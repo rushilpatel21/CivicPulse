@@ -1,0 +1,27 @@
+.map-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .autocomplete-container {
+    width: 100%;
+    max-width: 600px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .autocomplete-item {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .autocomplete-item:hover {
+    background-color: #f9f9f9;
+  }
+  
