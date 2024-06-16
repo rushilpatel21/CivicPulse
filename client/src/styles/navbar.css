@@ -1,0 +1,27 @@
+.navbar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px;
+    background: rgba(24, 24, 24, 0.8);
+    border-radius: 100px; 
+    position: fixed; 
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 15px;
+    z-index: 1000; 
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  
+  .navbar-options {
+    color: azure;
+    text-decoration: none; 
+    padding: 10px 20px; 
+    transition: background 0.3s, color 0.3s; 
+  }
+  
+  .navbar-options:hover {
+    color: rgba(255, 0, 0, 0.7);
+  }
