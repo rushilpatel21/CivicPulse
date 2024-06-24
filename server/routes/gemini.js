@@ -13,6 +13,7 @@ const fileManager = new GoogleAIFileManager(apiKey);
 // model: "gemini-1.5-pro" 
 const model = genAI.getGenerativeModel({
   model: "gemini-1.5-flash",
+  systemInstruction: "There are the following department: Road, Garden, Electricity, Drainage, Health & Hygiene, Smart Toilet, Water, Animals, Others \nand from this departments only you have to answer. also just answer the department name and nothing else ",
 });
 
 const generationConfig = {

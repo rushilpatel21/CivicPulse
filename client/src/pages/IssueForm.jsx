@@ -60,7 +60,7 @@ const IssueForm = () => {
           <PlacePicker
             className="form-control place-picker"
             id="location"
-            placeholder="Enter a place to see its address"
+            placeholder="Enter a place to report"
             onPlaceChange={handlePlaceChange}
           />
         </div>

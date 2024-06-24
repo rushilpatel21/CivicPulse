@@ -6,7 +6,7 @@ const fileUtils = require('../utils/fileUtils'); // Import fileUtils module
 const genAI = new GoogleGenerativeAI(config.GEMINI_API_KEY);
 const fileManager = new GoogleAIFileManager(config.GEMINI_API_KEY);
 
-const model = genAI.getGenerativeModel({ model: config.GENERATIVE_MODEL });
+const model = genAI.getGenerativeModel({ model: config.GENERATIVE_MODEL, systemInstruction: config.SYSTEM_INSTRUCTION });
 const generationConfig = config.GENERATION_CONFIG;
 
 async function uploadToGemini(imagePath, mimeType) {
