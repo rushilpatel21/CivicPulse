@@ -1,5 +1,5 @@
 const geminiService = require('../services/geminiService');
-const fileUtils = require('../utils/fileUtils');
+// const fileUtils = require('../utils/fileUtils');
 
 // TODO: Check if we need fileUtils or not and remove it if not needed. fileUtiles is required in geminiService.js
 
