@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { APILoader, PlacePicker } from '@googlemaps/extended-component-library/react';
+import { Gemini } from '../helper/api.js';
 import '../assets/IssueForm.css';
 
 const IssueForm = () => {
@@ -8,6 +9,15 @@ const IssueForm = () => {
   const [tags, setTags] = useState([]);
   const [customTag, setCustomTag] = useState('');
   const [severity, setSeverity] = useState('');
+
+  const getCurrentDate = () => {
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const year = today.getFullYear();
+
+    return `${day}-${month}-${year}`;
+  };
 
   const handlePlaceChange = (e) => {
     setLocation(e.target.value?.formattedAddress ?? '');
@@ -40,9 +50,24 @@ const IssueForm = () => {
     setSeverity(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ location, photo, tags, severity });
+    const formData = new FormData();
+    formData.append('location', location);
+    formData.append('photo', photo);
+    formData.append('tags', JSON.stringify(tags));
+    formData.append('severity', severity);
+    formData.append('date', getCurrentDate());
+    console.log(formData);
+    console.table(formData);
+
+    try {
+      const result = await Gemini(formData);
+      console.log('Success:', result);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+
     setLocation('');
     setPhoto(null);
     setTags([]);
