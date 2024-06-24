@@ -1,21 +1,12 @@
-const express = require("express");
-const bodyParser = require('body-parser');
-const cors = require("cors");
-require('dotenv').config();
+// server.js
+const express = require('express');
+const geminiRouter = require('./routes/geminiRouter');
 
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-app.use(cors()); // To Allow all origins 
-app.use(express.json());
-app.use(bodyParser.json())
-
-const gemini = require('./routes/gemini.js');
-
-
-
-app.use("/api/gemini", gemini);
+app.use('/api/gemini', geminiRouter);
 
 app.listen(PORT, () => {
-  console.log("Server started on port " + PORT);
+  console.log(`Server started on port ${PORT}`);
 });

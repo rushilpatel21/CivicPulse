@@ -1,0 +1,14 @@
+- server/
+  - routes/
+    - geminiRouter.js
+  - controllers/
+    - geminiController.js
+  - services/
+    - geminiService.js
+  - utils/
+    - fileUtils.js
+  - config/
+    - config.js
+  - app.js (or server.js)
+  - .env
+  - package.json

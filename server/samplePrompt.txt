@@ -4,6 +4,6 @@
 }
 
 {
-    "prompt": "what is the image",
-    "imagePath": "../whatever"
+    "prompt": "what is the image, describe in detail",
+    "imagePath": "./test.webp"
 }

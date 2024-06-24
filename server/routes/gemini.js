@@ -48,7 +48,7 @@ router.post('/', async (req, res) => {
       files.push(uploadedFile);
     }
 
-    const chatSession = model.startChat({
+    const chatSession = model.startChat({ 
       generationConfig,
       history: files.map(file => ({
         role: "user",
