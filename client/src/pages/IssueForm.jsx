@@ -57,8 +57,12 @@ const IssueForm = () => {
         <div className="mb-3">
           <label htmlFor="location" className="form-label">Location</label>
           <APILoader apiKey="YOUR_API_KEY_HERE" solutionChannel="GMP_GCC_placepicker_v1" />
-          <PlacePicker className="form-control" id="location" placeholder="Enter a place to see its address" onPlaceChange={handlePlaceChange} />
-          <input type="hidden" className="form-control" id="location" value={location} readOnly required />
+          <PlacePicker
+            className="form-control place-picker"
+            id="location"
+            placeholder="Enter a place to see its address"
+            onPlaceChange={handlePlaceChange}
+          />
         </div>
         <div className="mb-3">
           <label htmlFor="photo" className="form-label">Upload Photo</label>
