@@ -14,6 +14,7 @@ import './styles/App.css';
 // TODO 2: We need to send the userName field too in the issueForm dataForm Object, otherwise we cant identify who raise the issue.
 // TODO 3: Ask for location permission in heat map and focus the map on those lats and longs
 // TODO 4: I would like to have two drop down bars at issue details, 1) would be my Issues, 2) would be Issues near me
+// TODO 5: Dont forget to hash the passwords incase i dont use google Oauth
 
 function App() {
   return (
