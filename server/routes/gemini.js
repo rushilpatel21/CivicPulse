@@ -2,10 +2,13 @@ const express = require('express');
 const router = express.Router();
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const { GoogleAIFileManager } = require("@google/generative-ai/files");
-const path = require('path'); // Node.js path module
+const path = require('path');
+
 const apiKey = process.env.GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(apiKey);
 const fileManager = new GoogleAIFileManager(apiKey);
+
+// IMP: we need to use "@google/generative-ai": "0.12.0" inorder to use the AIFileManager
 
 // model: "gemini-1.5-pro" 
 const model = genAI.getGenerativeModel({
@@ -20,7 +23,6 @@ const generationConfig = {
   responseMimeType: "text/plain",
 };
 
-// Function to upload file to Google AI FileManager (Gemini)
 async function uploadToGemini(imagePath, mimeType) {
   try {
     const uploadResult = await fileManager.uploadFile(imagePath, {
@@ -36,14 +38,13 @@ async function uploadToGemini(imagePath, mimeType) {
   }
 }
 
-// POST / endpoint to handle prompting with optional image
 router.post('/', async (req, res) => {
-  const { prompt, imagePath } = req.body; // Assuming prompt and imagePath are sent in the request body
+  const { prompt, imagePath } = req.body;
 
   try {
     let files = [];
     if (imagePath) {
-      const uploadedFile = await uploadToGemini('./test.webp', "image/webp"); // Adjust MIME type as per your image type
+      const uploadedFile = await uploadToGemini('./test.webp', "image/webp");
       files.push(uploadedFile);
     }
 
