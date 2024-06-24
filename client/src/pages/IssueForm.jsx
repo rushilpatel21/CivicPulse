@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import Radar from 'radar-sdk-js';
+import { useState } from 'react';
+import { APILoader, PlacePicker } from '@googlemaps/extended-component-library/react';
+import '../assets/IssueForm.css';
 
 const IssueForm = () => {
   const [location, setLocation] = useState('');
@@ -9,16 +9,8 @@ const IssueForm = () => {
   const [customTag, setCustomTag] = useState('');
   const [severity, setSeverity] = useState('');
 
-  useEffect(() => {
-    Radar.initialize('prj_test_pk_77365fe4ac12e1c73c9ac314d30a8ae3605433e2');
-  }, []);
-
-  const handleSelection = (address) => {
-    console.log('Selected address:', address);
-  };
-
-  const handleLocationChange = (e) => {
-    setLocation(e.target.value);
+  const handlePlaceChange = (e) => {
+    setLocation(e.target.value?.formattedAddress ?? '');
   };
 
   const handlePhotoChange = (e) => {
@@ -62,33 +54,16 @@ const IssueForm = () => {
     <div className="container">
       <h1>Report an Issue</h1>
       <form onSubmit={handleSubmit}>
-        {/* <div className="mb-3">
+        <div className="mb-3">
           <label htmlFor="location" className="form-label">Location</label>
-          <input type="text" className="form-control" id="location" placeholder="Enter location"
-            value={location} onChange={handleLocationChange} required />
-        </div> */}
-        <Autocomplete onSelection={handleSelection} />
-        
-        <div className="mb-3 visually-hidden">
-          <label htmlFor="location" className="form-label">
-            Location
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="location"
-            placeholder="Enter location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            required
-          />
+          <APILoader apiKey="YOUR_API_KEY_HERE" solutionChannel="GMP_GCC_placepicker_v1" />
+          <PlacePicker className="form-control" id="location" placeholder="Enter a place to see its address" onPlaceChange={handlePlaceChange} />
+          <input type="hidden" className="form-control" id="location" value={location} readOnly required />
         </div>
-
         <div className="mb-3">
           <label htmlFor="photo" className="form-label">Upload Photo</label>
           <input type="file" className="form-control" id="photo" accept="image/*" onChange={handlePhotoChange} />
         </div>
-
         <div className="mb-3">
           <label htmlFor="tags" className="form-label">Tags</label>
           <input type="text" className="form-control" id="tags" placeholder="Enter tags"
@@ -96,7 +71,7 @@ const IssueForm = () => {
           <small className="form-text text-muted">Separate tags with spaces.</small>
           <div>
             {tags.map((tag, index) => (
-              <span key={index} className="badge bg-primary text-light mr-1">
+              <span key={index} className="badge bg-primary text-light mr-1 issue-form-tags">
                 {tag}
                 <button type="button" className="btn-close ms-1" aria-label="Close"
                   onClick={() => handleTagDelete(index)}></button>
@@ -104,7 +79,6 @@ const IssueForm = () => {
             ))}
           </div>
         </div>
-
         <div className="mb-3">
           <label htmlFor="severity" className="form-label">Severity</label>
           <select className="form-select" id="severity" value={severity} onChange={handleSeverityChange} required>
@@ -114,29 +88,10 @@ const IssueForm = () => {
             <option value="high">High</option>
           </select>
         </div>
-
         <button type="submit" className="btn btn-primary">Submit</button>
       </form>
     </div>
   );
-};
-
-const Autocomplete = ({ onSelection }) => {
-  useEffect(() => {
-    Radar.ui.autocomplete({
-      container: 'autocomplete',
-      width: '100%',
-      onSelection: onSelection,
-    });
-  }, [onSelection]);
-
-  return (
-    <div id="autocomplete" className="autocomplete-container" />
-  );
-};
-
-Autocomplete.propTypes = {
-  onSelection: PropTypes.func.isRequired,
 };
 
 export default IssueForm;
