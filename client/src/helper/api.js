@@ -15,17 +15,14 @@ export const Gemini = async (formData) => {
       },
     });
     return response.data;
-  } catch (error) {
-    if (error.response) {
-      // Request was made and server responded with a status code outside the range of 2xx
+  }catch(error) {
+    if(error.response) {
       console.error('Error response:', error.response.data);
       console.error('Error status:', error.response.status);
       console.error('Error headers:', error.response.headers);
-    } else if (error.request) {
-      // Request was made but no response was received
+    }else if (error.request) {
       console.error('Error request:', error.request);
-    } else {
-      // Something happened in setting up the request that triggered an error
+    }else {
       console.error('Error message:', error.message);
     }
     throw error;

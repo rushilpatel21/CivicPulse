@@ -9,7 +9,8 @@ const IssueForm = () => {
   const [tags, setTags] = useState([]);
   const [customTag, setCustomTag] = useState('');
   const [severity, setSeverity] = useState('');
-
+  const GOOGLE_API = import.meta.env.VITE_GOOGLE_API;
+  
   const getCurrentDate = () => {
     const today = new Date();
     const day = String(today.getDate()).padStart(2, '0');
@@ -81,7 +82,7 @@ const IssueForm = () => {
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="location" className="form-label">Location</label>
-          <APILoader apiKey="YOUR_API_KEY_HERE" solutionChannel="GMP_GCC_placepicker_v1" />
+          <APILoader apiKey={GOOGLE_API} solutionChannel="GMP_GCC_placepicker_v1" />
           <PlacePicker
             className="form-control place-picker"
             id="location"

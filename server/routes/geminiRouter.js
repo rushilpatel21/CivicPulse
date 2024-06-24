@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const geminiController = require('../controllers/geminiController');
 
-router.use(express.json());
-router.post('/', geminiController);
+router.post('/', geminiController.uploadToGemini);
 
 module.exports = router;
