@@ -2,3 +2,8 @@
     "prompt": "identify which government sector this issue should go into, the tags are: garbage, dirty, waste, just answer the sector name and nothing else and no trailing space nor \n. the sectors are Road, Hygiene, Railway, Food"
 
 }
+
+{
+    "prompt": "what is the image",
+    "imagePath": "../whatever"
+}
