@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { APILoader, PlacePicker } from '@googlemaps/extended-component-library/react';
 import { Gemini } from '../helper/api.js';
+import { SwalSuccess, SwalError } from '../helper/swal.js';
 import '../assets/IssueForm.css';
 
 const IssueForm = () => {
@@ -59,14 +60,16 @@ const IssueForm = () => {
     formData.append('tags', JSON.stringify(tags));
     formData.append('severity', severity);
     formData.append('date', getCurrentDate());
-    console.log(formData);
-    console.table(formData);
+    // console.log(formData);
+    // console.table(formData);
 
     try {
       const result = await Gemini(formData);
       console.log('Success:', result);
+      SwalSuccess();
     } catch (error) {
       console.error('Error:', error);
+      SwalError();
     }
 
     setLocation('');
