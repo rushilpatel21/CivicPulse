@@ -8,7 +8,6 @@ import Session from "supertokens-auth-react/recipe/session";
 
 SuperTokens.init({
     appInfo: {
-        // learn more about this on https://supertokens.com/docs/thirdpartyemailpassword/appinfo
         appName: "CivicPulse",
         apiDomain: "http://localhost:8000",
         websiteDomain: "http://localhost:5173",
@@ -21,7 +20,6 @@ SuperTokens.init({
                 providers: [
                     Github.init(),
                     Google.init(),
-                    // Facebook.init(),
                     Apple.init(),
                 ]
             }
@@ -30,7 +28,6 @@ SuperTokens.init({
             exposeAccessTokenToFrontendInCookieBasedAuth: true,
         }),
         EmailPassword.init(),
-        // Session.init()
     ]
 });
 

@@ -6,6 +6,8 @@ const Session = require("supertokens-node/recipe/session");
 const EmailPassword = require("supertokens-node/recipe/emailpassword");
 const ThirdParty = require("supertokens-node/recipe/thirdparty");
 const { middleware, errorHandler } = require("supertokens-node/framework/express");
+const Dashboard = require("supertokens-node/recipe/dashboard");
+const UserRoles = require ("supertokens-node/recipe/userroles");
 
 const SUPERTOKENS_CONNECTION_URI = process.env.SUPERTOKENS_CONNECTION_URI || 'https://st-dev-7972eee0-32cb-11ef-a570-fdac6021a8ff.aws.supertokens.io';
 const SUPERTOKENS_API_KEY = process.env.SUPERTOKENS_API_KEY || '9GgcFJXzBQxZUiQZh9-vnUViMS';
@@ -28,6 +30,8 @@ supertokens.init({
     },
     recipeList: [
         EmailPassword.init(),
+        Dashboard.init(),
+        UserRoles.init(),
         ThirdParty.init({
           signInAndUpFeature: {
             providers: [{
