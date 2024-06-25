@@ -10,6 +10,8 @@ const Navbar = () => {
       <Link className='navbar-options' to="/issuedetails">IssueDetails</Link>
       <Link className='navbar-options' to="/issueform">IssueForm</Link>
       <Link className='navbar-options' to="/profile">Profile</Link>
+      <Link className='navbar-options' to="/auth">Log In</Link>
+      {/* <Link className='navbar-options' to="/logout">Log Out</Link> */}
     </nav>
   );
 };
