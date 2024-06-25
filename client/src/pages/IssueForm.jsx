@@ -3,6 +3,7 @@ import { APILoader, PlacePicker } from '@googlemaps/extended-component-library/r
 import { Gemini } from '../helper/api.js';
 import { SwalSuccess, SwalError } from '../helper/swal.js';
 import '../styles/IssueForm.css';
+import { auth } from '../components/firebase.jsx';
 
 const IssueForm = () => {
   const [location, setLocation] = useState('');
@@ -53,14 +54,19 @@ const IssueForm = () => {
   };
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
+
+    const user = auth.currentUser;
     const formData = new FormData();
+    console.log(user.uid);
+    formData.append('user',user.uid);
     formData.append('location', location);
     formData.append('photo', photo);
     formData.append('tags', JSON.stringify(tags));
     formData.append('severity', severity);
     formData.append('date', getCurrentDate());
-    // console.log(formData);
+    console.log(formData);
     // console.table(formData);
 
     try {

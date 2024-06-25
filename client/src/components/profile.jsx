@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { auth, db } from "./firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { deleteDoc, doc, getDoc } from "firebase/firestore";
+import { useNavigate } from 'react-router-dom';
 
 function Profile() {
   const [userDetails, setUserDetails] = useState(null);
+  const navigate = useNavigate();
 
   const fetchUserData = async () => {
     auth.onAuthStateChanged(async (user) => {
@@ -26,10 +28,23 @@ function Profile() {
   async function handleLogout() {
     try {
       await auth.signOut();
-      window.location.href = "/login";
       console.log("User logged out successfully!");
+      navigate('/');
     } catch (error) {
       console.error("Error logging out:", error.message);
+    }
+  }
+
+  async function handleDelteAccount() {
+    try {
+      const user = auth.currentUser;
+      console.log(user.uid);
+      await user.delete(); // Delete from the firebase auth.
+      await deleteDoc(doc(db,"Users",user.uid)); // Delete from the database.
+      console.log("User deleted successfully!");
+      navigate('/');
+    } catch (error) {
+      console.error("Error deleting user:", error.message);
     }
   }
   return (
@@ -49,6 +64,9 @@ function Profile() {
           </div>
           <button className="btn btn-primary" onClick={handleLogout}>
             Logout
+          </button>
+          <button className="btn btn-primary" onClick={handleDelteAccount}>
+            Delete Account
           </button>
         </>
       ) : (

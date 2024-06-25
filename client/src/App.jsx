@@ -13,15 +13,24 @@ import IssueForm from './pages/IssueForm.jsx';
 import Profile from "./components/profile";
 import Login from "./components/login";
 import SignUp from "./components/register";
+import { useEffect, useState } from 'react';
+import { auth } from './components/firebase.jsx';
 
-// TODO 1: We need to create a Login, Signup, logout and Profile page 
-// TODO 2: We need to send the userName field too in the issueForm dataForm Object, otherwise we cant identify who raise the issue.
+// TODO 2: We need to use the userName to store the data in the database for the issueForm.
 // TODO 3: Ask for location permission in heat map and focus the map on those lats and longs
 // TODO 4: I would like to have two drop down bars at issue details, 1) would be my Issues, 2) would be Issues near me
-// TODO 5: Dont forget to hash the passwords incase i dont use google Oauth
 
 
 function App() {
+
+  const [user, setUser] = useState();
+  
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      setUser(user);
+    });
+  });
+
   return (
     <Router>
       <div className="App">
@@ -34,9 +43,9 @@ function App() {
               <Route path="/map" element={<Map />} />
               <Route path="/issuedetails" element={<IssueDetails />} />
               <Route path="/issueform" element={<IssueForm />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<SignUp />} />
+              {user && <Route path="/profile" element={<Profile />} />}
+              {!user && <Route path="/login" element={<Login />} />}
+              {!user && <Route path="/register" element={<SignUp />} />}
             </Routes>
             <ToastContainer />
           </div>
