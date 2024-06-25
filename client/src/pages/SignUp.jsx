@@ -1,10 +1,38 @@
-const SignUp = () => {
-    return (
-      <div>
-        <h1>SignUp</h1>
-        
-      </div>
-    );
+import { useState } from 'react';
+import { auth } from '../components/firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+
+const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      console.log('Logged in with:', userCredential.user);
+    } catch (error) {
+      console.error('Error logging in:', error);
+    }
   };
-  
-export default SignUp;
+
+  return (
+    <form onSubmit={handleLogin}>
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <button type="submit">Login</button>
+    </form>
+  );
+};
+
+export default Login;

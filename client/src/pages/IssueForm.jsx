@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { APILoader, PlacePicker } from '@googlemaps/extended-component-library/react';
 import { Gemini } from '../helper/api.js';
 import { SwalSuccess, SwalError } from '../helper/swal.js';
-import '../assets/IssueForm.css';
+import '../styles/IssueForm.css';
 
 const IssueForm = () => {
   const [location, setLocation] = useState('');
