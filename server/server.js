@@ -71,6 +71,8 @@ supertokens.init({
 
 const geminiRouter = require('./routes/geminiRouter.js');
 const user = require('./routes/user.js');
+const userNew = require('./routes/userRole.js');
+
 const app = express();
 const PORT = process.env.PORT || 8000;
 
@@ -97,7 +99,9 @@ const upload = multer({ storage: storage });
 app.use('/api/gemini', upload.single('photo'));
 
 app.use('/api/gemini', geminiRouter);
-app.use('/user/details',user);
+app.use('/dont/use/user',user);
+app.use('/api/user', userNew);
+
 app.use(errorHandler());
 
 app.listen(PORT, () => {

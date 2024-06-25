@@ -8,6 +8,9 @@ import IssueDetails from './pages/IssueDetails.jsx';
 import Profile from './pages/Profile.jsx';
 import Map from './pages/Map.jsx';
 import IssueForm from './pages/IssueForm.jsx';
+import UserDetails from './pages/UserDetail';
+// ....
+import AddUserRole from './pages/AddUserRole';
 
 import './styles/App.css';
 
@@ -30,6 +33,7 @@ function App() {
 
 
   // TODO: have to set logged in state as false in logout button and set undefined for UserDetail
+  // TODO: API keys are exposed, clean it up 
   useEffect(() => {
     if(Session.doesSessionExist){
       setIsLoggedIn(true);
@@ -52,6 +56,9 @@ function App() {
         <Route path="/issueform" element={<SessionAuth><IssueForm /></SessionAuth>} />
         <Route path="/profile" element={<SessionAuth><Profile /></SessionAuth>} />
         {getSuperTokensRoutesForReactRouterDom(reactRouterDom, [ThirdPartyPreBuiltUI, EmailPasswordPreBuiltUI])}
+
+        <Route path="/add-role" element={<AddUserRole />} />
+        <Route path="/user-details" element={<UserDetails />} />
       </Routes>
     </Router>
   );
