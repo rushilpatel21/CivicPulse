@@ -28,7 +28,16 @@ const IssueForm = () => {
 
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
-    setPhoto(file);
+    if (file && isFileTypeValid(file.type)) {
+      setPhoto(file);
+      console.log("valid");
+    } else {
+      alert('Invalid file type. Please select an image (PNG, JPEG, WEBP, HEIC, HEIF).');
+    }
+  };
+  
+  const isFileTypeValid = (fileType) => {
+    return /^image\/(png|jpeg|webp|heic|heif)$/.test(fileType);
   };
 
   const handleTagsChange = (e) => {
@@ -101,7 +110,7 @@ const IssueForm = () => {
         </div>
         <div className="mb-3">
           <label htmlFor="photo" className="form-label">Upload Photo</label>
-          <input type="file" className="form-control" id="photo" accept="image/*" onChange={handlePhotoChange} />
+          <input type="file" className="form-control" id="photo" accept="image/png, image/jpeg, image/webp, image/heic, image/heif" onChange={handlePhotoChange} />
         </div>
         <div className="mb-3">
           <label htmlFor="tags" className="form-label">Tags</label>

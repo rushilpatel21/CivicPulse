@@ -1,11 +1,9 @@
 const geminiService = require('../services/geminiService');
-// const fileUtils = require('../utils/fileUtils');
-
-// TODO: Check if we need fileUtils or not and remove it if not needed. fileUtiles is required in geminiService.js
 
 async function uploadToGemini(req, res) {
   const { tags } = req.body;
   const prompt = tags;
+  console.log(req.file.path);
   const imagePath = req.file.path; // Path to uploaded file
 
   try {
