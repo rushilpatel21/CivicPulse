@@ -9,9 +9,9 @@ const instance = axios.create({
 
 export const Gemini = async (formData) => {
   try {
-    const response = await instance.post('/gemini', formData,{
+    const response = await instance.post('/gemini', formData, {
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
       },
     });
     return response.data;
