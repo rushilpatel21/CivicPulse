@@ -14,11 +14,3 @@ const firebaseConfig = {
     measurementId: process.env.GOOGLE_MEASUREMENT_ID,
     databaseUrl: process.env.GOOGLE_DATABASE_URL
 };
-
-firebase.initializeApp(firebaseConfig);
-
-const storage = getStorage();
-const storageRef = ref(storage);
-
-module.exports = { storage };
- 

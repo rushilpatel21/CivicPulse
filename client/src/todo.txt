@@ -4,3 +4,4 @@ TODO 4: I would like to have two drop down bars at issue details, 1) would be my
 TODO 5: Need to find a way to have unique names for the images
 TODO 6: Need to store the data from the issue form into google database
 TODO 7: Need to add Apple and Github SSO for login
+TODO 8: Also have a loading animation like a spinner or something to show when uploading the data

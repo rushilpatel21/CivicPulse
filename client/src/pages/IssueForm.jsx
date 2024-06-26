@@ -131,10 +131,10 @@ const IssueForm = () => {
     formData.append('user',user.uid);
     formData.append('location', location);
     formData.append('photo', photo);
-    formData.append('tags', JSON.stringify(tags));
+    formData.append('tags', tags);
     formData.append('severity', severity);
     formData.append('date', getCurrentDate());
-    console.log(formData);
+    // console.log(formData);
     // console.table(formData);
 
     try {
