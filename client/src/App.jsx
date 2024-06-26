@@ -16,11 +16,6 @@ import SignUp from "./components/register";
 import { useEffect, useState } from 'react';
 import { auth } from './components/firebase.jsx';
 
-// TODO 2: We need to use the userName to store the data in the database for the issueForm.
-// TODO 3: Ask for location permission in heat map and focus the map on those lats and longs
-// TODO 4: I would like to have two drop down bars at issue details, 1) would be my Issues, 2) would be Issues near me
-
-
 function App() {
 
   const [user, setUser] = useState();
@@ -47,7 +42,9 @@ function App() {
               {!user && <Route path="/login" element={<Login />} />}
               {!user && <Route path="/register" element={<SignUp />} />}
             </Routes>
-            <ToastContainer />
+            <ToastContainer 
+              newestOnTop
+            />
           </div>
         </div>
       </div>

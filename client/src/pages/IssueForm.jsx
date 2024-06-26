@@ -1,9 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { APILoader, PlacePicker } from '@googlemaps/extended-component-library/react';
 import { Gemini } from '../helper/api.js';
 import { SwalSuccess, SwalError } from '../helper/swal.js';
 import '../styles/IssueForm.css';
+import { toast } from "react-toastify";
 import { auth } from '../components/firebase.jsx';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 const IssueForm = () => {
   const [location, setLocation] = useState('');
@@ -12,7 +16,37 @@ const IssueForm = () => {
   const [customTag, setCustomTag] = useState('');
   const [severity, setSeverity] = useState('');
   const GOOGLE_API = import.meta.env.VITE_GOOGLE_API;
-  
+  const navigate = useNavigate();
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const usingSwal = () => {
+      withReactContent(Swal).fire({
+        icon: "error",
+        title: "User Not Logged In",
+        text: "Please sign in to view progress",
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Log In',
+        cancelButtonText: 'Close',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/login');
+        } else {
+          navigate('/');
+        }
+      })
+    };
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        usingSwal();
+      }else{
+        setLoggedIn(true);
+      }
+    });
+  },[navigate]);
+
   const getCurrentDate = () => {
     const today = new Date();
     const day = String(today.getDate()).padStart(2, '0');
@@ -63,8 +97,29 @@ const IssueForm = () => {
   };
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
+
+    if (!location) {
+      toast.error('Location is required.', {
+      position: "bottom-center",
+    }); return; }
+
+    if (!photo) {
+      toast.error('Photo is required.', {
+      position: "bottom-center",
+    }); return;}
+
+    if (tags.length === 0) {
+      toast.error('At least one tag is required.', {
+      position: "bottom-center",
+    }); return;}
+
+    if (!severity) {
+      toast.error('Severity is required.', {
+      position: "bottom-center",
+    }); return;}
+
+
 
     const user = auth.currentUser;
     const formData = new FormData();
@@ -95,7 +150,8 @@ const IssueForm = () => {
   };
 
   return (
-    <div className="container">
+    <>
+    { loggedIn && <div className="container">
       <h1>Report an Issue</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
@@ -106,11 +162,14 @@ const IssueForm = () => {
             id="location"
             placeholder="Enter a place to report"
             onPlaceChange={handlePlaceChange}
+            // required
           />
         </div>
         <div className="mb-3">
           <label htmlFor="photo" className="form-label">Upload Photo</label>
-          <input type="file" className="form-control" id="photo" accept="image/png, image/jpeg, image/webp, image/heic, image/heif" onChange={handlePhotoChange} />
+          <input type="file" className="form-control" id="photo" accept="image/png, image/jpeg, image/webp, image/heic, image/heif" onChange={handlePhotoChange} 
+          // required
+          />
         </div>
         <div className="mb-3">
           <label htmlFor="tags" className="form-label">Tags</label>
@@ -126,10 +185,13 @@ const IssueForm = () => {
               </span>
             ))}
           </div>
+          {tags.length === 0 && <div className="text-danger">At least one tag is required.</div>}
         </div>
         <div className="mb-3">
           <label htmlFor="severity" className="form-label">Severity</label>
-          <select className="form-select" id="severity" value={severity} onChange={handleSeverityChange} required>
+          <select className="form-select" id="severity" value={severity} onChange={handleSeverityChange} 
+          // required
+          >
             <option value="">Select severity</option>
             <option value="low">Low</option>
             <option value="medium">Medium</option>
@@ -138,7 +200,7 @@ const IssueForm = () => {
         </div>
         <button type="submit" className="btn btn-primary">Submit</button>
       </form>
-    </div>
+    </div>}</>
   );
 };
 

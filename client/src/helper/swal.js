@@ -17,4 +17,4 @@ export const SwalError = async () => {
         title: 'Issue Not Submitted!',
         text: 'An error occurred while submitting your issue.',
     });
-}
+};
