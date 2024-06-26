@@ -1,13 +1,12 @@
 const geminiService = require('../services/geminiService');
 
 async function uploadToGemini(req, res) {
-  const { tags } = req.body;
-  const prompt = tags;
-  console.log(req.file.path);
-  const imagePath = req.file.path; // Path to uploaded file
+  const { tags, photo, mimeType } = req.body;
 
   try {
-    const uploadedFile = await geminiService.uploadToGemini(imagePath, req.file.mimetype);
+    console.log(photo);
+    const response = await geminiService.uploadToGemini(photo, mimeType);
+    console.log(response);
     const chatSession = geminiService.model.startChat({
       generationConfig: geminiService.generationConfig,
       history: [
@@ -16,8 +15,8 @@ async function uploadToGemini(req, res) {
           parts: [
             {
               fileData: {
-                mimeType: uploadedFile.mimeType,
-                fileUri: uploadedFile.uri,
+                mimeType: mimeType,
+                fileUri: photo,
               },
             },
           ],
@@ -25,7 +24,7 @@ async function uploadToGemini(req, res) {
       ],
     });
 
-    const result = await chatSession.sendMessage(prompt);
+    const result = await chatSession.sendMessage(tags);
     const responseText = result.response.text();
     console.log(responseText);
     res.status(200).json({ response: responseText });

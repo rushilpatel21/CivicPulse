@@ -4,10 +4,11 @@ import { Gemini } from '../helper/api.js';
 import { SwalSuccess, SwalError } from '../helper/swal.js';
 import '../styles/IssueForm.css';
 import { toast } from "react-toastify";
-import { auth } from '../components/firebase.jsx';
+import { auth, storage } from '../components/firebase.jsx';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const IssueForm = () => {
   const [location, setLocation] = useState('');
@@ -99,10 +100,10 @@ const IssueForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!location) {
-      toast.error('Location is required.', {
-      position: "bottom-center",
-    }); return; }
+    // if (!location) {
+    //   toast.error('Location is required.', {
+    //   position: "bottom-center",
+    // }); return; }
 
     if (!photo) {
       toast.error('Photo is required.', {
@@ -122,18 +123,43 @@ const IssueForm = () => {
 
 
     const user = auth.currentUser;
-    const formData = new FormData();
-    console.log(user.uid);
-    formData.append('user',user.uid);
-    formData.append('location', location);
-    formData.append('photo', photo);
-    formData.append('tags', JSON.stringify(tags));
-    formData.append('severity', severity);
-    formData.append('date', getCurrentDate());
-    console.log(formData);
+    const date = Date.now();
+    const name = `images/${user.uid}${date}${photo.name}`
+    const storageRef = ref(storage,name);
+
+    // const formData = new FormData();
+    // console.log(user.uid);
+    // formData.append('user',user.uid);
+    // formData.append('location', location);
+    // formData.append('photo', photo);
+    // formData.append('tags', JSON.stringify(tags));
+    // formData.append('severity', severity);
+    // formData.append('date', getCurrentDate());
+    // console.log(formData);
     // console.table(formData);
+    // try {
+    //   const result = await Gemini(formData);
+    //   console.log('Success:', result);
+    //   SwalSuccess();
+    // } catch (error) {
+    //   console.error('Error:', error);
+    //   SwalError();
+    // }
 
     try {
+      await uploadBytes(storageRef, photo);
+
+      const downloadURL = await getDownloadURL(storageRef);
+      const formData = {
+        user: user.uid,
+        location,
+        photo: downloadURL,
+        mimeType: photo.type,
+        tags: JSON.stringify(tags),
+        severity,
+        date: getCurrentDate(),
+      };
+      console.table(formData);
       const result = await Gemini(formData);
       console.log('Success:', result);
       SwalSuccess();
