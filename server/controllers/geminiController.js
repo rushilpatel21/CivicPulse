@@ -1,4 +1,3 @@
-const { Firestore } = require('@google-cloud/firestore');
 const serviceAccount = require('../config/serviceAccountKey.json');
 const admin = require('firebase-admin');
 const geminiService = require('../services/geminiService');
