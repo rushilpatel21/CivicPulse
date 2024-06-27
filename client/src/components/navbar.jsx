@@ -1,3 +1,5 @@
+// TODO: Make the profile picture appear and also use  profile pic || defaultUserIcon
+
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
