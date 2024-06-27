@@ -15,6 +15,7 @@ import Login from "./components/login";
 import SignUp from "./components/register";
 import { useEffect, useState } from 'react';
 import { auth } from './components/firebase.jsx';
+import { CssBaseline } from '@mui/material';
 
 function App() {
 
@@ -45,6 +46,7 @@ function App() {
             <ToastContainer 
               newestOnTop
             />
+            <CssBaseline />
           </div>
         </div>
       </div>

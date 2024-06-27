@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import Loader from '../components/loader.jsx';
 
 const IssueForm = () => {
   const [location, setLocation] = useState('');
@@ -20,6 +21,7 @@ const IssueForm = () => {
   const GOOGLE_API = import.meta.env.VITE_GOOGLE_API;
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const usingSwal = () => {
@@ -120,7 +122,7 @@ const IssueForm = () => {
       toast.error('Severity is required.', {
       position: "bottom-center",
     }); return;}
-
+    setIsLoading(true);
     const user = auth.currentUser;
     const formData = new FormData();
     const date = Date.now();
@@ -134,8 +136,6 @@ const IssueForm = () => {
     formData.append('tags', tags);
     formData.append('severity', severity);
     formData.append('date', getCurrentDate());
-    // console.log(formData);
-    // console.table(formData);
 
     try {
       await uploadBytes(storageRef, photo);
@@ -148,7 +148,7 @@ const IssueForm = () => {
       console.error('Error:', error);
       SwalError();
     }
-
+    setIsLoading(false);
     setLocation('');
     setPhoto(null);
     setTags([]);
@@ -158,6 +158,7 @@ const IssueForm = () => {
 
   return (
     <>
+    {isLoading && <Loader/>}
     { loggedIn && <div className="container">
       <h1>Report an Issue</h1>
       <form onSubmit={handleSubmit}>
