@@ -26,7 +26,7 @@ const IssueForm = () => {
       withReactContent(Swal).fire({
         icon: "error",
         title: "User Not Logged In",
-        text: "Please sign in to view progress",
+        text: "Please sign in to view Issue Form",
         showCancelButton: true,
         confirmButtonColor: '#dc3545',
         cancelButtonColor: '#6c757d',

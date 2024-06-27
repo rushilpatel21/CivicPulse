@@ -14,7 +14,7 @@ const HeatMap = () => {
       withReactContent(Swal).fire({
         icon: "error",
         title: "User Not Logged In",
-        text: "Please sign in to view progress",
+        text: "Please sign in to view Heat Map",
         showCancelButton: true,
         confirmButtonColor: '#dc3545',
         cancelButtonColor: '#6c757d',
