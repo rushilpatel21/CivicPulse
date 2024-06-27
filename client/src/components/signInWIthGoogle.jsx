@@ -29,9 +29,9 @@ function SignInWithGoogle() {
   }
   
   return (
-    <div className="continue-google">
-      <div onClick={googleLogin}>
-        <img className="continue-google-icon" src={googleIconLight} alt="Google Icon" />
+    <div className="continue-google d-flex align-items-center justify-content-center">
+      <div onClick={googleLogin} className="d-grid mb-3">
+        <img className="continue-submit-icon" src={googleIconLight} alt="Google Icon" />
       </div>
     </div>
   );

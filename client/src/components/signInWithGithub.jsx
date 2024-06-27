@@ -29,9 +29,9 @@ function SignInWithGithub() {
   }
   
   return (
-    <div className="continue-github">
-      <div  onClick={githubLogin}>
-        <img className="continue-github-icon" src={githubIcon} alt="GitHub Icon" />
+    <div className="continue-google d-flex align-items-center justify-content-center">
+      <div onClick={githubLogin} className="d-grid mb-3">
+        <img className="continue-submit-icon" src={githubIcon} alt="Google Icon" />
       </div>
     </div>
   );

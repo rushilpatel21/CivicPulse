@@ -16,6 +16,16 @@
 .continue-github-icon,
 .continue-google-icon,
 .continue-submit-icon {
-  width: 350px;
+  width: 300px;
   margin: 0 5px;
+}
+
+@media screen and (min-width: 900px) {
+  .continue-submit-icon {
+    width: 400px;
+  }
+  .padding-login{
+    padding-top: 90px;
+    height: calc(100vh - 90px);
+  }
 }

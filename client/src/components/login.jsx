@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
 import SignInWithGithub from "./signInWithGithub.jsx";
 import SignInWithGoogle from "./signInWithGoogle.jsx";
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -30,47 +32,53 @@ function Login() {
   };
 
   return (
-    <div className="container-fluid pt-5 d-flex align-items-center justify-content-center">
-      <div>
-        <form onSubmit={handleSubmit} className="p-4 bg-light rounded shadow">
-          <h3 className="text-center mb-4">Login</h3>
+    <div className="container-fluid padding-login d-flex align-items-center justify-content-center">
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{
+          p: 4,
+          bgcolor: 'background.paper',
+          borderRadius: 1,
+          boxShadow: 3,
+          width: { sm: 350, md: 450 },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <h3 className="text-center mb-4">Login</h3>
 
-          <div className="mb-3">
-            <label htmlFor="inputEmail" className="form-label">Email address</label>
-            <input
-              type="email"
-              className="form-control"
-              id="inputEmail"
-              placeholder="Enter email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
+        <TextField
+          required
+          id="outlined-email"
+          label="Email Address"
+          type="email"
+          fullWidth
+          margin="normal"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-          <div className="mb-3">
-            <label htmlFor="inputPassword" className="form-label">Password</label>
-            <input
-              type="password"
-              className="form-control"
-              id="inputPassword"
-              placeholder="Enter password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
+        <TextField
+          required
+          id="outlined-password"
+          label="Password"
+          type="password"
+          fullWidth
+          margin="normal"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-          <div className="d-grid mb-3">
-            <button type="submit" className="btn btn-primary continue-submit-icon">Submit</button>
-          </div>
+        <div className="d-grid mb-3">
+          <button type="submit" className="btn btn-primary continue-submit-ico">Submit</button>
+        </div>
 
-          <p className="text-center">New user? <a href="/register">Register Here</a></p>
-          <p className="text-center">--Or continue with--</p>
-          <SignInWithGoogle />
-          <SignInWithGithub />
-        </form>
-      </div>
+        <p className="text-center">New user? <a href="/register">Register Here</a></p>
+        <p className="text-center">--Or continue with--</p>
+        <SignInWithGoogle />
+        <SignInWithGithub />
+      </Box>
     </div>
   );
 }
