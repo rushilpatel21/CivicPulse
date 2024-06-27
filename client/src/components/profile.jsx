@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { auth, db } from "./firebase";
 import { deleteDoc, doc, getDoc } from "firebase/firestore";
 import { useNavigate } from 'react-router-dom';
+import { toast } from "react-toastify";
 
 function Profile() {
   const [userDetails, setUserDetails] = useState(null);
@@ -29,6 +30,9 @@ function Profile() {
     try {
       await auth.signOut();
       console.log("User logged out successfully!");
+      toast.success("User logged out Successfully", {
+        position: "bottom-center",
+      });
       navigate('/');
     } catch (error) {
       console.error("Error logging out:", error.message);
@@ -42,6 +46,9 @@ function Profile() {
       await user.delete(); // Delete from the firebase auth.
       await deleteDoc(doc(db,"Users",user.uid)); // Delete from the database.
       console.log("User deleted successfully!");
+      toast.success("Account Deleted Successfully", {
+        position: "bottom-center",
+      });
       navigate('/');
     } catch (error) {
       console.error("Error deleting user:", error.message);

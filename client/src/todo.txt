@@ -3,4 +3,11 @@ TODO 3: Ask for location permission in heat map and focus the map on those lats 
 TODO 4: I would like to have two drop down bars at issue details, 1) would be my Issues, 2) would be Issues near me
 TODO 7: Need to add Apple SSO for login
 TODO 9: Make Light & Dark Mode feature
-TODO 10: Add a feature to allow users to add their own issues
+TODO 10: Add a feature to allow users to add their own issues (report a bug)
+TODO 11: Fix the order of the toastify (it is not following newestOnTop)
+todo 
+
+1) Have option to edit the details.
+ -- like have a form already and fill the details already and then have a submit button or cancel button. (on cancel we can just reset/initialize the form)
+2) For delete, make it like a danger zone (like GitHub) and ask for confirmation
+3) have the image on the left side (square) and and below the image should be your name.
