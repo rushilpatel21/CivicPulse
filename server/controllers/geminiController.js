@@ -12,9 +12,7 @@ const db = admin.firestore();
 async function uploadToGemini(req, res) {
   const { tags, user, location, severity, photoUrl } = req.body;
   const prompt = JSON.stringify(tags);
-  
-  console.log(req.file.path);
-  
+    
   const imagePath = req.file.path;
 
   try {
@@ -41,7 +39,6 @@ async function uploadToGemini(req, res) {
     console.log(department);
 
     const date = new Date();
-    // Store data in Firestore
     const docRef = await db.collection('IssueDetails').add({
       user,
       date,
@@ -52,7 +49,7 @@ async function uploadToGemini(req, res) {
       photoUrl,
     });
 
-    console.log(`Document written with ID: ${docRef.id}`);
+    // console.log(`Document written with ID: ${docRef.id}`);
 
     fs.unlink(imagePath, (err) => {
       if (err) {

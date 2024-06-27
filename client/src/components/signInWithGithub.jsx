@@ -1,15 +1,15 @@
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { GithubAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth, db } from "./firebase";
 import { toast } from "react-toastify";
 import { setDoc, doc } from "firebase/firestore";
-import googleIconLight from "../assets/GoogleIconLight.png";
+import githubIcon from "../assets/GithubIconLight.png"; 
 import { useNavigate } from 'react-router-dom';
 
-function SignInWithGoogle() {
+function SignInWithGithub() {
   const navigate = useNavigate();
   
-  function googleLogin() {
-    const provider = new GoogleAuthProvider();
+  function githubLogin() {
+    const provider = new GithubAuthProvider();
     signInWithPopup(auth, provider).then(async (result) => {
       console.log(result);
       const user = result.user;
@@ -29,12 +29,12 @@ function SignInWithGoogle() {
   }
   
   return (
-    <div className="continue-google">
-      <div onClick={googleLogin}>
-        <img className="continue-google-icon" src={googleIconLight} alt="Google Icon" />
+    <div className="continue-github">
+      <div  onClick={githubLogin}>
+        <img className="continue-github-icon" src={githubIcon} alt="GitHub Icon" />
       </div>
     </div>
   );
 }
 
-export default SignInWithGoogle;
+export default SignInWithGithub;

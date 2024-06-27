@@ -1,0 +1,21 @@
+.continue-github,
+.continue-google {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 14px;
+}
+
+.continue-github .continue-github-icon,
+.continue-google .continue-google-icon, .continue-submit-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.continue-github-icon,
+.continue-google-icon,
+.continue-submit-icon {
+  width: 350px;
+  margin: 0 5px;
+}

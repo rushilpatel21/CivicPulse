@@ -1,9 +1,11 @@
+import '../styles/Login.css';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { auth } from "./firebase";
 import { toast } from "react-toastify";
-import SignInwithGoogle from "./signInWIthGoogle";
 import { useNavigate } from 'react-router-dom';
+import SignInWithGithub from "./signInWithGithub.jsx";
+import SignInWithGoogle from "./signInWithGoogle.jsx";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -21,7 +23,6 @@ function Login() {
       navigate('/');
     } catch (error) {
       console.log(error.message);
-
       toast.error(error.message, {
         position: "bottom-center",
       });
@@ -29,41 +30,48 @@ function Login() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h3>Login</h3>
+    <div className="container-fluid pt-5 d-flex align-items-center justify-content-center">
+      <div>
+        <form onSubmit={handleSubmit} className="p-4 bg-light rounded shadow">
+          <h3 className="text-center mb-4">Login</h3>
 
-      <div className="mb-3">
-        <label>Email address</label>
-        <input
-          type="email"
-          className="form-control"
-          placeholder="Enter email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
+          <div className="mb-3">
+            <label htmlFor="inputEmail" className="form-label">Email address</label>
+            <input
+              type="email"
+              className="form-control"
+              id="inputEmail"
+              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
 
-      <div className="mb-3">
-        <label>Password</label>
-        <input
-          type="password"
-          className="form-control"
-          placeholder="Enter password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
+          <div className="mb-3">
+            <label htmlFor="inputPassword" className="form-label">Password</label>
+            <input
+              type="password"
+              className="form-control"
+              id="inputPassword"
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
 
-      <div className="d-grid">
-        <button type="submit" className="btn btn-primary">
-          Submit
-        </button>
+          <div className="d-grid mb-3">
+            <button type="submit" className="btn btn-primary continue-submit-icon">Submit</button>
+          </div>
+
+          <p className="text-center">New user? <a href="/register">Register Here</a></p>
+          <p className="text-center">--Or continue with--</p>
+          <SignInWithGoogle />
+          <SignInWithGithub />
+        </form>
       </div>
-      <p className="forgot-password text-right">
-        New user <a href="/register">Register Here</a>
-      </p>
-      <SignInwithGoogle/>
-    </form>
+    </div>
   );
 }
 
