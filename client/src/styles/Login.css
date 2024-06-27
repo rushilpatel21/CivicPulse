@@ -29,3 +29,11 @@
     height: calc(100vh - 90px);
   }
 }
+
+.login-paragraph {
+  margin: -0.5px; 
+}
+
+.login-paragraph-icon {
+  margin-top: 10px;
+}

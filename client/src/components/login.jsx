@@ -74,8 +74,9 @@ function Login() {
           <button type="submit" className="btn btn-primary continue-submit-ico">Submit</button>
         </div>
 
-        <p className="text-center">New user? <a href="/register">Register Here</a></p>
-        <p className="text-center">--Or continue with--</p>
+        <p className="login-paragraph">New user? <a href="/register">Register Here</a></p>
+        <p className="login-paragraph">Forgot Password? <a href="/resetpassword">Reset Here</a></p>
+        <p className="login-paragraph-icon">--Or continue with--</p>
         <SignInWithGoogle />
         <SignInWithGithub />
       </Box>
