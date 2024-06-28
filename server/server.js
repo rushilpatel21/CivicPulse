@@ -3,7 +3,7 @@ const express = require('express');
 const multer = require('multer');
 const cors = require('cors');
 const geminiRouter = require('./routes/geminiRouter');
-
+const issuesRouter = require('./routes/issuesRouter.js');
 const app = express();
 const PORT = process.env.PORT || 8000;
 
@@ -28,6 +28,8 @@ const upload = multer({ storage: storage });
 app.use('/api/gemini', upload.single('photo'));
 
 app.use('/api/gemini', geminiRouter);
+
+app.use('/api/issues', issuesRouter);
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
