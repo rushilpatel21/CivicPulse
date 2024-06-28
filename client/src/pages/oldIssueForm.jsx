@@ -4,13 +4,13 @@ import { SwalSuccess, SwalError } from '../helper/swal.js';
 import '../styles/IssueForm.css';
 import { auth, storage } from '../components/firebase.jsx';
 import { useEffect, useState } from 'react';
+import '../styles/IssueForm.css';
 import { toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import Loader from '../components/loader.jsx';
-import { Box, Button, Chip, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 
 const IssueForm = () => {
   const [location, setLocation] = useState('');
@@ -45,11 +45,11 @@ const IssueForm = () => {
     auth.onAuthStateChanged((user) => {
       if (!user) {
         usingSwal();
-      } else {
+      }else{
         setLoggedIn(true);
       }
     });
-  }, [navigate]);
+  },[navigate]);
 
   const getCurrentDate = () => {
     const today = new Date();
@@ -73,7 +73,7 @@ const IssueForm = () => {
       alert('Invalid file type. Please select an image (PNG, JPEG, WEBP, HEIC, HEIF).');
     }
   };
-
+  
   const isFileTypeValid = (fileType) => {
     return /^image\/(png|jpeg|webp|heic|heif)$/.test(fileType);
   };
@@ -110,29 +110,27 @@ const IssueForm = () => {
 
     if (!photo) {
       toast.error('Photo is required.', {
-        position: "bottom-center",
-      }); return;
-    }
+      position: "bottom-center",
+    }); return;}
 
     if (tags.length === 0) {
       toast.error('At least one tag is required.', {
-        position: "bottom-center",
-      }); return;
-    }
+      position: "bottom-center",
+    }); return;}
 
     if (!severity) {
       toast.error('Severity is required.', {
-        position: "bottom-center",
-      }); return;
-    }
+      position: "bottom-center",
+    }); return;}
     setIsLoading(true);
     const user = auth.currentUser;
     const formData = new FormData();
     const date = Date.now();
     const name = `images/${user.uid}${date}${photo.name}`
-    const storageRef = ref(storage, name);
+    const storageRef = ref(storage,name);
 
-    formData.append('user', user.uid);
+
+    formData.append('user',user.uid);
     formData.append('location', location);
     formData.append('photo', photo);
     formData.append('tags', tags);
@@ -160,80 +158,57 @@ const IssueForm = () => {
 
   return (
     <>
-      {isLoading && <Loader />}
-      {loggedIn && (
-        <Box
-          className="container"
-          component="form"
-          onSubmit={handleSubmit}
-          sx={{ p: 3, bgcolor: 'background.paper', borderRadius: 3, boxShadow: 3, width: { sm: 400, md: 500 } }}
-        >
-          <Typography variant="h4" gutterBottom>Report an Issue</Typography>
-          <FormControl fullWidth margin="normal">
-            <InputLabel htmlFor="location"></InputLabel>
-            <APILoader apiKey={GOOGLE_API} solutionChannel="GMP_GCC_placepicker_v1" />
-            <PlacePicker
-              id="location"
-              placeholder="Enter a place to report"
-              onPlaceChange={handlePlaceChange}
-              fullWidth
-              variant="outlined"
-              // required
-            />
-          </FormControl>
-          <FormControl fullWidth margin="normal">
-            <TextField
-              type="file"
-              label="Upload Photo"
-              InputLabelProps={{ shrink: true }}
-              inputProps={{ accept: "image/png, image/jpeg, image/webp, image/heic, image/heif" }}
-              onChange={handlePhotoChange}
-              // required
-            />
-          </FormControl>
-          <FormControl fullWidth margin="normal">
-            <TextField
-              label="Tags"
-              placeholder="Enter tags"
-              value={customTag}
-              onChange={handleCustomTagChange}
-              onKeyDown={handleTagsChange}
-            />
-            <Typography variant="body2" color="textSecondary">Separate tags with spaces.</Typography>
-            <Box mt={1}>
-              {tags.map((tag, index) => (
-                <Chip
-                  key={index}
-                  label={tag}
-                  onDelete={() => handleTagDelete(index)}
-                  color="primary"
-                  style={{ marginRight: '0.5rem', marginBottom: '0.5rem' }}
-                />
-              ))}
-            </Box>
-            {tags.length === 0 && <Typography color="error">At least one tag is required.</Typography>}
-          </FormControl>
-          <FormControl fullWidth margin="normal">
-            <InputLabel htmlFor="severity">Severity</InputLabel>
-            <Select
-              labelId="severity"
-              id="severity"
-              value={severity}
-              onChange={handleSeverityChange}
-              // required
-            >
-              <MenuItem value=""><em>Select severity</em></MenuItem>
-              <MenuItem value="low">Low</MenuItem>
-              <MenuItem value="medium">Medium</MenuItem>
-              <MenuItem value="high">High</MenuItem>
-            </Select>
-          </FormControl>
-          <Box mt={2}>
-            <Button variant="contained" color="primary" type="submit" fullWidth>Submit</Button>
-          </Box>
-        </Box>
-      )}
-    </>
+    {isLoading && <Loader/>}
+    { loggedIn && <div className="container">
+      <h1>Report an Issue</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label htmlFor="location" className="form-label">Location</label>
+          <APILoader apiKey={GOOGLE_API} solutionChannel="GMP_GCC_placepicker_v1" />
+          <PlacePicker
+            className="form-control place-picker"
+            id="location"
+            placeholder="Enter a place to report"
+            onPlaceChange={handlePlaceChange}
+            // required
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="photo" className="form-label">Upload Photo</label>
+          <input type="file" className="form-control" id="photo" accept="image/png, image/jpeg, image/webp, image/heic, image/heif" onChange={handlePhotoChange} 
+          // required
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="tags" className="form-label">Tags</label>
+          <input type="text" className="form-control" id="tags" placeholder="Enter tags"
+            value={customTag} onChange={handleCustomTagChange} onKeyDown={handleTagsChange} />
+          <small className="form-text text-muted">Separate tags with spaces.</small>
+          <div>
+            {tags.map((tag, index) => (
+              <span key={index} className="badge bg-primary text-light mr-1 issue-form-tags">
+                {tag}
+                <button type="button" className="btn-close ms-1" aria-label="Close"
+                  onClick={() => handleTagDelete(index)}></button>
+              </span>
+            ))}
+          </div>
+          {tags.length === 0 && <div className="text-danger">At least one tag is required.</div>}
+        </div>
+        <div className="mb-3">
+          <label htmlFor="severity" className="form-label">Severity</label>
+          <select className="form-select" id="severity" value={severity} onChange={handleSeverityChange} 
+          // required
+          >
+            <option value="">Select severity</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+        <button type="submit" className="btn btn-primary">Submit</button>
+      </form>
+    </div>}</>
   );
 };
 
