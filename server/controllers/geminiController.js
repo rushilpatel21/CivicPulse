@@ -39,7 +39,7 @@ async function uploadToGemini(req, res) {
     console.log(department);
 
     const date = new Date();
-    const docRef = await db.collection('IssueDetails').add({
+    await db.collection('IssueDetails').add({
       user,
       date,
       department,
@@ -47,9 +47,8 @@ async function uploadToGemini(req, res) {
       tags,
       severity,
       photoUrl,
+      progress: 1
     });
-
-    // console.log(`Document written with ID: ${docRef.id}`);
 
     fs.unlink(imagePath, (err) => {
       if (err) {

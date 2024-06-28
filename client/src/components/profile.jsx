@@ -3,16 +3,19 @@ import { auth, db } from "./firebase";
 import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Box, TextField, Button, Typography } from "@mui/material";
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
+import { Box, TextField, Button, Typography, IconButton, Menu, MenuItem } from "@mui/material";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 function Profile() {
   const [userDetails, setUserDetails] = useState(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
+  const open = Boolean(anchorEl);
 
   const fetchUserData = async () => {
     auth.onAuthStateChanged(async (user) => {
@@ -45,31 +48,32 @@ function Profile() {
       console.error("Error logging out:", error.message);
     }
   };
+
   const handleDeleteAccount = async () => {
     withReactContent(Swal).fire({
-        title: 'Are you sure?',
-        text: 'You will not be able to recover this account!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'No, keep it',
-        reverseButtons: true
-    }).then((result)=>{
-        if(result.isConfirmed){
-            confirmedDeleteAccount();
-        }else{
-            Swal.fire('Cancelled', 'Your account is safe :)', 'info');
-        }
-    
+      title: 'Are you sure?',
+      text: 'You will not be able to recover this account!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, keep it',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        confirmedDeleteAccount();
+      } else {
+        Swal.fire('Cancelled', 'Your account is safe :)', 'info');
+      }
     })
-  }
+  };
+
   const confirmedDeleteAccount = async () => {
     try {
-        const user = auth.currentUser;
-        await user.delete(); // Delete from the firebase auth.
-        await deleteDoc(doc(db, "Users", user.uid)); // Delete from the database.
-        toast.success("Account Deleted Successfully", { position: "bottom-center" });
-        navigate('/');
+      const user = auth.currentUser;
+      await user.delete(); // Delete from the firebase auth.
+      await deleteDoc(doc(db, "Users", user.uid)); // Delete from the database.
+      toast.success("Account Deleted Successfully", { position: "bottom-center" });
+      navigate('/');
     } catch (error) {
       console.error("Error deleting user:", error.message);
     }
@@ -91,6 +95,14 @@ function Profile() {
     }
   };
 
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <div className="container d-flex align-items-center justify-content-center mt-5">
       <Box
@@ -99,15 +111,35 @@ function Profile() {
         sx={{
           p: 4,
           bgcolor: 'background.paper',
-          borderRadius: 1,
+          borderRadius: 3,
           boxShadow: 3,
           width: { sm: 350, md: 450 },
+          position: 'relative'
         }}
         noValidate
         autoComplete="off"
       >
         {userDetails ? (
           <>
+            <IconButton
+              aria-label="more"
+              aria-controls="long-menu"
+              aria-haspopup="true"
+              onClick={handleMenuClick}
+              sx={{ position: 'absolute', top: 8, right: 8 }}
+            >
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              id="long-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={open}
+              onClose={handleMenuClose}
+            >
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              <MenuItem onClick={handleDeleteAccount}>Delete Account</MenuItem>
+            </Menu>
             <div className="text-center mb-4">
               <img
                 src={userDetails.photo}
@@ -150,10 +182,6 @@ function Profile() {
             <div className="d-flex justify-content-between mt-3">
               <Button variant="contained" color="primary" type="submit">Save</Button>
               <Button variant="outlined" color="secondary" onClick={fetchUserData}>Cancel</Button>
-            </div>
-            <div className="d-flex justify-content-between mt-3">
-              <Button variant="contained" color="error" onClick={handleLogout}>Logout</Button>
-              <Button variant="contained" color="error" onClick={handleDeleteAccount}>Delete Account</Button>
             </div>
           </>
         ) : (
