@@ -5,7 +5,7 @@ import { auth } from "./firebase";
 import { toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
 import SignInWithGithub from "./signInWithGithub.jsx";
-import SignInWithGoogle from "./signInWithGoogle.jsx";
+import SignInWithGoogle from "./signInGoogle.jsx";
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
