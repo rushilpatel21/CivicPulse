@@ -18,6 +18,7 @@ import Login from "./components/login.jsx";
 import SignUp from "./components/register.jsx";
 import ResetPassword from "./components/resetPassword.jsx";
 import Logout from './components/logout.jsx';
+import ReportBug from './pages/reportBug.jsx';
 function App() {
   
   const [user, setUser] = useState();
@@ -50,6 +51,7 @@ function App() {
               {!user && <Route path="/login" element={<Login />} />}
               {!user && <Route path="/register" element={<SignUp />} />}
               {!user && <Route path="/resetpassword" element={<ResetPassword />} />}
+              <Route path="/reportbug" element={<ReportBug />} />
             </Routes>
             
             

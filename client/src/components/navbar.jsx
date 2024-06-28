@@ -17,7 +17,7 @@ import { auth, db } from "./firebase";
 import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
-const pages = ['Home', 'Dashboard', 'Heat Map', 'Issue Details', 'Issue Form'];
+const pages = ['Home', 'Dashboard', 'Heat Map', 'Issue Details', 'Issue Form', 'Report Bug'];
 const settings = ['Profile', 'Logout'];
 const settingsNotLoggedIn = ['Login'];
 
