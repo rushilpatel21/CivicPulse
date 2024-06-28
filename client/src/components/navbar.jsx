@@ -1,6 +1,3 @@
-// TODO: Make the profile picture appear and also use  profile pic || defaultUserIcon
-
-import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -14,21 +11,22 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import defaultUser from '../assets/defaultUser.png';
 import { auth, db } from "./firebase";
 import { doc, getDoc } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 
 const pages = ['Home', 'Dashboard', 'Heat Map', 'Issue Details', 'Issue Form'];
 const settings = ['Profile', 'Logout'];
 const settingsNotLoggedIn = ['Login'];
 
 function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [user, setUser] = React.useState();
-  const [userDetails, setUserDetails] = React.useState(null);
-  const navigate = useNavigate();
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [user, setUser] = useState();
+  const [userDetails, setUserDetails] = useState(null);
+  const [profileIcon, setProfileIcon] = useState(defaultUser);
 
   const fetchUserData = async () => {
     auth.onAuthStateChanged(async (user) => {
@@ -44,13 +42,22 @@ function ResponsiveAppBar() {
       }
     });
   };
-  React.useEffect(() => {
+  useEffect(() => {
     fetchUserData();
   }, []);
   
-  React.useEffect(() => {
+  useEffect(() => {
+    if(userDetails){
+      setProfileIcon(userDetails.photo);
+    }
+  }, [userDetails]);
+
+  useEffect(() => {
     auth.onAuthStateChanged((user) => {
       setUser(user);
+      if(!user){
+        setProfileIcon(defaultUser);
+      }
     });
   });
 
@@ -81,9 +88,20 @@ function ResponsiveAppBar() {
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
+              fontFamily: [
+                '-apple-system',
+                'BlinkMacSystemFont',
+                '"Segoe UI"',
+                'Roboto',
+                '"Helvetica Neue"',
+                'Arial',
+                'sans-serif',
+                '"Apple Color Emoji"',
+                '"Segoe UI Emoji"',
+                '"Segoe UI Symbol"',
+              ].join(','),
               fontWeight: 700,
-              letterSpacing: '.3rem',
+              letterSpacing: '.2rem',
               color: 'inherit',
               textDecoration: 'none',
             }}
@@ -166,7 +184,7 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="User" src={profileIcon} />
               </IconButton>
             </Tooltip>
             <Menu
