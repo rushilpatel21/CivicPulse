@@ -3,13 +3,15 @@ import { auth, db } from "./firebase";
 import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Box, Button, Typography, Modal, TextField } from "@mui/joy";
+import { Box, TextField, Button, Typography } from "@mui/material";
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 function Profile() {
   const [userDetails, setUserDetails] = useState(null);
-  const [open, setOpen] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
   const fetchUserData = async () => {
@@ -22,6 +24,7 @@ function Profile() {
           setUserDetails(data);
           setFirstName(data.firstName);
           setLastName(data.lastName);
+          setEmail(data.email);
         } else {
           console.log("User is not logged in");
         }
@@ -42,29 +45,46 @@ function Profile() {
       console.error("Error logging out:", error.message);
     }
   };
-
   const handleDeleteAccount = async () => {
+    withReactContent(Swal).fire({
+        title: 'Are you sure?',
+        text: 'You will not be able to recover this account!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, keep it',
+        reverseButtons: true
+    }).then((result)=>{
+        if(result.isConfirmed){
+            confirmedDeleteAccount();
+        }else{
+            Swal.fire('Cancelled', 'Your account is safe :)', 'info');
+        }
+    
+    })
+  }
+  const confirmedDeleteAccount = async () => {
     try {
-      const user = auth.currentUser;
-      await user.delete(); // Delete from the firebase auth.
-      await deleteDoc(doc(db, "Users", user.uid)); // Delete from the database.
-      toast.success("Account Deleted Successfully", { position: "bottom-center" });
-      navigate('/');
+        const user = auth.currentUser;
+        await user.delete(); // Delete from the firebase auth.
+        await deleteDoc(doc(db, "Users", user.uid)); // Delete from the database.
+        toast.success("Account Deleted Successfully", { position: "bottom-center" });
+        navigate('/');
     } catch (error) {
       console.error("Error deleting user:", error.message);
     }
   };
 
-  const handleUpdateProfile = async () => {
+  const handleUpdateProfile = async (e) => {
+    e.preventDefault();
     try {
       const user = auth.currentUser;
       const docRef = doc(db, "Users", user.uid);
       await updateDoc(docRef, {
         firstName: firstName,
-        lastName: lastName
+        lastName: lastName,
       });
       toast.success("Profile Updated Successfully", { position: "bottom-center" });
-      setOpen(false);
       fetchUserData();
     } catch (error) {
       console.error("Error updating profile:", error.message);
@@ -72,54 +92,75 @@ function Profile() {
   };
 
   return (
-    <Box sx={{ maxWidth: 500, margin: "auto", textAlign: "center", mt: 5 }}>
-      {userDetails ? (
-        <>
-          <Box sx={{ display: "flex", justifyContent: "center", mb: 3 }}>
-            <img
-              src={userDetails.photo}
-              alt="User Profile"
-              width={"40%"}
-              style={{ borderRadius: "50%" }}
-            />
-          </Box>
-          <Typography level="h3">Welcome {userDetails.firstName} {userDetails.lastName}</Typography>
-          <Typography level="body1" sx={{ mb: 2 }}>Email: {userDetails.email}</Typography>
-          <Button variant="solid" onClick={handleLogout} sx={{ mb: 1 }}>
-            Logout
-          </Button>
-          <Button variant="solid" onClick={() => setOpen(true)} sx={{ mb: 1 }}>
-            Edit Profile
-          </Button>
-          <Button variant="solid" onClick={handleDeleteAccount}>
-            Delete Account
-          </Button>
+    <div className="container d-flex align-items-center justify-content-center mt-5">
+      <Box
+        component="form"
+        onSubmit={handleUpdateProfile}
+        sx={{
+          p: 4,
+          bgcolor: 'background.paper',
+          borderRadius: 1,
+          boxShadow: 3,
+          width: { sm: 350, md: 450 },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        {userDetails ? (
+          <>
+            <div className="text-center mb-4">
+              <img
+                src={userDetails.photo}
+                alt="User Profile"
+                width={"40%"}
+                style={{ borderRadius: "50%" }}
+                className="mb-2"
+              />
+              <Typography variant="h5">Hi, {firstName}</Typography>
+            </div>
 
-          <Modal open={open} onClose={() => setOpen(false)}>
-            <Box sx={{ maxWidth: 400, margin: "auto", p: 4, mt: 5, bgcolor: "background.paper", boxShadow: 24, borderRadius: 1 }}>
-              <Typography level="h5" sx={{ mb: 2 }}>Edit Profile</Typography>
-              <TextField
-                label="First Name"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                sx={{ mb: 2 }}
-              />
-              <TextField
-                label="Last Name"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                sx={{ mb: 2 }}
-              />
-              <Button variant="solid" onClick={handleUpdateProfile}>
-                Save Changes
-              </Button>
-            </Box>
-          </Modal>
-        </>
-      ) : (
-        <Typography level="body1">Loading...</Typography>
-      )}
-    </Box>
+            <TextField
+              required
+              label="First Name"
+              fullWidth
+              margin="normal"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+            <TextField
+              required
+              label="Last Name"
+              fullWidth
+              margin="normal"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            />
+            <TextField
+              required
+              label="Email Address"
+              type="email"
+              fullWidth
+              margin="normal"
+              value={email}
+              InputProps={{
+                readOnly: true,
+              }}
+            />
+
+            <div className="d-flex justify-content-between mt-3">
+              <Button variant="contained" color="primary" type="submit">Save</Button>
+              <Button variant="outlined" color="secondary" onClick={fetchUserData}>Cancel</Button>
+            </div>
+            <div className="d-flex justify-content-between mt-3">
+              <Button variant="contained" color="error" onClick={handleLogout}>Logout</Button>
+              <Button variant="contained" color="error" onClick={handleDeleteAccount}>Delete Account</Button>
+            </div>
+          </>
+        ) : (
+          <Typography variant="body1">Loading...</Typography>
+        )}
+      </Box>
+    </div>
   );
 }
 
