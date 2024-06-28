@@ -41,7 +41,7 @@ function Login() {
           bgcolor: 'background.paper',
           borderRadius: 1,
           boxShadow: 3,
-          width: { sm: 350, md: 450 },
+          width: { sm: 300, md: 450 },
         }}
         noValidate
         autoComplete="off"
