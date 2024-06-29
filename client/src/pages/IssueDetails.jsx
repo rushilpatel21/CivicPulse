@@ -3,7 +3,7 @@ import { auth } from '../components/firebase.jsx';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-
+import CustomizedSteppers from '../helper/progressBar.jsx';
 const IssueDetails = () => {
 
   const navigate = useNavigate();
@@ -41,6 +41,7 @@ const IssueDetails = () => {
     <>
       {loggedIn && <div>
         <h1> Issue Details</h1>
+        <CustomizedSteppers prog={3} />
       </div> }
     
     </>
