@@ -28,21 +28,22 @@ function ResponsiveAppBar() {
   const [userDetails, setUserDetails] = useState(null);
   const [profileIcon, setProfileIcon] = useState(defaultUser);
 
-  const fetchUserData = async () => {
-    auth.onAuthStateChanged(async (user) => {
-      console.log(user);
-
-      const docRef = doc(db, "Users", user.uid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setUserDetails(docSnap.data());
-        console.log(docSnap.data());
-      } else {
-        console.log("User is not logged in");
-      }
-    });
-  };
+  
   useEffect(() => {
+    const fetchUserData = async () => {
+      auth.onAuthStateChanged(async (user) => {
+        console.log(user);
+  
+        const docRef = doc(db, "Users", user.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setUserDetails(docSnap.data());
+          console.log(docSnap.data());
+        } else {
+          console.log("User is not logged in");
+        }
+      });
+    };
     fetchUserData();
   }, []);
   

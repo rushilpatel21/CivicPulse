@@ -7,6 +7,7 @@ import { Box, TextField, Button, Typography, IconButton, Menu, MenuItem } from "
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import { deleteIssueById } from '../helper/api.js';
 
 function Profile() {
   const [userDetails, setUserDetails] = useState(null);
@@ -60,6 +61,14 @@ function Profile() {
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
+        try {
+          const user = auth.currentUser;
+          console.log(user.uid);
+          const issues = deleteIssueById(user.uid);
+          console.log("Issues deleted:", issues);
+        } catch (error){
+          console.error("Error deleting user issues:", error.message);
+        }
         confirmedDeleteAccount();
       } else {
         Swal.fire('Cancelled', 'Your account is safe :)', 'info');

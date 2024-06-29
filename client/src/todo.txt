@@ -1,4 +1,3 @@
-TODO 1: Fix the user not logged in swal bug when loggin out
 TODO 3: Ask for location permission in heat map and focus the map on those lats and longs
 TODO 4: I would like to have two drop down bars at issue details, 1) would be my Issues, 2) would be Issues near me
 TODO 9: Make Light & Dark Mode feature
