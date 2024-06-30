@@ -3,11 +3,14 @@ import { auth } from '../components/firebase.jsx';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import CustomizedSteppers from '../helper/progressBar.jsx';
+// import CustomizedSteppers from '../helper/progressBar.jsx';
+import Filter from '../components/Filter.jsx'; 
+import IssueSections from '../components/IssueSections.jsx';
 const IssueDetails = () => {
 
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
+  const [filter, setFilter] = useState(null);
 
   useEffect(() => {
     const usingSwal = () => {
@@ -37,11 +40,18 @@ const IssueDetails = () => {
     });
   },[navigate]);
 
+  const handleFilter = (filterData) => {
+    setFilter(filterData);
+    // Implement logic to filter issues based on filterData
+  };
+
   return (
     <>
       {loggedIn && <div>
         <h1> Issue Details</h1>
-        <CustomizedSteppers prog={3} />
+        {/* <CustomizedSteppers prog={3} /> */}
+        <Filter onFilter={handleFilter} />
+        <IssueSections filter={filter} />
       </div> }
     
     </>
