@@ -3,7 +3,7 @@ TODO 4: I would like to have two drop down bars at issue details, 1) would be my
 TODO 9: Make Light & Dark Mode feature
 TODO 10: Add a feature to allow users to add their own issues (report a bug)
 TODO 11: Fix the order of the toastify (it is not following newestOnTop)
-
+TODO 12: We need an option to add profile picture for those who login with email pass instead of OAuth or atleast dont show anything over there
 
 For Issue Form 
 1) Have an option to sort it by time or issue, severity
@@ -13,3 +13,4 @@ we can have 3 checkpoints
 1) Submitted
 2) Viewed by Admin
 3) Resolved
+
