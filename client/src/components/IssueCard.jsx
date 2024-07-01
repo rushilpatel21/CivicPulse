@@ -10,18 +10,17 @@ const severityColors = {
 
 const IssueCard = ({ issue }) => {
   const { severity, tags, photoUrl, location, department, progress, date } = issue;
-
   const dateObject = new Date(date._seconds * 1000 + date._nanoseconds / 1000000);
   const formattedDate = dateObject.toLocaleDateString();
-
+  const location1 = 'Ahmedabad';
   return (
     <Card 
       sx={{ 
         marginBottom: 2, 
         borderLeft: `6px solid ${severityColors[severity]}`,
-        height: '250px',
+        height: '300px',
         maxWidth: '100%',
-        marginX: '2%',
+        // marginX: '2%',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between'
@@ -30,15 +29,17 @@ const IssueCard = ({ issue }) => {
       <CardContent sx={{ flexGrow: 1 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-            <Typography variant="h6">{location}</Typography>
-            <Typography variant="body2" color="textSecondary" sx={{ fontWeight: 'bold' }}>
+            <Typography variant="body2" color="textSecondary" sx={{ fontWeight: 'bold', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
               Department: {department}
             </Typography>
-            <Typography variant="body2" color="textSecondary" sx={{ fontWeight: 'bold' }}>
+            <Typography variant="body2" color="textSecondary" sx={{ fontWeight: 'bold', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
               Reported on: {formattedDate}
             </Typography>
+            <Typography variant="body2" color="textSecondary" sx={{ fontWeight: 'bold', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              Location: {location1}
+            </Typography>
           </Box>
-          <img src={photoUrl} alt="Issue" style={{ width: '120px', height: "auto", maxHeight: '150px', marginLeft: 16 }} />
+          <img src={photoUrl} alt="Issue" style={{ width: '180px', height: "auto", maxHeight: '190px', marginLeft: 12 }} />
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, marginY: 1 }}>
           {tags.split(',').map((tag, index) => (
