@@ -22,7 +22,8 @@ async function getById(req, res) {
     try {
         const snapshot = await db.collection('IssueDetails').where('user', '==', id).get();
         if (snapshot.empty) {
-            res.status(404).send('No issues found for the given user');
+            res.status(200).send([]);
+            // res.status(404).send('No issues found for the given user');
         } else {
             const issues = [];
             snapshot.forEach((doc) => {

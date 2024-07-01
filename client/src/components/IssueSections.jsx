@@ -29,15 +29,21 @@ const IssueSections = () => {
   const userId = auth.currentUser.uid;
 
   useEffect(() => {
-    const fetchIssues = async () => {
-      const allIssues = await getIssues();
-      const myIssues = await getIssuesById(userId);
-      console.log(allIssues);
-      setMyIssues(myIssues);
-      setOtherIssues(allIssues.filter(issue => issue.data.user !== userId));
+    try{
+      const fetchIssues = async () => {
+        const allIssues = await getIssues();
+        const myIssues = await getIssuesById(userId);
+        setOtherIssues(allIssues.filter(issue => issue.data.user !== userId));
+        setMyIssues(myIssues);
+        console.log(allIssues);
+        setLoading(false);
+      };
+      fetchIssues();
+    }catch (e) {
+      console.log(e.message);
+    }finally{
       setLoading(false);
-    };
-    fetchIssues();
+    }
   }, [userId]);
 
   const applyFilter = async () => {
@@ -107,7 +113,7 @@ const IssueSections = () => {
                 </Grid>
               ))
             ) : (
-              <Typography variant="body1" component="p">
+              <Typography variant="body1" component="div" sx={{ flexGrow: 1 }}>
                 No issues reported by you.
               </Typography>
             )}
@@ -127,7 +133,7 @@ const IssueSections = () => {
                 </Grid>
               ))
             ) : (
-              <Typography variant="body1" component="p">
+              <Typography variant="body1" component="div" sx={{ flexGrow: 1 }}>
                 No issues reported by others.
               </Typography>
             )}
