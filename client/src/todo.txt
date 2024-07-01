@@ -8,6 +8,8 @@ TODO 12: We need an option to add profile picture for those who login with email
 For Issue Form 
 1) Have an option to sort it by time or issue, severity
 2) Have an option to sort by resolved categoy 
+3) Filter bug: the container gets small in size for some reason
+4) Also for each filter need to reset the data 
 
 we can have 3 checkpoints 
 1) Submitted

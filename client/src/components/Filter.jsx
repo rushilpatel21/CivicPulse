@@ -8,7 +8,7 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 300,
+  width: 350,
   bgcolor: 'background.paper',
   boxShadow: 24,
   p: 4,
@@ -53,9 +53,9 @@ const Filter = ({ filter, setFilter, applyFilter, clearFilter }) => {
             <InputLabel>Severity</InputLabel>
             <Select name="severity" value={filter.severity} onChange={handleChange}>
               <MenuItem value="">No Filter</MenuItem>
-              <MenuItem value="Low">Low</MenuItem>
-              <MenuItem value="Medium">Medium</MenuItem>
-              <MenuItem value="High">High</MenuItem>
+              <MenuItem value="low">Low</MenuItem>
+              <MenuItem value="medium">Medium</MenuItem>
+              <MenuItem value="high">High</MenuItem>
             </Select>
           </FormControl>
           <FormControl fullWidth margin="normal">
@@ -71,6 +71,15 @@ const Filter = ({ filter, setFilter, applyFilter, clearFilter }) => {
               <MenuItem value="Water">Water</MenuItem>
               <MenuItem value="Animals">Animals</MenuItem>
               <MenuItem value="Others">Others</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Progress</InputLabel>
+            <Select name="progress" value={filter.progress} onChange={handleChange}>
+              <MenuItem value={0}>No Filter</MenuItem>
+              <MenuItem value={1}>Issue Submitted</MenuItem>
+              <MenuItem value={2}>Viewed by Admin</MenuItem>
+              <MenuItem value={3}>Issue Resolved</MenuItem>
             </Select>
           </FormControl>
           <Box mt={2} display="flex" justifyContent="space-between">

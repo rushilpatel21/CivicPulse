@@ -11,33 +11,80 @@ const IssueSections = () => {
   const [loading, setLoading] = useState(true);
   const [myIssues, setMyIssues] = useState([]);
   const [otherIssues, setOtherIssues] = useState([]);
+  const userId = auth.currentUser.uid;
   const [filter, setFilter] = useState({
     distance: '',
     severity: '',
     department: '',
+    progress: 0,
+  });
+  const [filterSelf, setFilterSelf] = useState({
+    distance: '',
+    severity: '',
+    department: '',
+    progress: 0,
   });
 
   useEffect(() => {
     const fetchIssues = async () => {
       const allIssues = await getIssues();
-      const user = auth.currentUser;
-      const userId = user.uid; 
       const myIssues = await getIssuesById(userId);
+      console.log(allIssues);
       setMyIssues(myIssues);
       setOtherIssues(allIssues.filter(issue => issue.data.user !== userId));
       setLoading(false);
     };
-
     fetchIssues();
-  }, []);
+  }, [userId]);
 
-  const applyFilter = () => {
-    
+  const applyFilter = async () => {
     console.log('Applying filter:', filter);
+    let allIssues = await getIssues();
+    allIssues = allIssues.filter(issue => issue.data.user !== userId);
+    if(filter.severity){
+      allIssues = allIssues.filter(issue => issue.data.severity === filter.severity);
+    }
+    if(filter.department){
+      allIssues = allIssues.filter(issue => issue.data.department === filter.department);
+    }
+    if(filter.progress > 0){
+      allIssues = allIssues.filter(issue => issue.data.progress === filter.progress);
+    }
+    // if(!filter.severity && !filter.department && !filter.distance && filter.progress == 0){
+    //   allIssues = allIssues.filter(issue => issue.data.user !== userId);
+    // }
+    setOtherIssues(allIssues);
   };
 
-  const clearFilter = () => {
-    setFilter({ distance: '', severity: '', department: '' });
+  const clearFilter = async () => {
+    setFilterSelf({ distance: '', severity: '', department: '' });
+    const allIssues = await getIssues();
+    setOtherIssues(allIssues.filter(issue => issue.data.user !== userId));
+  };
+
+  const applyFilterSelf = async () => {
+    console.log('Applying filter:', filter);
+    let myIssues = await getIssuesById(userId);
+    console.log(myIssues);
+    if(filter.severity){
+      myIssues = myIssues.filter(issue => issue.data.severity === filter.severity);
+    }
+    if(filter.department){
+      myIssues = myIssues.filter(issue => issue.data.department === filter.department);
+    }
+    if(filter.progress > 0){
+      myIssues = myIssues.filter(issue => issue.data.progress === filter.progress);
+    }
+    // if(!filter.severity && !filter.department && !filter.distance && filter.progress == 0){
+    //   myIssues = (myIssues);
+    // }
+    setMyIssues(myIssues);
+  };
+
+  const clearFilterSelf = async () => {
+    setFilterSelf({ distance: '', severity: '', department: '' });
+    const myIssues = await getIssuesById(userId);
+    setMyIssues(myIssues);
   };
 
   return (
@@ -49,7 +96,7 @@ const IssueSections = () => {
             <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
               Issues Reported by Me
             </Typography>
-            <Filter filter={filter} setFilter={setFilter} applyFilter={applyFilter} clearFilter={clearFilter} />
+            <Filter filter={filterSelf} setFilter={setFilterSelf} applyFilter={applyFilterSelf} clearFilter={clearFilterSelf} />
           </Box>
           <Grid container spacing={3}>
             {myIssues.length > 0 ? (
@@ -65,9 +112,12 @@ const IssueSections = () => {
             )}
           </Grid>
 
-          <Typography variant="h4" component="div" mt={4}>
+          <Box display="flex" alignItems="center" mb={2}>
+            <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
             Issues Reported by Others
-          </Typography>
+            </Typography>
+            <Filter filter={filter} setFilter={setFilter} applyFilter={applyFilter} clearFilter={clearFilter} />
+          </Box>
           <Grid container spacing={3}>
             {otherIssues.length > 0 ? (
               otherIssues.map(issue => (

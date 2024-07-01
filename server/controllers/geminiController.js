@@ -35,7 +35,7 @@ async function uploadToGemini(req, res) {
     });
 
     const result = await chatSession.sendMessage(prompt);
-    const department = result.response.text();
+    const department = result.response.text().replace(/\s+$/, '').trim();
     console.log(department);
 
     const date = new Date();
