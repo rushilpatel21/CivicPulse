@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { getIssues } from '../helper/api.js'; 
 import IssueCard from './IssueCard.jsx'; 
 import PropTypes from 'prop-types';
+import { Grid } from '@mui/material';
+import { auth } from './firebase.jsx';
 
 const IssueSections = ({ filter }) => {
   const [issues, setIssues] = useState([]);
@@ -11,10 +13,10 @@ const IssueSections = ({ filter }) => {
   useEffect(() => {
     const fetchIssues = async () => {
       const allIssues = await getIssues();
-      console.log('Fetched Issues:', allIssues);
       setIssues(allIssues);
 
-      const userId = 'currentUserId'; 
+      const user = auth.currentUser;
+      const userId = user.uid; 
       setMyIssues(allIssues.filter(issue => issue.data.user === userId));
       setOtherIssues(allIssues.filter(issue => issue.data.user !== userId));
     };
@@ -25,21 +27,30 @@ const IssueSections = ({ filter }) => {
   return (
     <div>
       <h2>Issues Reported by Me</h2>
-      {myIssues.length > 0 ? (
-        myIssues.map(issue => (
-          <IssueCard key={issue.id} issue={issue.data} />
-        ))
-      ) : (
-        <p>No issues reported by you.</p>
-      )}
+      <Grid container spacing={3}>
+        {myIssues.length > 0 ? (
+          myIssues.map(issue => (
+            <Grid item xs={12} sm={6} md={4} key={issue.id}>
+              <IssueCard issue={issue.data} />
+            </Grid>
+          ))
+        ) : (
+          <p>No issues reported by you.</p>
+        )}
+      </Grid>
+
       <h2>Issues Reported by Others</h2>
-      {otherIssues.length > 0 ? (
-        otherIssues.map(issue => (
-          <IssueCard key={issue.id} issue={issue.data} />
-        ))
-      ) : (
-        <p>No issues reported by others.</p>
-      )}
+      <Grid container spacing={3}>
+        {otherIssues.length > 0 ? (
+          otherIssues.map(issue => (
+            <Grid item xs={12} sm={6} md={4} key={issue.id}>
+              <IssueCard issue={issue.data} />
+            </Grid>
+          ))
+        ) : (
+          <p>No issues reported by others.</p>
+        )}
+      </Grid>
     </div>
   );
 };

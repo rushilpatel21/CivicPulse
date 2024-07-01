@@ -18,7 +18,7 @@ const IssueForm = () => {
   const [tags, setTags] = useState([]);
   const [customTag, setCustomTag] = useState('');
   const [severity, setSeverity] = useState('');
-  const GOOGLE_API = import.meta.env.VITE_GOOGLE_API;
+  const GOOGLE_API = import.meta.env.VITE_GOOGLE_PAID_API;
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -120,6 +120,12 @@ const IssueForm = () => {
       }); return;
     }
 
+    if(tags.length > 4){
+      toast.error('Maximum of 4 tags allowed.', {
+        position: "bottom-center",
+      }); return;
+    }
+
     if (!severity) {
       toast.error('Severity is required.', {
         position: "bottom-center",
@@ -212,6 +218,7 @@ const IssueForm = () => {
               ))}
             </Box>
             {tags.length === 0 && <Typography color="error">At least one tag is required.</Typography>}
+            {tags.length > 4 && <Typography color="error">Maximum of 4 tags allowed.</Typography>}
           </FormControl>
           <FormControl fullWidth margin="normal">
             <InputLabel htmlFor="severity">Severity</InputLabel>

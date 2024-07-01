@@ -48,9 +48,7 @@ const IssueDetails = () => {
   return (
     <>
       {loggedIn && <div>
-        <h1> Issue Details</h1>
-        {/* <CustomizedSteppers prog={3} /> */}
-        <Filter onFilter={handleFilter} />
+        {/* <Filter onFilter={handleFilter} /> */}
         <IssueSections filter={filter} />
       </div> }
     
