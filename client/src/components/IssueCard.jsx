@@ -13,17 +13,16 @@ const IssueCard = ({ issue }) => {
   const dateObject = new Date(date._seconds * 1000 + date._nanoseconds / 1000000);
   const formattedDate = dateObject.toLocaleDateString();
   const location1 = 'Ahmedabad';
+
   return (
     <Card 
       sx={{ 
         marginBottom: 2, 
         borderLeft: `6px solid ${severityColors[severity]}`,
-        height: '300px',
-        maxWidth: '100%',
-        // marginX: '2%',
+        height: { xs: '300px', sm: '350px', md: '300px', lg: '350px' },
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
       }}
     >
       <CardContent sx={{ flexGrow: 1 }}>
@@ -39,7 +38,9 @@ const IssueCard = ({ issue }) => {
               Location: {location1}
             </Typography>
           </Box>
-          <img src={photoUrl} alt="Issue" style={{ width: '180px', height: "auto", maxHeight: '190px', marginLeft: 12 }} />
+          <Box sx={{ flex: '1 1 auto', maxWidth: '180px', marginLeft: 2, height: 'auto', maxHeight: '190px', overflow: 'hidden' }}>
+            <img src={photoUrl} alt="Issue" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          </Box>
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, marginY: 1 }}>
           {tags.split(',').map((tag, index) => (
