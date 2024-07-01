@@ -11,19 +11,22 @@ const IssueSections = () => {
   const [loading, setLoading] = useState(true);
   const [myIssues, setMyIssues] = useState([]);
   const [otherIssues, setOtherIssues] = useState([]);
-  const userId = auth.currentUser.uid;
+
   const [filter, setFilter] = useState({
     distance: '',
     severity: '',
     department: '',
     progress: 0,
   });
+
   const [filterSelf, setFilterSelf] = useState({
     distance: '',
     severity: '',
     department: '',
     progress: 0,
   });
+
+  const userId = auth.currentUser.uid;
 
   useEffect(() => {
     const fetchIssues = async () => {
@@ -50,41 +53,39 @@ const IssueSections = () => {
     if(filter.progress > 0){
       allIssues = allIssues.filter(issue => issue.data.progress === filter.progress);
     }
-    // if(!filter.severity && !filter.department && !filter.distance && filter.progress == 0){
-    //   allIssues = allIssues.filter(issue => issue.data.user !== userId);
-    // }
     setOtherIssues(allIssues);
   };
 
   const clearFilter = async () => {
-    setFilterSelf({ distance: '', severity: '', department: '' });
+    setFilterSelf({ distance: '', severity: '', department: '', progress: 0});
     const allIssues = await getIssues();
     setOtherIssues(allIssues.filter(issue => issue.data.user !== userId));
   };
 
   const applyFilterSelf = async () => {
     console.log('Applying filter:', filter);
-    let myIssues = await getIssuesById(userId);
-    console.log(myIssues);
-    if(filter.severity){
-      myIssues = myIssues.filter(issue => issue.data.severity === filter.severity);
+    let myIssuesLocal = await getIssuesById(userId);
+    console.log(myIssuesLocal);
+    if(filterSelf.severity){
+      myIssuesLocal = myIssuesLocal.filter(issue => issue.data.severity === filterSelf.severity);
+      console.log(`Stage 1: ${myIssuesLocal}`);
     }
-    if(filter.department){
-      myIssues = myIssues.filter(issue => issue.data.department === filter.department);
+    if(filterSelf.department){
+      myIssuesLocal = myIssuesLocal.filter(issue => issue.data.department === filterSelf.department);
+      console.log(`Stage 2: ${myIssuesLocal}`);
     }
-    if(filter.progress > 0){
-      myIssues = myIssues.filter(issue => issue.data.progress === filter.progress);
+    if(filterSelf.progress > 0){
+      myIssuesLocal = myIssuesLocal.filter(issue => issue.data.progress === filterSelf.progress);
+      console.log(`Stage 3: ${myIssuesLocal}`);
     }
-    // if(!filter.severity && !filter.department && !filter.distance && filter.progress == 0){
-    //   myIssues = (myIssues);
-    // }
-    setMyIssues(myIssues);
+    console.log(`Stage 4: ${myIssuesLocal}`);
+    setMyIssues(myIssuesLocal);
   };
 
   const clearFilterSelf = async () => {
-    setFilterSelf({ distance: '', severity: '', department: '' });
-    const myIssues = await getIssuesById(userId);
-    setMyIssues(myIssues);
+    setFilterSelf({ distance: '', severity: '', department: '', progress: 0});
+    const myIssuesLocal = await getIssuesById(userId);
+    setMyIssues(myIssuesLocal);
   };
 
   return (
