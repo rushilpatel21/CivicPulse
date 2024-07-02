@@ -54,8 +54,6 @@ function App() {
               {!user && <Route path="/resetpassword" element={<ResetPassword />} />}
               <Route path="/reportbug" element={<ReportBug />} />
             </Routes>
-            
-            
           </div>
         </div>
       </div>
