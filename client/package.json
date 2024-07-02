@@ -31,7 +31,7 @@
     "react-router-dom": "^6.23.1",
     "react-toastify": "^10.0.5",
     "supertokens-auth-react": "^0.42.3",
-    "sweetalert2": "^11.12.1",
+    "sweetalert2": "11.6.13",
     "sweetalert2-react-content": "^5.0.7"
   },
   "devDependencies": {
