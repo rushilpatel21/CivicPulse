@@ -4,7 +4,7 @@ const baseURL = import.meta.env.VITE_BACKEND_SERVER_PORT_DEV;
 
 const instance = axios.create({
   baseURL,
-  timeout: 10000,
+  timeout: 30000,
 });
 
 export const Gemini = async (formData) => {

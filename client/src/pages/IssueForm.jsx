@@ -153,7 +153,6 @@ const IssueForm = () => {
       console.log('Success:', result);
       SwalSuccess();
     } catch (error) {
-      alert(error);
       console.error('Error:', error);
       SwalError();
     }
