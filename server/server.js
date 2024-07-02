@@ -34,6 +34,11 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Middleware to handle uploads
+
+app.get('/', (req, res) => {
+  res.send("Server is running.")
+})
+
 app.use('/api/gemini', upload.single('photo'));
 
 app.use('/api/gemini', geminiRouter);
