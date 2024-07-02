@@ -33,9 +33,12 @@ const IssueSections = () => {
       const fetchIssues = async () => {
         const allIssues = await getIssues();
         const myIssues = await getIssuesById(userId);
+
+        allIssues.sort((a, b) => b.data.date._seconds - a.data.date._seconds);
+        myIssues.sort((a, b) => b.data.date._seconds - a.data.date._seconds);
+
         setOtherIssues(allIssues.filter(issue => issue.data.user !== userId));
         setMyIssues(myIssues);
-        console.log(allIssues);
         setLoading(false);
       };
       fetchIssues();
@@ -47,8 +50,10 @@ const IssueSections = () => {
   }, [userId]);
 
   const applyFilter = async () => {
-    console.log('Applying filter:', filter);
     let allIssues = await getIssues();
+
+    allIssues.sort((a, b) => b.data.date._seconds - a.data.date._seconds);
+
     allIssues = allIssues.filter(issue => issue.data.user !== userId);
     if(filter.severity){
       allIssues = allIssues.filter(issue => issue.data.severity === filter.severity);
@@ -65,32 +70,35 @@ const IssueSections = () => {
   const clearFilter = async () => {
     setFilterSelf({ distance: '', severity: '', department: '', progress: 0});
     const allIssues = await getIssues();
+
+    allIssues.sort((a, b) => b.data.date._seconds - a.data.date._seconds);
+
     setOtherIssues(allIssues.filter(issue => issue.data.user !== userId));
   };
 
   const applyFilterSelf = async () => {
-    console.log('Applying filter:', filter);
     let myIssuesLocal = await getIssuesById(userId);
-    console.log(myIssuesLocal);
+
+    myIssuesLocal.sort((a, b) => b.data.date._seconds - a.data.date._seconds);
+
     if(filterSelf.severity){
       myIssuesLocal = myIssuesLocal.filter(issue => issue.data.severity === filterSelf.severity);
-      console.log(`Stage 1: ${myIssuesLocal}`);
     }
     if(filterSelf.department){
       myIssuesLocal = myIssuesLocal.filter(issue => issue.data.department === filterSelf.department);
-      console.log(`Stage 2: ${myIssuesLocal}`);
     }
     if(filterSelf.progress > 0){
       myIssuesLocal = myIssuesLocal.filter(issue => issue.data.progress === filterSelf.progress);
-      console.log(`Stage 3: ${myIssuesLocal}`);
     }
-    console.log(`Stage 4: ${myIssuesLocal}`);
     setMyIssues(myIssuesLocal);
   };
 
   const clearFilterSelf = async () => {
     setFilterSelf({ distance: '', severity: '', department: '', progress: 0});
     const myIssuesLocal = await getIssuesById(userId);
+
+    myIssuesLocal.sort((a, b) => b.data.date._seconds - a.data.date._seconds);
+
     setMyIssues(myIssuesLocal);
   };
 

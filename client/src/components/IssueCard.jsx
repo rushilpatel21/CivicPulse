@@ -12,7 +12,7 @@ const IssueCard = ({ issue }) => {
   const { severity, tags, photoUrl, location, department, progress, date } = issue;
   const dateObject = new Date(date._seconds * 1000 + date._nanoseconds / 1000000);
   const formattedDate = dateObject.toLocaleDateString();
-  const location1 = 'Ahmedabad';
+  // const location1 = 'Ahmedabad'; // Just for testing purpose
 
   return (
     <Card 
@@ -37,7 +37,7 @@ const IssueCard = ({ issue }) => {
               Reported on: {formattedDate}
             </Typography>
             <Typography variant="body2" color="textSecondary" sx={{ fontWeight: 'bold', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-              Location: {location1}
+              Location: {location}
             </Typography>
           </Box>
           <Box sx={{ flex: '1 1 auto', maxWidth: '180px', marginLeft: 2, height: 'auto', maxHeight: '190px', overflow: 'hidden' }}>
