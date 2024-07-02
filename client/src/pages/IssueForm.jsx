@@ -18,11 +18,11 @@ const IssueForm = () => {
   const [tags, setTags] = useState([]);
   const [customTag, setCustomTag] = useState('');
   const [severity, setSeverity] = useState('');
-  const GOOGLE_API = import.meta.env.VITE_GOOGLE_PAID_API;
-  const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
+  const GOOGLE_API = import.meta.env.VITE_GOOGLE_PAID_API;
+  const navigate = useNavigate();
+  
   useEffect(() => {
     const usingSwal = () => {
       withReactContent(Swal).fire({

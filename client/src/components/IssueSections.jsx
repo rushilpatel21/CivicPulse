@@ -52,9 +52,8 @@ const IssueSections = () => {
   const applyFilter = async () => {
     let allIssues = await getIssues();
 
-    allIssues.sort((a, b) => b.data.date._seconds - a.data.date._seconds);
+    allIssues = allIssues.sort((a, b) => b.data.date._seconds - a.data.date._seconds).filter(issue => issue.data.user !== userId);
 
-    allIssues = allIssues.filter(issue => issue.data.user !== userId);
     if(filter.severity){
       allIssues = allIssues.filter(issue => issue.data.severity === filter.severity);
     }
@@ -69,17 +68,17 @@ const IssueSections = () => {
 
   const clearFilter = async () => {
     setFilterSelf({ distance: '', severity: '', department: '', progress: 0});
-    const allIssues = await getIssues();
+    let allIssues = await getIssues();
 
-    allIssues.sort((a, b) => b.data.date._seconds - a.data.date._seconds);
+    allIssues = allIssues.sort((a, b) => b.data.date._seconds - a.data.date._seconds).filter(issue => issue.data.user !== userId);
 
-    setOtherIssues(allIssues.filter(issue => issue.data.user !== userId));
+    setOtherIssues(allIssues);
   };
 
   const applyFilterSelf = async () => {
     let myIssuesLocal = await getIssuesById(userId);
 
-    myIssuesLocal.sort((a, b) => b.data.date._seconds - a.data.date._seconds);
+    myIssuesLocal = myIssuesLocal.sort((a, b) => b.data.date._seconds - a.data.date._seconds);
 
     if(filterSelf.severity){
       myIssuesLocal = myIssuesLocal.filter(issue => issue.data.severity === filterSelf.severity);
@@ -95,9 +94,9 @@ const IssueSections = () => {
 
   const clearFilterSelf = async () => {
     setFilterSelf({ distance: '', severity: '', department: '', progress: 0});
-    const myIssuesLocal = await getIssuesById(userId);
+    let myIssuesLocal = await getIssuesById(userId);
 
-    myIssuesLocal.sort((a, b) => b.data.date._seconds - a.data.date._seconds);
+    myIssuesLocal = myIssuesLocal.sort((a, b) => b.data.date._seconds - a.data.date._seconds);
 
     setMyIssues(myIssuesLocal);
   };

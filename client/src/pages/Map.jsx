@@ -1,15 +1,48 @@
 import { useEffect, useRef, useState } from 'react';
 import { GoogleMap, useJsApiLoader, HeatmapLayer } from '@react-google-maps/api';
+import { auth } from '../components/firebase.jsx';
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const Heatmap = () => {
   const mapRef = useRef(null);
-
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_PAID_API,
     libraries: ['visualization']
   });
-
   const [heatmapData, setHeatmapData] = useState([]);
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const usingSwal = () => {
+      withReactContent(Swal).fire({
+        icon: "error",
+        title: "User Not Logged In",
+        text: "Please sign in to view Heat Map",
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Log In',
+        cancelButtonText: 'Close',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/login');
+        } else {
+          navigate('/');
+        }
+      })
+    };
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        usingSwal();
+      } else {
+        setLoggedIn(true);
+      }
+    });
+  }, [navigate]);
 
   useEffect(() => {
     if (isLoaded) {
@@ -58,15 +91,19 @@ const Heatmap = () => {
   }
 
   return (
-    <GoogleMap
-      mapContainerStyle={mapContainerStyle}
-      center={center}
-      zoom={13}
-      onLoad={(map) => (mapRef.current = map)}
-      mapTypeId="satellite"
-    >
-      <HeatmapLayer data={heatmapData} options={{ gradient }} />
-    </GoogleMap>
+    <>
+      {loggedIn && (
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
+          center={center}
+          zoom={13}
+          onLoad={(map) => (mapRef.current = map)}
+          mapTypeId="satellite"
+        >
+          <HeatmapLayer data={heatmapData} options={{ gradient }} />
+        </GoogleMap>
+      )}
+    </>
   );
 };
 
