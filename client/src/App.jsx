@@ -19,6 +19,7 @@ import SignUp from "./components/register.jsx";
 import ResetPassword from "./components/resetPassword.jsx";
 import Logout from './components/logout.jsx';
 import ReportBug from './pages/reportBug.jsx';
+
 function App() {
   
   const [user, setUser] = useState();
