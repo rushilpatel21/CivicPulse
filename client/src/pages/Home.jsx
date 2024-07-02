@@ -52,11 +52,11 @@ const Home = () => {
     }
   ];
 
-  const aboutUsText = `Welcome to CivicPulse, your gateway to active community engagement and seamless issue resolution. CivicPulse empowers you to effortlessly report and track local issues, ensuring your voice is heard and action is taken. Whether it's a pothole, graffiti, or a community improvement idea, CivicPulse simplifies the process of bringing attention to these issues.
-
-With CivicPulse, you can submit issues directly from your mobile device or desktop, complete with location details and photos, making it easier than ever to communicate the specifics of what needs attention. Once submitted, our platform automatically routes your concern to the relevant municipal department, ensuring it reaches the right authorities for swift resolution.
-
-Stay informed every step of the way with real-time updates on the status of your reported issues. From submission to resolution, CivicPulse keeps you in the loop, fostering transparency and accountability within your community. Join us in making a positive impact—because when communities come together, change happens.`;
+  const aboutUsText = `
+  Welcome to CivicPulse, your gateway to active community engagement and seamless issue resolution. CivicPulse empowers you to effortlessly report and track local issues, ensuring your voice is heard and action is taken. Whether it's a pothole, graffiti, or a community improvement idea, CivicPulse simplifies the process of bringing attention to these issues.
+  With CivicPulse, you can submit issues directly from your mobile device or desktop, complete with location details and photos, making it easier than ever to communicate the specifics of what needs attention. Once submitted, our platform automatically routes your concern to the relevant municipal department, ensuring it reaches the right authorities for swift resolution.
+  Stay informed every step of the way with real-time updates on the status of your reported issues. From submission to resolution, CivicPulse keeps you in the loop, fostering transparency and accountability within your community. Join us in making a positive impact—because when communities come together, change happens.
+  `;
 
   const handleFAQToggle = (index) => {
     if (expandedFAQ === index) {
