@@ -7,10 +7,19 @@ const issuesRouter = require('./routes/issuesRouter.js');
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-app.use(cors());
 
-// TODO 1: Change the originalname with something that will always be unique (use time stamp or something).
-// TODO 2: Also after this we need to find a way to store the uploads to firebase or some other database. 
+const corsOptions = {
+  origin: [
+    'https://civicpulse.vercel.app',
+    'http://localhost:5173'
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: '*/*',
+};
+
+app.use(cors(corsOptions));
+// app.use(cors());
+
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
