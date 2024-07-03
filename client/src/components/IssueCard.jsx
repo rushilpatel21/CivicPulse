@@ -19,7 +19,7 @@ const IssueCard = ({ issue }) => {
       sx={{ 
         marginBottom: 2, 
         borderLeft: `6px solid ${severityColors[severity]}`,
-        height: { xs: '300px', sm: '350px', md: '300px', lg: '350px' },
+        height: { xs: '350px', sm: '350px', md: '350px', lg: '350px' },
         minHeight: '300px',
         width: { xs: '100%', sm: '100%', md: '100%', lg: '100%'},
         display: 'flex',

@@ -43,7 +43,7 @@ const Filter = ({ filter, setFilter, applyFilter, clearFilter }) => {
         <Box sx={style}>
           <FormControl fullWidth margin="normal">
             <InputLabel>Distance</InputLabel>
-            <Select name="distance" value={filter.distance} onChange={handleChange}>
+            <Select name="distance" label="Distance" value={filter.distance} onChange={handleChange}>
               <MenuItem value="">No Filter</MenuItem>
               <MenuItem value="Closest">Closest</MenuItem>
               <MenuItem value="Furthest">Furthest</MenuItem>
@@ -51,7 +51,7 @@ const Filter = ({ filter, setFilter, applyFilter, clearFilter }) => {
           </FormControl>
           <FormControl fullWidth margin="normal">
             <InputLabel>Severity</InputLabel>
-            <Select name="severity" value={filter.severity} onChange={handleChange}>
+            <Select name="severity" label="Severity" value={filter.severity} onChange={handleChange}>
               <MenuItem value="">No Filter</MenuItem>
               <MenuItem value="low">Low</MenuItem>
               <MenuItem value="medium">Medium</MenuItem>
@@ -60,7 +60,7 @@ const Filter = ({ filter, setFilter, applyFilter, clearFilter }) => {
           </FormControl>
           <FormControl fullWidth margin="normal">
             <InputLabel>Department</InputLabel>
-            <Select name="department" value={filter.department} onChange={handleChange}>
+            <Select name="department" label="Department" value={filter.department} onChange={handleChange}>
               <MenuItem value="">No Filter</MenuItem>
               <MenuItem value="Road">Road</MenuItem>
               <MenuItem value="Garden">Garden</MenuItem>
@@ -75,7 +75,7 @@ const Filter = ({ filter, setFilter, applyFilter, clearFilter }) => {
           </FormControl>
           <FormControl fullWidth margin="normal">
             <InputLabel>Progress</InputLabel>
-            <Select name="progress" value={filter.progress} onChange={handleChange}>
+            <Select name="progress" label="Progress" value={filter.progress} onChange={handleChange}>
               <MenuItem value={0}>No Filter</MenuItem>
               <MenuItem value={1}>Issue Submitted</MenuItem>
               <MenuItem value={2}>Viewed by Admin</MenuItem>
