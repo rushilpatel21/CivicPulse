@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { auth } from '../components/firebase.jsx';
 import { useNavigate } from 'react-router-dom';
+import { Box } from '@mui/material';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import IssueSections from '../components/IssueSections.jsx';
-import { Box } from '@mui/material';
 
 const IssueDetails = () => {
   const navigate = useNavigate();

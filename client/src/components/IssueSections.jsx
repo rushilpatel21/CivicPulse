@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { getIssues, getIssuesById } from '../helper/api.js'; 
-import IssueCard from './IssueCard.jsx'; 
-import PropTypes from 'prop-types';
 import { Grid, Box, Typography } from '@mui/material';
 import { auth } from './firebase.jsx';
+import PropTypes from 'prop-types';
 import Loader from './loader.jsx';
+import IssueCard from './IssueCard.jsx'; 
 import Filter from './Filter.jsx';
 
 const IssueSections = () => {
@@ -67,7 +67,7 @@ const IssueSections = () => {
   };
 
   const clearFilter = async () => {
-    setFilterSelf({ distance: '', severity: '', department: '', progress: 0});
+    setFilter({ distance: '', severity: '', department: '', progress: 0});
     let allIssues = await getIssues();
 
     allIssues = allIssues.sort((a, b) => b.data.date._seconds - a.data.date._seconds).filter(issue => issue.data.user !== userId);
