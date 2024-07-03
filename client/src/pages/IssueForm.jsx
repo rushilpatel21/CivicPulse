@@ -68,7 +68,6 @@ const IssueForm = () => {
     const file = e.target.files[0];
     if (file && isFileTypeValid(file.type)) {
       setPhoto(file);
-      console.log("valid");
     } else {
       alert('Invalid file type. Please select an image (PNG, JPEG, WEBP, HEIC, HEIF).');
     }
@@ -184,7 +183,6 @@ const IssueForm = () => {
               onPlaceChange={handlePlaceChange}
               fullWidth
               variant="outlined"
-              // required
             />
           </FormControl>
           <FormControl fullWidth margin="normal">
@@ -194,7 +192,6 @@ const IssueForm = () => {
               InputLabelProps={{ shrink: true }}
               inputProps={{ accept: "image/png, image/jpeg, image/webp, image/heic, image/heif" }}
               onChange={handlePhotoChange}
-              // required
             />
           </FormControl>
           <FormControl fullWidth margin="normal">
@@ -227,7 +224,6 @@ const IssueForm = () => {
               id="severity"
               value={severity}
               onChange={handleSeverityChange}
-              // required
             >
               <MenuItem value=""><em>Select severity</em></MenuItem>
               <MenuItem value="low">Low</MenuItem>
