@@ -1,4 +1,3 @@
-// const serviceAccount = require('../config/serviceAccountKey.json');
 const admin = require('firebase-admin');
 const geminiService = require('../services/geminiService');
 const fs = require('fs');

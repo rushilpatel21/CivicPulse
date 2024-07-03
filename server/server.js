@@ -18,7 +18,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-// app.use(cors());
 
 
 const storage = multer.diskStorage({
