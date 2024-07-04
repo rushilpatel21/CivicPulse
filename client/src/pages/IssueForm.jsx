@@ -220,7 +220,7 @@ const IssueForm = () => {
           <FormControl fullWidth margin="normal">
             <InputLabel htmlFor="severity">Severity</InputLabel>
             <Select
-              labelId="severity"
+              label="severity"
               id="severity"
               value={severity}
               onChange={handleSeverityChange}
