@@ -4,9 +4,11 @@ const multer = require('multer');
 const cors = require('cors');
 const geminiRouter = require('./routes/geminiRouter');
 const issuesRouter = require('./routes/issuesRouter.js');
+const bugRouter = require('./routes/bugRouter.js');
 const app = express();
 const PORT = process.env.PORT || 8000;
 
+app.use(express.json());
 
 const corsOptions = {
   origin: [
@@ -14,7 +16,7 @@ const corsOptions = {
     'http://localhost:5173'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: '*/*',
+  allowedHeaders: '*',
 };
 
 app.use(cors(corsOptions));
@@ -43,6 +45,8 @@ app.use('/api/gemini', upload.single('photo'));
 app.use('/api/gemini', geminiRouter);
 
 app.use('/api/issues', issuesRouter);
+
+app.use('/api/bugs', bugRouter);
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
