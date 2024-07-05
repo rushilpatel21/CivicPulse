@@ -19,16 +19,30 @@ import SignUp from "./components/register.jsx";
 import ResetPassword from "./components/resetPassword.jsx";
 import Logout from './components/logout.jsx';
 import ReportBug from './pages/reportBug.jsx';
+import Admin from './pages/Admin.jsx';
+import { isAdmin } from './helper/api.js';
 
 function App() {
   
   const [user, setUser] = useState();
-  
+  const [admin, setAdmin] = useState(false);
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       setUser(user);
     });
+
   });
+  useEffect(() => {
+    if (user) {
+      setAdmin(isAdmin(user.uid));
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if(admin){
+      console.log("Admin is: " + admin);
+    }
+  },[admin]);
 
   return (
     <Router>
@@ -39,7 +53,7 @@ function App() {
               newestOnTop
             />
             <CssBaseline />
-            <Navbar />
+            <Navbar admin/>
             <Routes>
               <Route path="/" element={<Navigate to="/home" />} />
               <Route path="/home" element={<Home />} />
@@ -47,12 +61,13 @@ function App() {
               <Route path="/heatmap" element={<Map />} />
               <Route path="/issuedetails" element={<IssueDetails />} />
               <Route path="/issueform" element={<IssueForm />} />
-              {user && <Route path="/profile" element={<Profile />} />}
-              {user && <Route path="/logout" element={<Logout />} />}
+              <Route path="/reportbug" element={<ReportBug />} />
               {!user && <Route path="/login" element={<Login />} />}
               {!user && <Route path="/register" element={<SignUp />} />}
               {!user && <Route path="/resetpassword" element={<ResetPassword />} />}
-              <Route path="/reportbug" element={<ReportBug />} />
+              {user && <Route path="/logout" element={<Logout />} />}
+              {user && <Route path="/profile" element={<Profile />} />}
+              {user && admin && <Route path="/admin" element={<Admin />} />}
             </Routes>
           </div>
         </div>

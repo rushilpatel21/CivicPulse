@@ -134,7 +134,7 @@ const IssueForm = () => {
     const user = auth.currentUser;
     const formData = new FormData();
     const date = Date.now();
-    const name = `images/${user.uid}${date}${photo.name}`
+    const name = `images/${user.uid}/${date}${photo.name}`
     const storageRef = ref(storage, name);
 
     formData.append('user', user.uid);

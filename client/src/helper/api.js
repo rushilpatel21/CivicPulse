@@ -105,3 +105,27 @@ export const bugReportApi = async (data) => {
     throw error;
   }
 }
+
+export const isAdmin = async (id) => {
+  try {
+    const response = await instance.get(`/admin/${id}`);
+    console.log(response.data);
+    if(response.data === 'Admin'){
+      return true;
+    }else{
+      return false;
+    }
+    // return response.data;
+  } catch (error) {
+    if (error.response) {
+      console.error('Error response:', error.response.data);
+      console.error('Error status:', error.response.status);
+      console.error('Error headers:', error.response.headers);
+    } else if (error.request) {
+      console.error('Error request:', error.request);
+    } else {
+      console.error('Error message:', error.message);
+    }
+    throw error;
+  }
+}

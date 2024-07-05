@@ -16,23 +16,28 @@ import defaultUser from '../assets/defaultUser.png';
 import { auth, db } from "./firebase";
 import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
 // const pages = ['Home', 'Dashboard', 'Heat Map', 'Issue Details', 'Issue Form', 'Report Bug'];
-const pages = ['Home', 'Heat Map', 'Issue Details', 'Issue Form', 'Report Bug'];
+// const pages = ['Home', 'Heat Map', 'Issue Details', 'Issue Form', 'Report Bug', 'Admin'];
 const settings = ['Profile', 'Logout'];
 const settingsNotLoggedIn = ['Login'];
 
-function ResponsiveAppBar() {
+function Navbar({ admin }) {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [user, setUser] = useState();
   const [userDetails, setUserDetails] = useState(null);
   const [profileIcon, setProfileIcon] = useState(defaultUser);
+  const [pages, setPages] = useState(['Home', 'Heat Map', 'Issue Details', 'Issue Form', 'Report Bug']);
 
   
   useEffect(() => {
     const fetchUserData = async () => {
       auth.onAuthStateChanged(async (user) => {
+        if(!user){
+          return;
+        }
         console.log(user);
   
         const docRef = doc(db, "Users", user.uid);
@@ -52,7 +57,10 @@ function ResponsiveAppBar() {
     if(userDetails){
       setProfileIcon(userDetails.photo);
     }
-  }, [userDetails]);
+    if(admin){
+      setPages(['Home', 'Heat Map', 'Issue Details', 'Issue Form', 'Report Bug', 'Admin']);
+    }
+  }, [userDetails, admin]);
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
@@ -231,4 +239,8 @@ function ResponsiveAppBar() {
   );
 }
 
-export default ResponsiveAppBar;
+export default Navbar;
+
+Navbar.propTypes = {
+  admin: PropTypes.bool.isRequired,
+};

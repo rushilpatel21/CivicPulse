@@ -5,6 +5,7 @@ const cors = require('cors');
 const geminiRouter = require('./routes/geminiRouter');
 const issuesRouter = require('./routes/issuesRouter.js');
 const bugRouter = require('./routes/bugRouter.js');
+const adminRouter = require('./routes/adminRouter.js');
 const app = express();
 const PORT = process.env.PORT || 8000;
 
@@ -47,6 +48,8 @@ app.use('/api/gemini', geminiRouter);
 app.use('/api/issues', issuesRouter);
 
 app.use('/api/bugs', bugRouter);
+
+app.use('/api/admin', adminRouter);
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
