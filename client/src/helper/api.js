@@ -108,7 +108,7 @@ export const bugReportApi = async (data) => {
 
 export const isAdmin = async (id) => {
   try {
-    const response = await instance.get(`/admin/${id}`);
+    const response = await instance.get(`/admin/role/${id}`);
     if(response.data === 'Admin'){
       return true;
     }else{

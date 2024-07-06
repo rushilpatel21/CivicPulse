@@ -59,7 +59,7 @@ function Navbar({ admin }) {
       setProfileIcon(userDetails.photo);
     }
     if(admin){
-      setPages(['Home', 'Heat Map', 'Issue Details', 'Issue Form', 'Report Bug', 'Admin']);
+      setPages(['Home', 'Heat Map', 'Issue Details', 'User Management', 'Issue Management', 'Dashboard']);
     }
   }, [userDetails, admin]);
 

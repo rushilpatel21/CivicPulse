@@ -5,8 +5,9 @@ import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { ToastContainer } from "react-toastify";
-import { auth } from './components/firebase.jsx';
 import { CssBaseline } from '@mui/material';
+import { isAdmin } from './helper/api.js';
+import { auth } from './components/firebase.jsx';
 import Navbar from './components/navbar.jsx';
 import Home from './pages/Home.jsx';
 import Dashboard from './pages/Dashboard.jsx';
@@ -19,8 +20,8 @@ import SignUp from "./components/register.jsx";
 import ResetPassword from "./components/resetPassword.jsx";
 import Logout from './components/logout.jsx';
 import ReportBug from './pages/reportBug.jsx';
-import Admin from './pages/Admin.jsx';
-import { isAdmin } from './helper/api.js';
+import UserManagement from './pages/UserManagement.jsx';
+import IssueManagement from './pages/IssueManagement.jsx';
 
 function App() {
   
@@ -70,7 +71,9 @@ function App() {
               {!user && <Route path="/resetpassword" element={<ResetPassword />} />}
               {user && <Route path="/logout" element={<Logout />} />}
               {user && <Route path="/profile" element={<Profile />} />}
-              {user && admin && <Route path="/admin" element={<Admin />} />}
+              {user && admin && <Route path="/usermanagement" element={<UserManagement />} />}
+              {user && admin && <Route path="/issuemanagement" element={<IssueManagement />} />}
+              {user && admin && <Route path="/dashboard" element={<Dashboard />} />}
             </Routes>
           </div>
         </div>
