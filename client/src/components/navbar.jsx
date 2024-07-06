@@ -33,6 +33,7 @@ function Navbar({ admin }) {
 
   
   useEffect(() => {
+    console.log("From Navbar: " + admin);
     const fetchUserData = async () => {
       auth.onAuthStateChanged(async (user) => {
         if(!user){
@@ -51,7 +52,7 @@ function Navbar({ admin }) {
       });
     };
     fetchUserData();
-  }, []);
+  }, [admin]);
   
   useEffect(() => {
     if(userDetails){

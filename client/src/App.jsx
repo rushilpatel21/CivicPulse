@@ -26,23 +26,26 @@ function App() {
   
   const [user, setUser] = useState();
   const [admin, setAdmin] = useState(false);
+
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       setUser(user);
     });
+  }, []);
 
-  });
   useEffect(() => {
-    if (user) {
-      setAdmin(isAdmin(user.uid));
-    }
+    const checkAdmin = async () => {
+      if (user) {
+        const adminStatus = await isAdmin(user.uid);
+        setAdmin(adminStatus);
+      }
+    };
+    checkAdmin();
   }, [user]);
 
   useEffect(() => {
-    if(admin){
-      console.log("Admin is: " + admin);
-    }
-  },[admin]);
+    console.log("Admin is: " + admin);
+  }, [admin]);
 
   return (
     <Router>
@@ -53,7 +56,7 @@ function App() {
               newestOnTop
             />
             <CssBaseline />
-            <Navbar admin/>
+            <Navbar admin={admin}/>
             <Routes>
               <Route path="/" element={<Navigate to="/home" />} />
               <Route path="/home" element={<Home />} />
