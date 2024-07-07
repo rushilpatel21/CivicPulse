@@ -9,7 +9,6 @@ const adminRouter = require('./routes/adminRouter.js');
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-app.use(express.json());
 
 const corsOptions = {
   origin: [
@@ -22,6 +21,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+app.use(express.json());
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {

@@ -1,14 +1,14 @@
+// TODO: The page is not responsive. and include enableUserInfo (this api is working just lacks integration) 
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../components/firebase.jsx';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Typography } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Typography, Select, MenuItem } from '@mui/material';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { toast } from 'react-toastify';
-import { getAllUsers, deleteUserInfo } from '../helper/api.js';
+import { getAllUsers, deleteUserInfo, changeRoleById, disableUserInfo, enableUserInfo } from '../helper/api.js'; // Make sure updateUserRole is defined in your api helper
 import Loader from '../components/loader.jsx';
 
-// TODO: Add dropdown menu for roles 
 const UserManagement = () => {
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
@@ -57,7 +57,7 @@ const UserManagement = () => {
       if (!response) {
         throw new Error('Failed to fetch users data');
       }
-      const data = await response; // why is there an await here? fix it idiota!!!!! :D 
+      const data = await response;
       return data;
     } catch (error) {
       console.error('Error fetching users data:', error);
@@ -68,6 +68,11 @@ const UserManagement = () => {
   };
 
   const handleDelete = async (userId) => {
+    const myId =  auth.currentUser;
+    if(myId.uid === userId){
+      toast.error("You cannot delete your own account", { position: "bottom-center" });
+      return;
+    }
     withReactContent(Swal).fire({
       title: 'Are you sure?',
       text: 'You will not be able to recover this account!',
@@ -80,13 +85,13 @@ const UserManagement = () => {
       if (result.isConfirmed) {
         confirmedDeleteAccount(userId);
       } else {
-        Swal.fire('Cancelled', 'Your account is safe :)', 'info');
+        Swal.fire('Cancelled', 'Account is safe :)', 'info');
       }
     })
   };
 
   const confirmedDeleteAccount = async (userId) => {
-    try{
+    try {
       setLoading(true);
       const response = await deleteUserInfo(userId);
       console.log(response);
@@ -98,12 +103,67 @@ const UserManagement = () => {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   const handleDisable = (userId) => {
-    const user = auth.currentUser;
-    console.log(user);
-    console.log(`Disabling user with ID: ${userId}`);
+    const myId =  auth.currentUser;
+    if(myId.uid === userId){
+      toast.error("You cannot disable your own account", { position: "bottom-center" });
+      return;
+    }
+    withReactContent(Swal).fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to access this account!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, disable it!',
+      cancelButtonText: 'No, keep it',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        confirmedDisableAccount(userId);
+      } else {
+        Swal.fire('Cancelled', 'Account is safe :)', 'info');
+      }
+    })
+
+  };
+
+  const confirmedDisableAccount = async (userId) => {
+    try {
+      setLoading(true);
+      const response = await disableUserInfo(userId);
+      console.log(response);
+      toast.success("Account Disabled Successfully", { position: "bottom-center" });
+      const data = await fetchUsersData();
+      setUsers(data);
+    } catch (error) {
+      console.error('Error disabling user:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRoleChangeSubmit = async (userId, newRole) => {
+    try {
+      const myId =  auth.currentUser;
+      if(myId.uid === userId){
+        toast.error("You cannot change your own role", { position: "bottom-center" });
+        return;
+      }
+
+      setLoading(true);
+      const response = await changeRoleById(userId, newRole);
+      console.log(response);
+      toast.success("Role Updated Successfully", { position: "bottom-center" });
+      const data = await fetchUsersData();
+      setUsers(data);
+    } catch (error) {
+      console.error('Error updating role:', error);
+    } finally {
+      setLoading(false);
+    }
+
   };
 
   return (
@@ -133,8 +193,17 @@ const UserManagement = () => {
                     <TableCell>{user.firstName}</TableCell>
                     <TableCell>{user.lastName}</TableCell>
                     <TableCell>{user.email}</TableCell>
+                    <TableCell>
+                      <Select
+                        value={user.role}
+                        onChange={(e) => handleRoleChangeSubmit(user.id, e.target.value)}
+                        sx={{ width: 100, height: 40 }}
+                      >
+                        <MenuItem value="Admin">Admin</MenuItem>
+                        <MenuItem value="User">User</MenuItem>
+                      </Select>
+                    </TableCell>
                     <TableCell>{user.reportsCount}</TableCell>
-                    <TableCell>{user.role}</TableCell>
                     <TableCell>
                       <Button variant="contained" color="secondary" onClick={() => handleDelete(user.id)}>
                         Delete

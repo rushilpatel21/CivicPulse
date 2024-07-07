@@ -19,8 +19,6 @@ import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-// const pages = ['Home', 'Dashboard', 'Heat Map', 'Issue Details', 'Issue Form', 'Report Bug'];
-// const pages = ['Home', 'Heat Map', 'Issue Details', 'Issue Form', 'Report Bug', 'Admin'];
 const settings = ['Profile', 'Logout'];
 const settingsNotLoggedIn = ['Login'];
 
@@ -60,7 +58,7 @@ function Navbar({ admin }) {
       setProfileIcon(userDetails.photo);
     }
     if(admin){
-      setPages(['Home', 'Heat Map', 'Issue Details', 'User Management', 'Issue Management', 'Dashboard']);
+      setPages(['Home', 'Heat Map', 'Issue Details', 'Issue Form', 'User Management', 'Issue Management', 'Dashboard']);
     }
   }, [userDetails, admin]);
 

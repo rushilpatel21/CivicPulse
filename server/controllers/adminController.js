@@ -110,10 +110,47 @@ async function deleteById(id) {
     }
 }
 
+async function disableUser(req, res){
+    const id = req.params.id;
+    if(!id) {
+        res.status(400).send('User ID is required');
+        return;
+    }
+    try{
+        const user = await admin.auth().getUser(id);
+        await admin.auth().updateUser(user.uid, {
+            disabled: true
+        });
+        res.status(200).send('User disabled successfully');
+    }catch(error) {
+        console.error("Error disabling user: ", error);
+        res.status(500).send("Error disabling user");
+    }
+}
+
+async function enableUser(req, res){
+    const id = req.params.id;
+    if(!id) {
+        res.status(400).send('User ID is required');
+        return;
+    }
+    try{
+        const user = await admin.auth().getUser(id);
+        await admin.auth().updateUser(user.uid, {
+            disabled: false
+        });
+        res.status(200).send('User enabled successfully');
+    }catch(error) {
+        console.error("Error enabling user: ", error);
+        res.status(500).send("Error enabling user");
+    }
+}
 
 module.exports = {
     getRoleById,
     getAllUsers,
     changeRoleById,
-    deleteId
+    deleteId,
+    disableUser,
+    enableUser
 };
