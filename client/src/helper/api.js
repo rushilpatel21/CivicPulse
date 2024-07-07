@@ -127,3 +127,61 @@ export const isAdmin = async (id) => {
     throw error;
   }
 }
+
+export const changeRoleById = async (id, role) => {
+  try {
+    const response = await instance.put(`/admin/role/${id}`, role,{
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      console.error('Error response:', error.response.data);
+      console.error('Error status:', error.response.status);
+      console.error('Error headers:', error.response.headers);
+    } else if (error.request) {
+      console.error('Error request:', error.request);
+    } else {
+      console.error('Error message:', error.message);
+    }
+    throw error;
+  }
+}
+
+export const getAllUsers = async () => {
+  try {
+    const response = await instance.get('/admin/users');
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      console.error('Error response:', error.response.data);
+      console.error('Error status:', error.response.status);
+      console.error('Error headers:', error.response.headers);
+    } else if (error.request) {
+      console.error('Error request:', error.request);
+    } else {
+      console.error('Error message:', error.message);
+    }
+    throw error;
+  }
+}
+
+export const deleteUserInfo = async (id) => {
+  try{
+    const response = await instance.delete(`/admin/user/${id}`);
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      console.error('Error response:', error.response.data);
+      console.error('Error status:', error.response.status);
+      console.error('Error headers:', error.response.headers);
+    } else if (error.request) {
+      console.error('Error request:', error.request);
+    } else {
+      console.error('Error message:', error.message);
+    }
+    throw error;
+  }
+}

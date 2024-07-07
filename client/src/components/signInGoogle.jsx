@@ -22,6 +22,7 @@ function SignInWithGoogle() {
             firstName: user.displayName.split(" ")[0],
             lastName: user.displayName.split(" ").slice(1).join(" "),
             photo: user.photoURL,
+            role: "User"
           });
         }
         toast.success("User logged in Successfully", {

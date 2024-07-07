@@ -1,5 +1,4 @@
 const admin = require('firebase-admin');
-
 const db = admin.firestore();
 
 async function getRoleById(req, res) {
@@ -21,8 +20,6 @@ async function getRoleById(req, res) {
     }
 }
 
-// TODO: Figure out how to get last signed in and created date from firebase auth.
-
 async function getAllUsers(req, res) {
     try {
         const users = [];
@@ -32,7 +29,8 @@ async function getAllUsers(req, res) {
             const reportsCount = await getReportsCount(doc.id);
             users.push({
                 ...userData,
-                reportsCount: reportsCount
+                reportsCount: reportsCount,
+                id: doc.id
             });
         }
         res.status(200).send(users);
@@ -52,9 +50,70 @@ async function getReportsCount(userId) {
     }
 }   
 
+async function changeRoleById(req, res){
+    const id = req.params.id;
+    const role = req.body.role;
+    if(!id) {
+        res.status(400).send('User ID is required');
+        return;
+    }
+    if(!role) {
+        res.status(400).send('Role is required');
+        return;
+    }
+    try{
+        await db.collection('Users').doc(id).update({
+            role: role
+        });
+        res.status(200).send('Role updated successfully');
+    }catch(error) {
+        console.error("Error updating role: ", error);
+        res.status(500).send("Error updating role");
+    }
+}
+
+async function deleteId(req,res){
+    const id = req.params.id;
+    if(!id) {
+        res.status(400).send('User ID is required');
+        return;
+    }
+    try{
+        const user = await admin.auth().getUser(id);
+        await admin.auth().deleteUser(user.uid);
+        console.log("Stage 0 Clear");
+        const issues = await deleteById(id);
+        console.log("Issues deleted:", issues);
+        console.log("Stage 1 Clear");
+        await db.collection('Users').doc(id).delete();
+        res.status(200).send('User deleted successfully');
+    }catch(error) {
+        console.error("Error deleting user: ", error);
+        res.status(500).send("Error deleting user");
+    }
+}
+
+async function deleteById(id) {
+    try {
+        const snapshot = await db.collection('IssueDetails').where('user', '==', id).get();
+        if (snapshot.empty) {
+            return;
+        } else {
+            snapshot.forEach(async (doc) => {
+                await db.collection('IssueDetails').doc(doc.id).delete();
+            });
+            return;
+        }
+    } catch (error) {
+        console.error("Error deleting documents: ", error);
+        return;
+    }
+}
 
 
 module.exports = {
     getRoleById,
-    getAllUsers
+    getAllUsers,
+    changeRoleById,
+    deleteId
 };

@@ -79,6 +79,7 @@ function Profile() {
   const confirmedDeleteAccount = async () => {
     try {
       const user = auth.currentUser;
+      // console.log(user);
       await user.delete(); // Delete from the firebase auth.
       await deleteDoc(doc(db, "Users", user.uid)); // Delete from the database.
       toast.success("Account Deleted Successfully", { position: "bottom-center" });

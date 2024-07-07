@@ -4,11 +4,16 @@ import { auth } from '../components/firebase.jsx';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Typography } from '@mui/material';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import { toast } from 'react-toastify';
+import { getAllUsers, deleteUserInfo } from '../helper/api.js';
+import Loader from '../components/loader.jsx';
 
+// TODO: Add dropdown menu for roles 
 const UserManagement = () => {
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const usingSwal = () => {
@@ -34,45 +39,76 @@ const UserManagement = () => {
         usingSwal();
       } else {
         setLoggedIn(true);
-        // Fetch users data from API (replace with your API call)
         fetchUsersData().then((data) => {
           setUsers(data);
         }).catch((error) => {
           console.error('Error fetching users:', error);
-          // Handle error
         });
       }
     });
   }, [navigate]);
 
-  // Example function to fetch users data (replace with your actual API call)
   const fetchUsersData = async () => {
     try {
-      // Replace with actual API call to fetch users data
-      const response = await fetch('https://api.example.com/users');
-      if (!response.ok) {
+      setLoading(true);
+      const response = await getAllUsers();
+      console.log(response);
+
+      if (!response) {
         throw new Error('Failed to fetch users data');
       }
-      const data = await response.json();
+      const data = await response; // why is there an await here? fix it idiota!!!!! :D 
       return data;
     } catch (error) {
       console.error('Error fetching users data:', error);
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleDelete = (userId) => {
-    // Implement delete functionality here (e.g., API call to delete user)
-    console.log(`Deleting user with ID: ${userId}`);
+  const handleDelete = async (userId) => {
+    withReactContent(Swal).fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to recover this account!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, keep it',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        confirmedDeleteAccount(userId);
+      } else {
+        Swal.fire('Cancelled', 'Your account is safe :)', 'info');
+      }
+    })
   };
 
+  const confirmedDeleteAccount = async (userId) => {
+    try{
+      setLoading(true);
+      const response = await deleteUserInfo(userId);
+      console.log(response);
+      toast.success("Account Deleted Successfully", { position: "bottom-center" });
+      const data = await fetchUsersData();
+      setUsers(data);
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   const handleDisable = (userId) => {
-    // Implement disable functionality here (e.g., API call to disable user)
+    const user = auth.currentUser;
+    console.log(user);
     console.log(`Disabling user with ID: ${userId}`);
   };
 
   return (
     <>
+      {loading && <Loader />}
       {loggedIn && (
         <div>
           <Typography variant="h4" gutterBottom>User Management</Typography>
@@ -81,12 +117,11 @@ const UserManagement = () => {
               <TableHead>
                 <TableRow>
                   <TableCell>Sr. No.</TableCell>
-                  <TableCell>Name</TableCell>
+                  <TableCell>First Name</TableCell>
+                  <TableCell>Last Name</TableCell>
                   <TableCell>Email</TableCell>
-                  <TableCell>Sign up date</TableCell>
-                  <TableCell>Last Logged in date</TableCell>
                   <TableCell>Role</TableCell>
-                  <TableCell>Number of issues reported</TableCell>
+                  <TableCell>Issues reported</TableCell>
                   <TableCell>Action</TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
@@ -95,12 +130,11 @@ const UserManagement = () => {
                 {users.map((user, index) => (
                   <TableRow key={user.id}>
                     <TableCell>{index + 1}</TableCell>
-                    <TableCell>{user.name}</TableCell>
+                    <TableCell>{user.firstName}</TableCell>
+                    <TableCell>{user.lastName}</TableCell>
                     <TableCell>{user.email}</TableCell>
-                    <TableCell>{user.signupDate}</TableCell>
-                    <TableCell>{user.lastLoggedIn}</TableCell>
+                    <TableCell>{user.reportsCount}</TableCell>
                     <TableCell>{user.role}</TableCell>
-                    <TableCell>{user.numIssuesReported}</TableCell>
                     <TableCell>
                       <Button variant="contained" color="secondary" onClick={() => handleDelete(user.id)}>
                         Delete
@@ -123,18 +157,3 @@ const UserManagement = () => {
 };
 
 export default UserManagement;
-
-
-/*
-  A table with Name, email, Sign up date, Last Logged in date, Role(dropdown for Admin or User),Number of issues reported ,Delete (button), Disable(buttom) 
-
-  Example: {
-    "Name": "John Doe", // done
-    "Email": "johndoe@gmail.com", // done
-    "Sign up date": "12/12/2021",
-    "Last Logged in date": "20/12/2021",
-    "Role": "Admin", // done
-    "Number of issues reported": 5,(reportsCount) // done
-  }
-
-*/

@@ -20,8 +20,9 @@ function SignInWithGithub() {
           await setDoc(userDocRef, {
             email: user.email,
             firstName: user.displayName,
-            photo: user.photoURL,
             lastName: "",
+            photo: user.photoURL,
+            role: "User"
           });
         }
         toast.success("User logged in Successfully", {
