@@ -121,6 +121,9 @@ async function disableUser(req, res){
         await admin.auth().updateUser(user.uid, {
             disabled: true
         });
+        await db.collection('Users').doc(id).update({
+            isEnabled: false
+        });
         res.status(200).send('User disabled successfully');
     }catch(error) {
         console.error("Error disabling user: ", error);
@@ -138,6 +141,9 @@ async function enableUser(req, res){
         const user = await admin.auth().getUser(id);
         await admin.auth().updateUser(user.uid, {
             disabled: false
+        });
+        await db.collection('Users').doc(id).update({
+            isEnabled: true
         });
         res.status(200).send('User enabled successfully');
     }catch(error) {

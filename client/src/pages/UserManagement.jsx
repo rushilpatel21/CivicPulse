@@ -1,13 +1,13 @@
-// TODO: The page is not responsive. and include enableUserInfo (this api is working just lacks integration) 
+// TODO: The page is not responsive.
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../components/firebase.jsx';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Typography, Select, MenuItem } from '@mui/material';
+import { toast } from 'react-toastify';
+import { getAllUsers, deleteUserInfo, changeRoleById, disableUserInfo, enableUserInfo } from '../helper/api.js';
+import Loader from '../components/loader.jsx';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import { toast } from 'react-toastify';
-import { getAllUsers, deleteUserInfo, changeRoleById, disableUserInfo, enableUserInfo } from '../helper/api.js'; // Make sure updateUserRole is defined in your api helper
-import Loader from '../components/loader.jsx';
 
 const UserManagement = () => {
   const navigate = useNavigate();
@@ -113,7 +113,7 @@ const UserManagement = () => {
     }
     withReactContent(Swal).fire({
       title: 'Are you sure?',
-      text: 'You will not be able to access this account!',
+      text: 'User will not be able to access this account!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, disable it!',
@@ -129,6 +129,29 @@ const UserManagement = () => {
 
   };
 
+  const handleEnable = (userId) => {
+    const myId =  auth.currentUser;
+    if(myId.uid === userId){
+      toast.error("You cannot enable your own account", { position: "bottom-center" });
+      return;
+    }
+    withReactContent(Swal).fire({
+      title: 'Are you sure?',
+      text: 'User will be able to access this account!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, enable it!',
+      cancelButtonText: 'No, keep it',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        confirmedEnableAccount(userId);
+      } else {
+        Swal.fire('Cancelled', 'Account is safe :)', 'info');
+      }
+    })
+  }
+
   const confirmedDisableAccount = async (userId) => {
     try {
       setLoading(true);
@@ -143,6 +166,21 @@ const UserManagement = () => {
       setLoading(false);
     }
   };
+
+  const confirmedEnableAccount = async (userId) => {
+    try {
+      setLoading(true);
+      const response = await enableUserInfo(userId);
+      console.log(response);
+      toast.success("Account Enabled Successfully", { position: "bottom-center" });
+      const data = await fetchUsersData();
+      setUsers(data);
+    } catch (error) {
+      console.error('Error enabling user:', error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const handleRoleChangeSubmit = async (userId, newRole) => {
     try {
@@ -205,14 +243,17 @@ const UserManagement = () => {
                     </TableCell>
                     <TableCell>{user.reportsCount}</TableCell>
                     <TableCell>
-                      <Button variant="contained" color="secondary" onClick={() => handleDelete(user.id)}>
+                      <Button variant="contained" color="secondary" onClick={() => handleDelete(user.id)} sx={{ width: 90, height: 40 }}>
                         Delete
                       </Button>
                     </TableCell>
                     <TableCell>
-                      <Button variant="contained" color="primary" onClick={() => handleDisable(user.id)}>
+                      {user.isEnabled &&  <Button variant="contained" color="primary" onClick={() => handleDisable(user.id)} sx={{ width: 90, height: 40 }}>
                         Disable
-                      </Button>
+                      </Button>}
+                      {!user.isEnabled &&  <Button variant="contained" color="primary" onClick={() => handleEnable(user.id)} sx={{ width: 90, height: 40 }}>
+                        Enable
+                      </Button>}
                     </TableCell>
                   </TableRow>
                 ))}
