@@ -31,6 +31,7 @@ const IssueSections = () => {
   useEffect(() => {
     try{
       const fetchIssues = async () => {
+        setLoading(true);
         const allIssues = await getIssues();
         const myIssues = await getIssuesById(userId);
 
@@ -39,7 +40,6 @@ const IssueSections = () => {
 
         setOtherIssues(allIssues.filter(issue => issue.data.user !== userId));
         setMyIssues(myIssues);
-        setLoading(false);
       };
       fetchIssues();
     }catch (e) {

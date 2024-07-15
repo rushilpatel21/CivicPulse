@@ -9,7 +9,7 @@ import IssueSections from '../components/IssueSections.jsx';
 const IssueDetails = () => {
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
-
+  
   useEffect(() => {
     const usingSwal = () => {
       withReactContent(Swal).fire({
