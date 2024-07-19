@@ -67,7 +67,6 @@ export const getIssuesById = async (id) => {
   }
 };
 
-// Needed when deleting an account to clear out issues. 
 export const deleteIssueById = async (id) => {
   try {
     const response = await instance.delete(`/issues/${id}`);
@@ -198,7 +197,7 @@ const deleteFilesInDirectory = async (directoryPath) => {
     const deleteFilePromises = filesRef.items.map((itemRef) => {
       return deleteObject(itemRef).catch((error) => {
         console.error(`Error deleting file ${itemRef.name}:`, error);
-        throw error; // Rethrow error to propagate it up
+        throw error;
       });
     });
 
@@ -247,3 +246,100 @@ export const enableUserInfo = async (id) => {
     throw error;
   }
 }
+
+// TODO: Write backend code for the following api calls :) 
+
+export const getDisabledUsers = async () => {
+  try {
+    const response = await instance.get('/admin/disabled');
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      console.error('Error response:', error.response.data);
+      console.error('Error status:', error.response.status);
+      console.error('Error headers:', error.response.headers);
+    } else if (error.request) {
+      console.error('Error request:', error.request);
+    } else {
+      console.error('Error message:', error.message);
+    }
+    throw error;
+  }
+}
+
+export const getBugs = async () => {
+  try {
+    const response = await instance.get('/bugs');
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      console.error('Error response:', error.response.data);
+      console.error('Error status:', error.response.status);
+      console.error('Error headers:', error.response.headers);
+    } else if (error.request) {
+      console.error('Error request:', error.request);
+    } else {
+      console.error('Error message:', error.message);
+    }
+    throw error;
+  }
+}
+
+export const deleteBugById = async (id) => {
+  try {
+    const response = await instance.delete(`/bugs/${id}`);
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      console.error('Error response:', error.response.data);
+      console.error('Error status:', error.response.status);
+      console.error('Error headers:', error.response.headers);
+    } else if (error.request) {
+      console.error('Error request:', error.request);
+    } else {
+      console.error('Error message:', error.message);
+    }
+    throw error;
+  }
+}
+
+export const getIssuesByDepartment = async (department) => {
+  try {
+    const response = await instance.get(`/issues/department/${department}`);
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      console.error('Error response:', error.response.data);
+      console.error('Error status:', error.response.status);
+      console.error('Error headers:', error.response.headers);
+    } else if (error.request) {
+      console.error('Error request:', error.request);
+    } else {
+      console.error('Error message:', error.message);
+    }
+    throw error;
+  }
+};
+
+export const updateIssueProgress = async (id, progress) => {
+  try {
+    const response = await instance.put(`/issues/${id}`, { progress }, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      console.error('Error response:', error.response.data);
+      console.error('Error status:', error.response.status);
+      console.error('Error headers:', error.response.headers);
+    } else if (error.request) {
+      console.error('Error request:', error.request);
+    } else {
+      console.error('Error message:', error.message);
+    }
+    throw error;
+  }
+};
+
