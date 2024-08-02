@@ -76,7 +76,7 @@ const AdminIssueManagement = () => {
         <Paper>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px', marginTop: '50px' }}>
                 <TextField
-                    name="id"
+                    name="name"
                     label="ID"
                     value={filter.name}
                     onChange={handleFilterChange}
