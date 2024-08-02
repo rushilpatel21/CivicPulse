@@ -85,6 +85,46 @@ export const deleteIssueById = async (id) => {
   }
 };
 
+export const deleteIssueByIssueId = async (id) => {
+  try {
+    const response = await instance.delete(`/issues/issues/${id}`);
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      console.error('Error response:', error.response.data);
+      console.error('Error status:', error.response.status);
+      console.error('Error headers:', error.response.headers);
+    } else if (error.request) {
+      console.error('Error request:', error.request);
+    } else {
+      console.error('Error message:', error.message);
+    }
+    throw error;
+  }
+};
+
+export const updateIssueProgress = async (id, progress) => {
+  try {
+    const response = await instance.put(`/issues/${id}`, { progress }, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      console.error('Error response:', error.response.data);
+      console.error('Error status:', error.response.status);
+      console.error('Error headers:', error.response.headers);
+    } else if (error.request) {
+      console.error('Error request:', error.request);
+    } else {
+      console.error('Error message:', error.message);
+    }
+    throw error;
+  }
+};
+
 export const bugReportApi = async (data) => {
   try {
     const response = await instance.post('/bugs', data,{
@@ -320,26 +360,3 @@ export const getIssuesByDepartment = async (department) => {
     throw error;
   }
 };
-
-export const updateIssueProgress = async (id, progress) => {
-  try {
-    const response = await instance.put(`/issues/${id}`, { progress }, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return response.data;
-  } catch (error) {
-    if (error.response) {
-      console.error('Error response:', error.response.data);
-      console.error('Error status:', error.response.status);
-      console.error('Error headers:', error.response.headers);
-    } else if (error.request) {
-      console.error('Error request:', error.request);
-    } else {
-      console.error('Error message:', error.message);
-    }
-    throw error;
-  }
-};
-
