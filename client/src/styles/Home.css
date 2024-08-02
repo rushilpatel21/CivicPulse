@@ -1,85 +1,107 @@
-.home-container {
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  .home-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-}
+  }
   
-.gradient-text-section {
+  .gradient-text-section {
     height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-}
+    background: url('../path-to-your-image/image.png') no-repeat center center/cover; /* Adjust the path as needed */
+    color: white;
+  }
   
-.gradient-text {
+  .gradient-text {
     background: linear-gradient(135deg, #30cfd0, #330867);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-weight: bold;
-    background-clip: text;
-}
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
   
-.welcome-text {
-    color: #333;
-}
+  .welcome-text {
+    color: #fff;
+    font-size: 1.8rem;
+  }
   
-.about-us-section,
-.faqs-section {
-    background-color: #fff;
+  .about-us-section,
+  .faqs-section {
+    background-color: rgba(255, 255, 255, 0.9);
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 80%;
     max-width: 800px;
-    margin-top: 20px;
-}
+    margin: 20px auto;
+  }
   
-.about-us-section {
-    margin-bottom: 40px;
-}
-  
-.section-title {
+  .section-title {
     font-size: 1.8rem;
     margin-bottom: 10px;
     color: #333;
-}
+    text-align: left;
+  }
   
-.section-content {
+  .section-content {
     font-size: 1.2rem;
     color: #555;
-}
+    text-align: left;
+  }
   
-.faq-item {
+  .faq-item {
     margin-bottom: 10px;
     padding-bottom: 10px;
     cursor: pointer;
     display: flex;
     flex-direction: column;
-}
+  }
   
-.faq-header {
+  .faq-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
+  }
   
-.faq-question {
+  .faq-question {
     font-size: 1.4rem;
     color: #333;
     text-align: left;
-}
+  }
   
-.expand-button {
+  .expand-button {
     color: #666;
-}
+  }
   
-.faq-answer {
+  .faq-answer {
     font-size: 1.2rem;
     color: #00796b;
     margin-top: 10px;
     text-align: left;
-}
+  }
+  
+  .footer {
+    background-color: #1976d2;
+    padding: 20px;
+    width: 100%;
+    text-align: center;
+    color: white;
+    bottom: 0;
+  }
+  
+  .footer-text {
+    font-size: 1rem;
+  }
   

@@ -25,7 +25,8 @@ function Register() {
           firstName: fname,
           lastName: lname,
           photo: "",
-          role: "User"
+          role: "User",
+          isEnabled: true
         });
       }
       console.log("User Registered Successfully!!");

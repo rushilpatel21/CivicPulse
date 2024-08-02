@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { auth, db } from "../components/firebase";
 import { doc, getDoc } from "firebase/firestore";
-import { Typography, Container, Collapse, IconButton } from '@mui/material';
+import { Typography, Container, Collapse, IconButton, Box } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import '../styles/Home.css';
@@ -72,7 +72,7 @@ const Home = () => {
         <Typography variant="h3" gutterBottom className="gradient-text">
           Hello, {userName}
         </Typography>
-        <Typography variant="h4" gutterBottom className="welcome-text">
+        <Typography variant="h4" gutterBottom className="gradient-text">
           Welcome to Civic Pulse
         </Typography>
       </div>
@@ -109,14 +109,20 @@ const Home = () => {
                 </IconButton>
               </div>
               <Collapse in={expandedFAQ === index} timeout="auto" unmountOnExit>
-                <Typography variant="body1" className="faq-answer">
+                <Box mt={1} className="faq-answer">
                   {faq.answer}
-                </Typography>
+                </Box>
               </Collapse>
             </div>
           ))}
         </Container>
       </div>
+
+      <footer className="footer">
+        <Typography variant="body1" className="footer-text">
+          &copy; 2024 Civic Pulse. All rights reserved.
+        </Typography>
+      </footer>
     </div>
   );
 };

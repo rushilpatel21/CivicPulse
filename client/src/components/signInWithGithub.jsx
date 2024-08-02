@@ -22,7 +22,8 @@ function SignInWithGithub() {
             firstName: user.displayName,
             lastName: "",
             photo: user.photoURL,
-            role: "User"
+            role: "User",
+            isEnabled: true
           });
         }
         toast.success("User logged in Successfully", {

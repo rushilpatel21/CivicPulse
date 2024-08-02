@@ -17,7 +17,7 @@ import ShowIssue from '../components/ShowIssue.jsx';
 
 const departments = ['Road', 'Garden', 'Electricity', 'Drainage', 'Health & Hygiene', 'Smart Toilet', 'Water', 'Animals', 'Others'];
 
-const Dashboard = () => {
+const IssueManagement = () => {
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
   const [expanded, setExpanded] = useState(false);
@@ -27,7 +27,7 @@ const Dashboard = () => {
       withReactContent(Swal).fire({
         icon: 'error',
         title: 'User Not Logged In',
-        text: 'Please sign in to view Dashboard',
+        text: 'Please sign in to view Issue Management Tab',
         showCancelButton: true,
         confirmButtonColor: '#dc3545',
         cancelButtonColor: '#6c757d',
@@ -73,7 +73,6 @@ const Dashboard = () => {
                     <Typography>{department}</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    {/* <Typography>Content for {department}</Typography> */}
                     <ShowIssue department={department} />
                   </AccordionDetails>
                 </Accordion>
@@ -86,4 +85,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default IssueManagement;
