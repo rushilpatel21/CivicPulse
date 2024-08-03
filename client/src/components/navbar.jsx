@@ -28,7 +28,7 @@ function Navbar({ admin }) {
   const [user, setUser] = useState();
   const [userDetails, setUserDetails] = useState(null);
   const [profileIcon, setProfileIcon] = useState(defaultUser);
-  const [pages, setPages] = useState(['Home', 'Heat Map', 'Issue Details', 'Issue Form', 'Report Bug']);
+  const [pages, setPages] = useState(['Home', 'Heat Map', 'Issue Details', 'Issue Form', 'Report Bug', 'Dashboard']);
 
   
   useEffect(() => {

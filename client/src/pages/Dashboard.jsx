@@ -16,6 +16,12 @@ import {
   Legend,
   ArcElement
 } from 'chart.js';
+import {
+  getIssuesByMonth,
+  getIssuesByDepartmentType,
+  getIssuesByClearance,
+  getIssues
+} from '../helper/api.js';
 
 ChartJS.register(
   CategoryScale,
@@ -32,12 +38,107 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
 
+  const [issuesByMonth, setIssuesByMonth] = useState([]);
+  const [issuesByDepartment, setIssuesByDepartment] = useState([]);
+  const [issuesByClearance, setIssuesByClearance] = useState([]);
+  const [issues, setIssues] = useState([]);
+
+  const [labelsForBar, setLabelsForBar] = useState([]);
+  const [dataForBar, setDataForBar] = useState([]);
+  const [labelsForDoughnut, setLabelsForDoughnut] = useState([]);
+  const [dataForDoughnut, setDataForDoughnut] = useState([]);
+  // const [labelsForSummary, setLabelsForSummary] = useState([]);
+  const [dataForSummary, setDataForSummary] = useState([]);
+  const [dataForTable, setDataForTable] = useState([]);
+
+  useEffect(() => {
+    getIssueMonth();
+    getDept();
+    getClearance();
+    getIssuesForTable();
+  }, []);
+
+  const getClearance = async () => {
+    const data = await getIssuesByClearance();
+    setIssuesByClearance(data);
+  }
+
+  const getDept = async () => {
+    const data = await getIssuesByDepartmentType();
+    setIssuesByDepartment(data);
+  }
+
+  const getIssueMonth = async () => {
+    const data = await getIssuesByMonth();
+    setIssuesByMonth(data);
+  }
+
+  const getIssuesForTable = async () => {
+    const data = await getIssues();
+    setIssues(data);
+  }
+
+  useEffect(() => {
+    if(!issuesByMonth){
+      return;
+    }
+    const labels = Object.keys(issuesByMonth).reverse();
+    const data = Object.values(issuesByMonth).reverse();
+    setLabelsForBar(labels);
+    setDataForBar(data);
+  }, [issuesByMonth]);
+
+  useEffect(() => {
+    if(!issuesByDepartment){
+      return;
+    }
+    const labels = Object.keys(issuesByDepartment);
+    const data = Object.values(issuesByDepartment);
+    setLabelsForDoughnut(labels);
+    setDataForDoughnut(data);
+  }, [issuesByDepartment]);
+
+  useEffect(() => {
+    if(!issuesByClearance){
+      return;
+    }
+    // const labels = Object.keys(issuesByClearance);
+    const data = Object.values(issuesByClearance);
+    
+    // setLabelsForSummary(labels);
+    setDataForSummary(data);
+  }, [issuesByClearance]);
+
+  useEffect(() => {
+    if(!issues){
+      return;
+    }
+    const data = issues.map((issue) => {
+      const dataMap = new Map([
+        [1, 'Open'],
+        [2, 'In Progress'],
+        [3, 'Resolved']
+      ]);
+      issue.data.progress = dataMap.get(issue.data.progress);
+      issue.data.date = convertTimestampToDate(issue.data.date._seconds, issue.data.date._nanoseconds);
+      return {
+        id: issue.id,
+        department: issue.data.department,
+        severity: issue.data.severity,
+        status: issue.data.progress,
+        date: issue.data.date,
+      };
+    });
+    setDataForTable(data);
+    
+  },[issues])
+
   const barData = {
-    labels: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+    labels: labelsForBar,
     datasets: [
       {
         label: 'Reports per Month',
-        data: [12, 19, 3, 5, 2, 3],
+        data: dataForBar,
         backgroundColor: 'rgba(75, 192, 192, 0.2)',
         borderColor: 'rgba(75, 192, 192, 1)',
         borderWidth: 1,
@@ -46,34 +147,36 @@ const Dashboard = () => {
   };
 
   const doughnutData = {
-    labels: ['Road', 'Electricity', 'Water', 'Health', 'Others'],
+    labels: labelsForDoughnut,
     datasets: [
       {
-        data: [300, 50, 100, 40, 60],
-        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#FF9F40', '#4BC0C0'],
-        hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#FF9F40', '#4BC0C0'],
+        data: dataForDoughnut,
+        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#FF9F40', '#4BC0C0', '#9966FF', '#FF9F80', '#8ACB88', '#E0E0E0'],
+        hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#FF9F40', '#4BC0C0', '#9966FF', '#FF9F80', '#8ACB88', '#E0E0E0'],
       },
     ],
   };
 
   const summaryData = [
-    { label: 'Resolved Cases', value: '70%', color: '#4caf50' },
-    { label: 'Cases in Progress', value: '20%', color: '#ffeb3b' },
-    { label: 'Unresolved Cases', value: '10%', color: '#f44336' },
+    { label: 'Resolved Cases', value: dataForSummary[0], color: '#4caf50' },
+    { label: 'Cases in Progress', value: dataForSummary[1], color: '#ffeb3b' },
+    { label: 'Unresolved Cases', value: dataForSummary[2], color: '#f44336' },
   ];
+
+  const convertTimestampToDate = (seconds, nanoseconds) => {
+    const milliseconds = seconds * 1000 + nanoseconds / 1000000;
+    return new Date(milliseconds).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+  };
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 90 },
-    { field: 'issue', headerName: 'Issue', width: 150 },
+    { field: 'id', headerName: 'Issue ID', width: 235 },
+    { field: 'department', headerName: 'Department', width: 160 },
+    { field: 'severity', headerName: 'Severity', width: 150 },
     { field: 'status', headerName: 'Status', width: 150 },
-    { field: 'department', headerName: 'Department', width: 150 },
-    { field: 'date', headerName: 'Date Reported', width: 150 },
+    { field: 'date', headerName: 'Date Reported', width: 200 },
   ];
 
-  const rows = [
-    { id: 1, issue: 'Pothole', status: 'Unresolved', department: 'Road', date: '2024-02-15' },
-    { id: 2, issue: 'Streetlight', status: 'Resolved', department: 'Electricity', date: '2024-03-22' },
-  ];
+  const rows = dataForTable;
 
   useEffect(() => {
     const usingSwal = () => {
@@ -107,14 +210,14 @@ const Dashboard = () => {
     <>
       {loggedIn && <div>
         <Container>
-      <Typography variant="h4" gutterBottom>
-        Civic Pulse Dashboard
+      <Typography variant="h4" gutterBottom style={{ paddingTop: '40px' }}>
+        Dashboard
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <Paper elevation={3} style={{ padding: '16px' }}>
             <Typography variant="h6">Reports per Month</Typography>
-            <div style={{ position: 'relative', width: '100%', height: '350px' }}>
+            <div style={{ position: 'relative', width: '100%', height: '400px' }}>
               <Bar data={barData} options={{ maintainAspectRatio: false, responsive: true }} />
             </div>
           </Paper>
@@ -122,7 +225,7 @@ const Dashboard = () => {
         <Grid item xs={12} md={6}>
           <Paper elevation={3} style={{ padding: '16px' }}>
             <Typography variant="h6">Reports by Department</Typography>
-            <div style={{ position: 'relative', width: '100%', height: '350px' }}>
+            <div style={{ position: 'relative', width: '100%', height: '400px' }}>
               <Doughnut data={doughnutData} options={{ maintainAspectRatio: false, responsive: true }} />
             </div>
           </Paper>

@@ -11,7 +11,7 @@ const severityColors = {
 const IssueCard = ({ issue }) => {
   const { severity, tags, photoUrl, location, department, progress, date } = issue;
   const dateObject = new Date(date._seconds * 1000 + date._nanoseconds / 1000000);
-  const formattedDate = dateObject.toLocaleDateString();
+  const formattedDate = dateObject.toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' });
   // const location1 = 'Ahmedabad'; // Just for testing purpose
 
   return (

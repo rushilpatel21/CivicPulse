@@ -73,7 +73,7 @@ function App() {
               {user && <Route path="/profile" element={<Profile />} />}
               {user && admin && <Route path="/usermanagement" element={<UserManagement />} />}
               {user && admin && <Route path="/issuemanagement" element={<IssueManagement />} />}
-              {user && admin && <Route path="/dashboard" element={<Dashboard />} />}
+              {/* {user && admin && <Route path="/dashboard" element={<Dashboard />} />} */}
             </Routes>
           </div>
         </div>
