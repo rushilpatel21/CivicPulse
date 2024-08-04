@@ -25,7 +25,7 @@ admin.initializeApp({
 const db = admin.firestore();
 
 async function uploadToGemini(req, res) {
-  const { tags, user, location, severity, photoUrl } = req.body;
+  const { tags, user, location, severity, photoUrl, lat, lng } = req.body;
   const prompt = JSON.stringify(tags);
     
   const imagePath = req.file.path;
@@ -59,6 +59,8 @@ async function uploadToGemini(req, res) {
       date,
       department,
       location,
+      lat,
+      lng,
       tags,
       severity,
       photoUrl,
