@@ -1,15 +1,52 @@
-TODO 3: Ask for location permission in heat map and focus the map on those lats and longs
-TODO 9: Make Light & Dark Mode feature
-TODO 11: Fix the order of the toastify (it is not following newestOnTop)
-TODO 12: We need an option to add profile picture for those who login with email pass instead of OAuth or atleast dont show anything over there
-TODO 13: We can add a notification bell type thing on navbar, for times when we want to send alert to a particular user about their issue moving forward or being removed for xyz issues or whatever
-and also have a cross button or something so that they can delete the notis later or something like that and have a seen section? 
-two section (one viewed and one new version type)
+TODO Fix the map first time loading error 
+TODO Make the home page 
+TODO Get an icon for the civicpulse
 
-For Issue Form 
-TODO: Bug about the location not going to the next line but straight 
-TODO: Bug about the same type of thing happening with 2 per row is now with 1 per row (the container is getting cut)
-TODO: Feature, add the logic for location filter
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
