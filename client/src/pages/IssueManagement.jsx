@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, Button, Select, MenuItem } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, Button, Select, MenuItem, Typography } from '@mui/material';
 import { getIssues, updateIssueProgress, deleteIssueByIssueId } from '../helper/api.js';
 import Loader from '../components/loader.jsx';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import { toast } from 'react-toastify';
 
 const IssueManagement = () => {
     const [issues, setIssues] = useState([]);
@@ -67,12 +70,30 @@ const IssueManagement = () => {
     };
 
     const handleDelete = async (id) => {
+        const MySwal = withReactContent(Swal);
+
         try {
-            setIsLoading(true);
-            await deleteIssueByIssueId(id);
-            fetchIssues();
+            const result = await MySwal.fire({
+                title: 'Are you sure?',
+                text: 'Issue will be Deleted',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, keep it',
+                reverseButtons: true
+            });
+    
+            if (result.isConfirmed) {
+                setIsLoading(true);
+                await deleteIssueByIssueId(id);
+                await fetchIssues();
+                toast.success("Issue Deleted Successfully", { position: "bottom-center" });
+            } else {
+                MySwal.fire('Cancelled', 'Account is safe :)', 'info');
+            }
         } catch (error) {
             console.error('Error deleting issue:', error);
+            toast.error("Error deleting issue", { position: "bottom-center" });
         } finally {
             setIsLoading(false);
         }
@@ -94,7 +115,8 @@ const IssueManagement = () => {
         <>
             {isLoading && <Loader />}
             <Paper>
-                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px', marginTop: '50px' }}>
+            <Typography style={{marginTop: '90px'}} variant="h4" gutterBottom>Issue Management</Typography>
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px', marginTop: '0px' }}>
                     <TextField
                         name="name"
                         label="ID"

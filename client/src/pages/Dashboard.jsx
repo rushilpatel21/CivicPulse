@@ -210,7 +210,7 @@ const Dashboard = () => {
     <>
       {loggedIn && <div>
         <Container>
-      <Typography variant="h4" gutterBottom style={{ paddingTop: '40px' }}>
+      <Typography variant="h4" gutterBottom style={{ paddingTop: '80px' }}>
         Dashboard
       </Typography>
       <Grid container spacing={3}>

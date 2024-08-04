@@ -73,6 +73,10 @@ const UserManagement = () => {
       toast.error("You cannot delete your own account", { position: "bottom-center" });
       return;
     }
+    if(userId === import.meta.env.VITE_GOOGLE_RUSHIL_ID){
+      toast.error("You cannot delete this account (Owner)", { position: "bottom-center" });
+      return;
+    }
     withReactContent(Swal).fire({
       title: 'Are you sure?',
       text: 'You will not be able to recover this account!',
@@ -109,6 +113,10 @@ const UserManagement = () => {
     const myId =  auth.currentUser;
     if(myId.uid === userId){
       toast.error("You cannot disable your own account", { position: "bottom-center" });
+      return;
+    }
+    if(userId === import.meta.env.VITE_GOOGLE_RUSHIL_ID){
+      toast.error("You cannot disable this account (Owner)", { position: "bottom-center" });
       return;
     }
     withReactContent(Swal).fire({
@@ -187,6 +195,10 @@ const UserManagement = () => {
       const myId =  auth.currentUser;
       if(myId.uid === userId){
         toast.error("You cannot change your own role", { position: "bottom-center" });
+        return;
+      }
+      if(userId === import.meta.env.VITE_GOOGLE_RUSHIL_ID){
+        toast.error("You cannot change this account's Role (Owner)", { position: "bottom-center" });
         return;
       }
 

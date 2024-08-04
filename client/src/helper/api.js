@@ -414,3 +414,21 @@ export const getIssuesByDepartmentType = async () => {
     throw error;
   }
 }
+
+export const getHeatmapData = async () => {
+  try {
+    const response = await instance.get('/issues/heatmap/getData');
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      console.error('Error response:', error.response.data);
+      console.error('Error status:', error.response.status);
+      console.error('Error headers:', error.response.headers);
+    } else if (error.request) {
+      console.error('Error request:', error.request);
+    } else {
+      console.error('Error message:', error.message);
+    }
+    throw error;
+  }
+};

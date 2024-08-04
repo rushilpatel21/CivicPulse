@@ -42,7 +42,7 @@ const IssueDetails = () => {
     <>
       {loggedIn && (
         <div>
-          <Box sx={{ paddingTop: '50px' }}>
+          <Box sx={{ paddingTop: '90px', width: '75vw' }}>
             <IssueSections />
           </Box>
         </div>

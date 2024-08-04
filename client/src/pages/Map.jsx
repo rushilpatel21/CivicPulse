@@ -1,110 +1,170 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { GoogleMap, useJsApiLoader, HeatmapLayer } from '@react-google-maps/api';
-import { auth } from '../components/firebase.jsx';
-import withReactContent from 'sweetalert2-react-content';
-import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
+import { getHeatmapData } from '../helper/api';
 
-const Heatmap = () => {
-  const mapRef = useRef(null);
-  const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_PAID_API,
-    libraries: ['visualization']
-  });
-  const [heatmapData, setHeatmapData] = useState([]);
-  const [loggedIn, setLoggedIn] = useState(false);
+const containerStyle = {
+  width: '100vw',
+  height: '100vh',
+};
 
-  const navigate = useNavigate();
+const center = {
+  lat: 23.039809,
+  lng: 72.5031242,
+};
+
+const HeatmapComponent = () => {
+  const GOOGLE_API = import.meta.env.VITE_GOOGLE_PAID_API;
+  const [heatMapData, setHeatMapData] = useState([]);
 
   useEffect(() => {
-    const usingSwal = () => {
-      withReactContent(Swal).fire({
-        icon: "error",
-        title: "User Not Logged In",
-        text: "Please sign in to view Heat Map",
-        showCancelButton: true,
-        confirmButtonColor: '#dc3545',
-        cancelButtonColor: '#6c757d',
-        confirmButtonText: 'Log In',
-        cancelButtonText: 'Close',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          navigate('/login');
-        } else {
-          navigate('/');
-        }
-      })
-    };
-    auth.onAuthStateChanged((user) => {
-      if (!user) {
-        usingSwal();
-      } else {
-        setLoggedIn(true);
+    const fetchHeatmapData = async () => {
+      try {
+        const data = await getHeatmapData();
+        setHeatMapData(data);
+      } catch (error) {
+        console.error('Error fetching heatmap data:', error);
       }
-    });
-  }, [navigate]);
+    };
 
-  useEffect(() => {
-    if (isLoaded) {
-      const data = [
-        { lat: 37.782551, lng: -122.445368 },
-        { lat: 37.782745, lng: -122.444586 },
-        // Add more points here
-      ].map(point => new window.google.maps.LatLng(point.lat, point.lng));
-      setHeatmapData(data);
+    fetchHeatmapData();
+  }, []);
+
+  const heatmapPoints = useMemo(() => {
+    if (window.google) {
+      return heatMapData.map(point => ({
+        location: new window.google.maps.LatLng(point.lat, point.lng),
+        weight: point.weight,
+      }));
     }
-  }, [isLoaded]);
+    return [];
+  }, [heatMapData]);
 
-  const gradient = [
-    'rgba(0, 255, 255, 0)',
-    'rgba(0, 255, 255, 1)',
-    'rgba(0, 191, 255, 1)',
-    'rgba(0, 127, 255, 1)',
-    'rgba(0, 63, 255, 1)',
-    'rgba(0, 0, 255, 1)',
-    'rgba(0, 0, 223, 1)',
-    'rgba(0, 0, 191, 1)',
-    'rgba(0, 0, 159, 1)',
-    'rgba(0, 0, 127, 1)',
-    'rgba(63, 0, 91, 1)',
-    'rgba(127, 0, 63, 1)',
-    'rgba(191, 0, 31, 1)',
-    'rgba(255, 0, 0, 1)',
-  ];
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: GOOGLE_API,
+    libraries: ['visualization'],
+  });
 
-  const mapContainerStyle = {
-    width: '100%',
-    height: '400px',
-  };
-
-  const center = {
-    lat: 37.775,
-    lng: -122.434,
-  };
-
-  if (loadError) {
-    return <div>Error loading maps</div>;
-  }
-
-  if (!isLoaded) {
-    return <div>Loading Maps</div>;
-  }
-
-  return (
-    <>
-      {loggedIn && (
-        <GoogleMap
-          mapContainerStyle={mapContainerStyle}
-          center={center}
-          zoom={13}
-          onLoad={(map) => (mapRef.current = map)}
-          mapTypeId="satellite"
-        >
-          <HeatmapLayer data={heatmapData} options={{ gradient }} />
-        </GoogleMap>
-      )}
-    </>
+  return isLoaded ? (
+    <GoogleMap
+      mapContainerStyle={containerStyle}
+      center={center}
+      zoom={10}
+      options={{
+        streetViewControl: false,
+        mapTypeControl: false,
+      }}
+    >
+      <HeatmapLayer
+        data={heatmapPoints}
+        options={{
+          radius: 50,
+          opacity: 0.6,
+          gradient: [
+            'rgba(0, 255, 255, 0)',
+            'rgba(0, 255, 255, 1)',
+            'rgba(0, 200, 255, 1)',
+            'rgba(0, 150, 255, 1)',
+            'rgba(0, 100, 255, 1)',
+            'rgba(0, 50, 255, 1)',
+            'rgba(0, 0, 255, 1)',
+          ],
+        }}
+      />
+    </GoogleMap>
+  ) : (
+    <div>Loading...</div>
   );
 };
 
-export default Heatmap;
+export default React.memo(HeatmapComponent);
+
+// import React, { useEffect } from 'react';
+// import { GoogleMap, useJsApiLoader, HeatmapLayer } from '@react-google-maps/api';
+// import { getHeatmapData } from '../helper/api';
+
+// const containerStyle = {
+//   width: '100vw',
+//   height: '100vh'
+// };
+
+// const center = {
+//   lat: 23.039809,
+//   lng: 72.5031242
+// };
+
+// function MyComponent() {
+//   const GOOGLE_API = import.meta.env.VITE_GOOGLE_PAID_API;
+//   const [map, setMap] = React.useState(null);
+//   const [heatMapData, setHeatMapData] = React.useState([]);
+
+//   useEffect(() => {
+//     const fetchHeatmapData = async () => {
+//       try {
+//         const data = await getHeatmapData();
+//         setHeatMapData(data);
+//       } catch (error) {
+//         console.error('Error fetching heatmap data:', error);
+//       }
+//     };
+
+//     fetchHeatmapData();
+//   }, []);
+
+//   const onLoad = React.useCallback(function callback(map) {
+//     setMap(map);
+//   }, []);
+
+//   const onUnmount = React.useCallback(function callback(map) {
+//     setMap(null);
+//   }, []);
+
+//   const heatmapPoints = React.useMemo(() => {
+//     if (window.google) {
+//       return heatMapData.map(point => {
+//         return {
+//           location: new window.google.maps.LatLng(point.lat, point.lng),
+//           weight: point.weight
+//         };
+//       });
+//     }
+//     return [];
+//   }, [heatMapData]);
+
+//   const { isLoaded } = useJsApiLoader({
+//     id: 'google-map-script',
+//     googleMapsApiKey: GOOGLE_API,
+//     libraries: ['visualization']
+//   });
+
+//   return isLoaded ? (
+//     <GoogleMap
+//       mapContainerStyle={containerStyle}
+//       center={center}
+//       zoom={10}
+//       onLoad={onLoad}
+//       onUnmount={onUnmount}
+//     >
+//       <HeatmapLayer
+//         data={heatmapPoints}
+//         options={{
+//           radius: 50,
+//           opacity: 0.6,
+//           gradient: [
+//             'rgba(0, 255, 255, 0)',
+//             'rgba(0, 255, 255, 1)',
+//             'rgba(0, 200, 255, 1)',
+//             'rgba(0, 150, 255, 1)',
+//             'rgba(0, 100, 255, 1)',
+//             'rgba(0, 50, 255, 1)',
+//             'rgba(0, 0, 255, 1)'
+//           ]
+//         }}
+//       />
+//     </GoogleMap>
+//   ) : (
+//     <div>Loading...</div>
+//   );
+// }
+
+// export default React.memo(MyComponent);

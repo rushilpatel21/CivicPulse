@@ -12,7 +12,6 @@ const IssueCard = ({ issue }) => {
   const { severity, tags, photoUrl, location, department, progress, date } = issue;
   const dateObject = new Date(date._seconds * 1000 + date._nanoseconds / 1000000);
   const formattedDate = dateObject.toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' });
-  // const location1 = 'Ahmedabad'; // Just for testing purpose
 
   return (
     <Card 
@@ -36,9 +35,11 @@ const IssueCard = ({ issue }) => {
             <Typography variant="body2" color="textSecondary" sx={{ fontWeight: 'bold', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
               Reported on: {formattedDate}
             </Typography>
-            <Typography variant="body2" color="textSecondary" sx={{ fontWeight: 'bold', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-              Location: {location}
-            </Typography>
+            <Box sx={{ maxWidth: '150px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              <Typography variant="body2" color="textSecondary" sx={{ fontWeight: 'bold' }}>
+                Location: {location}
+              </Typography>
+            </Box>
           </Box>
           <Box sx={{ flex: '1 1 auto', maxWidth: '180px', marginLeft: 2, height: 'auto', maxHeight: '190px', overflow: 'hidden' }}>
             <img src={photoUrl} alt="Issue" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />

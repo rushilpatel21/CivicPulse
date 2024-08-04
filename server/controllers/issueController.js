@@ -261,6 +261,25 @@ async function getAllIssuesByClearance(req, res) {
     }
 }
 
+async function getHeatmapData(req, res) {
+    try {
+        const snapshot = await db.collection('IssueDetails').get();
+        const heatmapData = [];
+        snapshot.forEach((doc) => {
+            const data = doc.data();
+            heatmapData.push({
+                lat: parseFloat(data.lat) || 0,
+                lng: parseFloat(data.lng) || 0,
+                weight: 500
+            });
+        });
+        res.send(heatmapData);
+    } catch {
+        console.error("Error fetching documents: ", error);
+        res.status(500).send("Error fetching documents");
+    }
+}
+
 module.exports = {
     getAll,
     getById,
@@ -270,5 +289,6 @@ module.exports = {
     deleteByIssueId,
     getAllIssuesByMonth,
     getAllIssuesByDepartment,
-    getAllIssuesByClearance
+    getAllIssuesByClearance,
+    getHeatmapData
 };

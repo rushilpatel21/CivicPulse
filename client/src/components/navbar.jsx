@@ -28,7 +28,7 @@ function Navbar({ admin }) {
   const [user, setUser] = useState();
   const [userDetails, setUserDetails] = useState(null);
   const [profileIcon, setProfileIcon] = useState(defaultUser);
-  const [pages, setPages] = useState(['Home', 'Heat Map', 'Issue Details', 'Issue Form', 'Report Bug', 'Dashboard']);
+  const [pages, setPages] = useState(['Home', 'Dashboard', 'Heat Map', 'Issue Details', 'Issue Form', 'Report Bug']);
 
   
   useEffect(() => {
@@ -58,7 +58,7 @@ function Navbar({ admin }) {
       setProfileIcon(userDetails.photo);
     }
     if(admin){
-      setPages(['Home', 'Heat Map', 'Issue Details', 'Issue Form', 'User Management', 'Issue Management', 'Dashboard']);
+      setPages(['Home', 'Dashboard', 'Heat Map', 'Issue Details', 'Issue Form', 'User Management', 'Issue Management']);
     }
   }, [userDetails, admin]);
 
