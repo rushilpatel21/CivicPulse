@@ -158,9 +158,9 @@ const Dashboard = () => {
   };
 
   const summaryData = [
-    { label: 'Resolved Cases', value: dataForSummary[0], color: '#4caf50' },
+    { label: 'Resolved Cases', value: dataForSummary[2], color: '#4caf50' },
     { label: 'Cases in Progress', value: dataForSummary[1], color: '#ffeb3b' },
-    { label: 'Unresolved Cases', value: dataForSummary[2], color: '#f44336' },
+    { label: 'Unresolved Cases', value: dataForSummary[0], color: '#f44336' },
   ];
 
   const convertTimestampToDate = (seconds, nanoseconds) => {
