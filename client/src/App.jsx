@@ -1,6 +1,5 @@
 // TODO Fix the map first time loading error 
 // TODO Make the home page 
-// TODO Get an icon for the civicpulse
 
 import './styles/App.css';
 import "react-toastify/dist/ReactToastify.css";

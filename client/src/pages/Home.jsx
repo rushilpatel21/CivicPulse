@@ -1,3 +1,6 @@
+// TODO Fix the map first time loading error 
+// TODO Make the home page 
+
 import { useEffect, useState } from 'react';
 import { auth, db } from "../components/firebase";
 import { doc, getDoc } from "firebase/firestore";

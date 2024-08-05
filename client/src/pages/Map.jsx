@@ -1,6 +1,5 @@
-// TODO Fix the map first time loading error 
 // TODO Make the home page 
-// TODO Get an icon for the civicpulse
+// TODO Fix the map first time loading error 
 
 import React, { useEffect, useState, useMemo } from 'react';
 import { GoogleMap, useJsApiLoader, HeatmapLayer } from '@react-google-maps/api';
