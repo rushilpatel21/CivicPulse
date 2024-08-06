@@ -41,7 +41,7 @@ const IssueCard = ({ issue }) => {
               </Typography>
             </Box>
           </Box>
-          <Box sx={{ flex: '1 1 auto', maxWidth: '180px', marginLeft: 2, height: 'auto', maxHeight: '190px', overflow: 'hidden' }}>
+          <Box sx={{ flex: '1 1 auto', maxWidth: '170px', width: '170px', marginLeft: 2, height: '140px', maxHeight: '140px', overflow: 'hidden' }}>
             <img src={photoUrl} alt="Issue" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </Box>
         </Box>
