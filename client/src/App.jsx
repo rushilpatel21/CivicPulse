@@ -1,6 +1,3 @@
-// TODO Fix the map first time loading error 
-// TODO Make the home page 
-
 import './styles/App.css';
 import "react-toastify/dist/ReactToastify.css";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";

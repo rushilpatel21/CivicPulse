@@ -3,6 +3,7 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    overflow-x: hidden;
   }
   
   .home-container {
@@ -10,6 +11,8 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background: url('../assets/backgroundImg.jpg') no-repeat center center fixed;
+    background-size: cover;
   }
   
   .gradient-text-section {
@@ -19,16 +22,14 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
-    background: url('../path-to-your-image/image.png') no-repeat center center/cover; /* Adjust the path as needed */
     color: white;
   }
   
   .gradient-text {
-    background: linear-gradient(135deg, #30cfd0, #330867);
+    background:#E6E6E6;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-weight: bold;
-    font-size: 2.5rem;
     margin-bottom: 10px;
   }
   
@@ -93,7 +94,6 @@ body {
   }
   
   .footer {
-    background-color: #1976d2;
     padding: 20px;
     width: 100%;
     text-align: center;

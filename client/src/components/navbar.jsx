@@ -87,7 +87,7 @@ function Navbar({ admin }) {
   };
 
   return (
-    <AppBar position="fixed" sx={{ top: 0, left: 0, right: 0 }}>
+    <AppBar position="fixed" sx={{ top: 0, left: 0, right: 0, backgroundColor: '#254fa2'  }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />  */}

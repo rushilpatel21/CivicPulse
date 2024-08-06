@@ -1,6 +1,3 @@
-// TODO Fix the map first time loading error 
-// TODO Make the home page 
-
 import { useEffect, useState } from 'react';
 import { auth, db } from "../components/firebase";
 import { doc, getDoc } from "firebase/firestore";
@@ -72,10 +69,10 @@ const Home = () => {
   return (
     <div className="home-container">
       <div className="gradient-text-section">
-        <Typography variant="h3" gutterBottom className="gradient-text">
+        <Typography variant="h2" gutterBottom className="gradient-text">
           Hello, {userName}
         </Typography>
-        <Typography variant="h4" gutterBottom className="gradient-text">
+        <Typography variant="h3" gutterBottom className="gradient-text">
           Welcome to Civic Pulse
         </Typography>
       </div>
@@ -121,7 +118,7 @@ const Home = () => {
         </Container>
       </div>
 
-      <footer className="footer">
+      <footer className="footer" style={{backgroundColor: '#254fa2', width: '100vw'}}>
         <Typography variant="body1" className="footer-text">
           &copy; 2024 Civic Pulse. All rights reserved.
         </Typography>
