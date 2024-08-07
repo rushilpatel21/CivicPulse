@@ -1,5 +1,4 @@
 TODO Fix the map first time loading error 
-TODO Fix the card issue 
 
 
 

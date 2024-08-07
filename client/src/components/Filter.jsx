@@ -42,14 +42,6 @@ const Filter = ({ filter, setFilter, applyFilter, clearFilter }) => {
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
           <FormControl fullWidth margin="normal">
-            <InputLabel>Distance</InputLabel>
-            <Select name="distance" label="Distance" value={filter.distance} onChange={handleChange}>
-              <MenuItem value="">No Filter</MenuItem>
-              <MenuItem value="Closest">Closest</MenuItem>
-              <MenuItem value="Furthest">Furthest</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl fullWidth margin="normal">
             <InputLabel>Severity</InputLabel>
             <Select name="severity" label="Severity" value={filter.severity} onChange={handleChange}>
               <MenuItem value="">No Filter</MenuItem>
