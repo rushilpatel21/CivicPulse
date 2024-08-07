@@ -16,6 +16,8 @@ const center = {
   lng: 72.5031242,
 };
 
+const libraries = ['visualization'];
+
 const HeatmapComponent = () => {
 
   const navigate = useNavigate();
@@ -77,40 +79,10 @@ const HeatmapComponent = () => {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: GOOGLE_API,
-    libraries: ['visualization'],
+    libraries: libraries,
   });
 
   return( 
-  // isLoaded && loggedIn? (
-  //   <GoogleMap
-  //     mapContainerStyle={containerStyle}
-  //     center={center}
-  //     zoom={10}
-  //     options={{
-  //       streetViewControl: false,
-  //       mapTypeControl: false,
-  //     }}
-  //   >
-  //     <HeatmapLayer
-  //       data={heatmapPoints}
-  //       options={{
-  //         radius: 50,
-  //         opacity: 0.6,
-  //         gradient: [
-  //           'rgba(0, 255, 255, 0)',
-  //           'rgba(0, 255, 255, 1)',
-  //           'rgba(0, 200, 255, 1)',
-  //           'rgba(0, 150, 255, 1)',
-  //           'rgba(0, 100, 255, 1)',
-  //           'rgba(0, 50, 255, 1)',
-  //           'rgba(0, 0, 255, 1)',
-  //         ],
-  //       }}
-  //     />
-  //   </GoogleMap>
-  // ) : (
-  //   <div>Loading...</div>
-  // );
   <>
     { isLoaded && loggedIn &&
       <GoogleMap
