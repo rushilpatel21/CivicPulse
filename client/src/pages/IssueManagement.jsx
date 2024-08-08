@@ -49,6 +49,10 @@ const IssueManagement = () => {
                 filteredIssues = filteredIssues.filter(issue => issue.id.toLowerCase().includes(filter.name.toLowerCase()));
             }
 
+            if (filter.location) {
+                filteredIssues = filteredIssues.filter(issue => issue.data.location.toLowerCase().includes(filter.location.toLowerCase()));
+            }
+
             if (filter.department) {
                 filteredIssues = filteredIssues.filter(issue => issue.data.department === filter.department);
             }
@@ -126,6 +130,15 @@ const IssueManagement = () => {
                         size="small"
                         style={{ marginRight: '10px' }}
                     />
+                    <TextField
+                        name="location"
+                        label="location"
+                        value={filter.location}
+                        onChange={handleFilterChange}
+                        variant="outlined"
+                        size="small"
+                        style={{ marginRight: '10px' }}
+                    />
                     <Select
                         name="department"
                         value={filter.department}
@@ -178,6 +191,7 @@ const IssueManagement = () => {
                         <TableHead>
                             <TableRow>
                                 <TableCell>ID</TableCell>
+                                <TableCell>Location</TableCell>
                                 <TableCell>Department</TableCell>
                                 <TableCell>Severity</TableCell>
                                 <TableCell>Tags</TableCell>
@@ -190,6 +204,9 @@ const IssueManagement = () => {
                             {issues.map(issue => (
                                 <TableRow key={issue.id}>
                                     <TableCell>{issue.id}</TableCell>
+                                    <TableCell sx={{ maxWidth: 250, overflow: 'hidden', textOverflow: 'ellipsis'}}>
+                                        {issue.data.location}
+                                    </TableCell>
                                     <TableCell>{issue.data.department}</TableCell>
                                     <TableCell>{issue.data.severity}</TableCell>
                                     <TableCell>{issue.data.tags}</TableCell>
