@@ -1,7 +1,7 @@
-TODO Fix the map first time loading error 
-
-
-
+TODO 
+Fix the map first time loading error 
+Remove the option to add the severity and obtain it from gemini itself
+Can also add a filter for explicit protection type thing
 
 
 

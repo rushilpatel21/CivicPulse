@@ -62,85 +62,13 @@ const IssueForm = () => {
     return `${day}-${month}-${year}`;
   };
 
-  // const handlePlaceChange = (e) => {
-  //   const formattedAddress = e.target.value?.formattedAddress ?? '';
-  //   const latitude = e.target.value?.location?.lat ?? 0;
-  //   const longitude = e.target.value?.location?.lng ?? 0;
-
-
-  //   console.log('Formatted Address:', formattedAddress);
-  //   console.log('Latitude:', latitude);
-  //   console.log('Longitude:', longitude);
-  //   // if (!place || !place) {
-  //   //   console.error('Invalid place object:', place);
-  //   //   return;
-  //   // }
-  //   // console.log(place);
-
-  //   // const lat = place.geometry.location.lat();
-  //   // const lng = place.geometry.location.lng();
-
-  //   // let city = '';
-  //   // let state = '';
-  //   // let country = '';
-
-  //   // for (const component of place.address_components) {
-  //   //   if (component.types.includes('locality')) {
-  //   //     city = component.long_name;
-  //   //   }
-  //   //   if (component.types.includes('administrative_area_level_1')) {
-  //   //     state = component.long_name;
-  //   //   }
-  //   //   if (component.types.includes('country')) {
-  //   //     country = component.long_name;
-  //   //   }
-  //   // }
-
-  //   // setLocation(place.formatted_address || '');
-
-  //   // console.log('Latitude:', lat);
-  //   // console.log('Longitude:', lng);
-  //   // console.log('City:', city);
-  //   // console.log('State:', state);
-  //   // console.log('Country:', country);
-
-  //   // if (place) {
-  //   //   const latitude = place.geometry.location.lat();
-  //   //   const longitude = place.geometry.location.lng();
-      
-  //   //   console.log('Latitude:', latitude);
-  //   //   console.log('Longitude:', longitude);
-  
-  //   //   // You can use the latitude and longitude here
-  //   //   // For example, set them in the state if you're using React
-  //   //   // setState({ latitude, longitude });
-  //   // } else {
-  //   //   console.error('Place does not have geometry or location data.');
-  //   // }
-  // };
-
   const handlePlaceChange = (e) => {
-    // const formattedAddress = e.target.value?.formattedAddress ?? '';
   
-    // // Check if latitude and longitude are functions, then call them
-    // const latitude = typeof e.target.value?.location?.lat === 'function' 
-    //   ? e.target.value.location.lat() 
-    //   : e.target.value?.location?.lat ?? 0;
   
-    // const longitude = typeof e.target.value?.location?.lng === 'function' 
-    //   ? e.target.value.location.lng() 
-    //   : e.target.value?.location?.lng ?? 0;
-  
-    // console.log('Formatted Address:', formattedAddress);
-    // console.log('Latitude:', latitude);
-    // console.log('Longitude:', longitude);
-
     const place = e.target.value;
 
-  // Extract formatted address
   const formattedAddress = place?.formattedAddress ?? '';
 
-  // Extract latitude and longitude
   const latitude = typeof place?.location?.lat === 'function' 
     ? place.location.lat() 
     : place?.location?.lat ?? 0;
@@ -148,55 +76,6 @@ const IssueForm = () => {
   const longitude = typeof place?.location?.lng === 'function' 
     ? place.location.lng() 
     : place?.location?.lng ?? 0;
-
-  // Log the values
-  // get the city from the place
-  // let city = '';
-  // let state = '';
-  // let country = '';
-  // let postalCode = '';
-  // let streetNumber = '';
-  // let streetName = '';
-  // let sublocality = '';
-  // let sublocalityLevel1 = '';
-  // let sublocalityLevel2 = '';
-  // let sublocalityLevel3 = '';
-  // let sublocalityLevel4 = '';
-  // let sublocalityLevel5 = '';
-  // let sublocalityLevel6 = '';
-  // let sublocalityLevel7 = '';
-
-  // now write the object call to retrive city
-
-  // error saying TypeError: place.address_components is not iterable
-  // correct it and write the correct code 
-  // if (place.address_components) {
-  //   console.log('Address Components:', place.address_components);
-  // } else {
-  //   console.error('Address Components not found.');
-  // }
-  
-  // for (const component of place.address_components) {
-  //   if (component.types.includes('locality')) {
-  //     city = component.long_name;
-  //   }
-  //   if (component.types.includes('administrative_area_level_1')) {
-  //     state = component.long_name;
-  //   }
-  //   if (component.types.includes('country')) {
-  //     country = component.long_name;
-  //   }
-  //   if (component.types.includes('postal_code')) {
-  //     postalCode = component.long_name;
-  //   }
-  // }
-  // console.log('City:', city);
-  // console.log('State:', state);
-  // console.log('Country:', country);
-  // console.log('Postal Code:', postalCode);
-
-
-  
 
   setLocation(formattedAddress);
   setLat(latitude);

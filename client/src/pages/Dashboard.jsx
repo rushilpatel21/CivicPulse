@@ -123,6 +123,7 @@ const Dashboard = () => {
       issue.data.date = convertTimestampToDate(issue.data.date._seconds, issue.data.date._nanoseconds);
       return {
         id: issue.id,
+        location: issue.data.location,
         department: issue.data.department,
         severity: issue.data.severity,
         status: issue.data.progress,
@@ -170,6 +171,7 @@ const Dashboard = () => {
 
   const columns = [
     { field: 'id', headerName: 'Issue ID', width: 235 },
+    { field: 'location', headerName: 'Location', width: 200 },
     { field: 'department', headerName: 'Department', width: 160 },
     { field: 'severity', headerName: 'Severity', width: 150 },
     { field: 'status', headerName: 'Status', width: 150 },
