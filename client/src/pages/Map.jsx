@@ -13,7 +13,7 @@ const containerStyle = {
 
 const center = {
   lat: 23.039809,
-  lng: 72.5031242,
+  lng: 78.5031242,
 };
 
 const libraries = ['visualization'];
@@ -88,7 +88,7 @@ const HeatmapComponent = () => {
       <GoogleMap
       mapContainerStyle={containerStyle}
       center={center}
-      zoom={10}
+      zoom={5.8}
       options={{
         streetViewControl: false,
         mapTypeControl: false,
