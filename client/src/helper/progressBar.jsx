@@ -71,7 +71,7 @@ QontoStepIcon.propTypes = {
   completed: PropTypes.bool,
 };
 
-const steps = ['Issue Submitted', 'Viewed by Admin', 'Issue Resolved'];
+const steps = ['Issue Submitted', 'In Progress', 'Issue Resolved'];
 
 export default function CustomizedSteppers({ prog }) {
   return (
