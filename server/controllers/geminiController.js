@@ -25,7 +25,7 @@ admin.initializeApp({
 const db = admin.firestore();
 
 async function uploadToGemini(req, res) {
-  const { tags, user, location, severity, photoUrl, lat, lng } = req.body;
+  const { tags, user, location, photoUrl, lat, lng } = req.body;
   const prompt = JSON.stringify(tags);
     
   const imagePath = req.file.path;
@@ -49,8 +49,29 @@ async function uploadToGemini(req, res) {
       ],
     });
 
+    const chatSession_severity = geminiService.model_severity.startChat({
+      generationConfig: geminiService.generationConfig,
+      history: [
+        {
+          role: 'user',
+          parts: [
+            {
+              fileData: {
+                mimeType: uploadedFile.mimeType,
+                fileUri: uploadedFile.uri,
+              },
+            },
+          ],
+        },
+      ],
+    });
     const result = await chatSession.sendMessage(prompt);
     const department = result.response.text().replace(/\s+$/, '').trim();
+
+    const result_severity = await chatSession_severity.sendMessage(prompt);
+    const severity = result_severity.response.text().replace(/\s+$/, '').trim().toLowerCase();
+
+    console.log(severity);
     console.log(department);
 
     const date = new Date();
@@ -70,8 +91,6 @@ async function uploadToGemini(req, res) {
     fs.unlink(imagePath, (err) => {
       if (err) {
         console.error('Error deleting file:', err);
-      } else {
-        console.log('File deleted:', imagePath);
       }
     });
 

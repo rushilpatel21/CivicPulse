@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import Loader from '../components/loader.jsx';
-import { Box, Button, Chip, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { Box, Button, Chip, FormControl, InputLabel, TextField, Typography } from '@mui/material';
 
 const IssueForm = () => {
   const [location, setLocation] = useState('');
@@ -19,7 +19,6 @@ const IssueForm = () => {
   const [photo, setPhoto] = useState(null);
   const [tags, setTags] = useState([]);
   const [customTag, setCustomTag] = useState('');
-  const [severity, setSeverity] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const GOOGLE_API = import.meta.env.VITE_GOOGLE_PAID_API;
@@ -81,9 +80,6 @@ const IssueForm = () => {
   setLat(latitude);
   setLng(longitude);
 
-  console.log('Formatted Address:', formattedAddress);
-  console.log('Latitude:', latitude);
-  console.log('Longitude:', longitude);
   };
   
   
@@ -118,10 +114,6 @@ const IssueForm = () => {
     setTags(updatedTags);
   };
 
-  const handleSeverityChange = (e) => {
-    setSeverity(e.target.value);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -148,11 +140,6 @@ const IssueForm = () => {
       }); return;
     }
 
-    if (!severity) {
-      toast.error('Severity is required.', {
-        position: "bottom-center",
-      }); return;
-    }
     setIsLoading(true);
     const user = auth.currentUser;
     const formData = new FormData();
@@ -166,15 +153,13 @@ const IssueForm = () => {
     formData.append('lng', lng);
     formData.append('photo', photo);
     formData.append('tags', tags);
-    formData.append('severity', severity);
     formData.append('date', getCurrentDate());
 
     try {
       await uploadBytes(storageRef, photo);
       const downloadURL = await getDownloadURL(storageRef);
       formData.append('photoUrl', downloadURL);
-      const result = await Gemini(formData);
-      console.log('Success:', result);
+      await Gemini(formData);
       SwalSuccess();
     } catch (error) {
       console.error('Error:', error);
@@ -185,7 +170,6 @@ const IssueForm = () => {
     setPhoto(null);
     setTags([]);
     setCustomTag('');
-    setSeverity('');
   };
 
   return (
@@ -241,20 +225,6 @@ const IssueForm = () => {
             </Box>
             {tags.length === 0 && <Typography color="error">At least one tag is required.</Typography>}
             {tags.length > 4 && <Typography color="error">Maximum of 4 tags allowed.</Typography>}
-          </FormControl>
-          <FormControl fullWidth margin="normal">
-            <InputLabel htmlFor="severity">Severity</InputLabel>
-            <Select
-              label="severity"
-              id="severity"
-              value={severity}
-              onChange={handleSeverityChange}
-            >
-              <MenuItem value=""><em>Select severity</em></MenuItem>
-              <MenuItem value="low">Low</MenuItem>
-              <MenuItem value="medium">Medium</MenuItem>
-              <MenuItem value="high">High</MenuItem>
-            </Select>
           </FormControl>
           <Box mt={2}>
             <Button variant="contained" color="primary" type="submit" fullWidth>Submit</Button>

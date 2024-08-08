@@ -7,6 +7,8 @@ const genAI = new GoogleGenerativeAI(config.GEMINI_API_KEY);
 const fileManager = new GoogleAIFileManager(config.GEMINI_API_KEY);
 
 const model = genAI.getGenerativeModel({ model: config.GENERATIVE_MODEL, systemInstruction: config.SYSTEM_INSTRUCTION });
+const model_severity = genAI.getGenerativeModel({ model: config.GENERATIVE_MODEL, systemInstruction: config.SYSTEM_INSTRUCTION_FOR_SEVERITY });
+
 const generationConfig = config.GENERATION_CONFIG;
 
 async function uploadToGemini(imagePath, mimeType) {
@@ -26,6 +28,7 @@ async function uploadToGemini(imagePath, mimeType) {
 
 module.exports = {
   model,
+  model_severity,
   generationConfig,
   uploadToGemini,
 };

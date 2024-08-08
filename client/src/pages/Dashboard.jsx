@@ -47,7 +47,6 @@ const Dashboard = () => {
   const [dataForBar, setDataForBar] = useState([]);
   const [labelsForDoughnut, setLabelsForDoughnut] = useState([]);
   const [dataForDoughnut, setDataForDoughnut] = useState([]);
-  // const [labelsForSummary, setLabelsForSummary] = useState([]);
   const [dataForSummary, setDataForSummary] = useState([]);
   const [dataForTable, setDataForTable] = useState([]);
 
@@ -102,10 +101,8 @@ const Dashboard = () => {
     if(!issuesByClearance){
       return;
     }
-    // const labels = Object.keys(issuesByClearance);
     const data = Object.values(issuesByClearance);
     
-    // setLabelsForSummary(labels);
     setDataForSummary(data);
   }, [issuesByClearance]);
 
