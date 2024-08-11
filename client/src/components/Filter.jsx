@@ -70,7 +70,7 @@ const Filter = ({ filter, setFilter, applyFilter, clearFilter }) => {
             <Select name="progress" label="Progress" value={filter.progress} onChange={handleChange}>
               <MenuItem value={0}>No Filter</MenuItem>
               <MenuItem value={1}>Issue Submitted</MenuItem>
-              <MenuItem value={2}>Viewed by Admin</MenuItem>
+              <MenuItem value={2}>In Progress</MenuItem>
               <MenuItem value={3}>Issue Resolved</MenuItem>
             </Select>
           </FormControl>
