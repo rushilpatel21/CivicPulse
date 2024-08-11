@@ -8,6 +8,10 @@ You can view the live demo of the application [here](https://civicpulse.vercel.a
 
 > **Note:** In some cases, clicking on the heatmap may cause the whole window to go blank. If this happens, simply reload the page. This issue typically occurs the first time you click on the heatmap.
 
+### Youtube Video
+
+You can view the video of the application [here](https://www.youtube.com/watch?v=qlDzaNWU6mc).
+
 ## Table of Contents
 
 - [Libraries Used](#libraries-used)
