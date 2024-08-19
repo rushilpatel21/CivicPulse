@@ -2,10 +2,11 @@ require('dotenv').config();
 const express = require('express');
 const multer = require('multer');
 const cors = require('cors');
-const geminiRouter = require('./routes/geminiRouter');
+const geminiRouter = require('./routes/geminiRouter.js');
 const issuesRouter = require('./routes/issuesRouter.js');
 const bugRouter = require('./routes/bugRouter.js');
 const adminRouter = require('./routes/adminRouter.js');
+const userRouter = require('./routes/userRouter.js');
 const app = express();
 const PORT = process.env.PORT || 8000;
 
@@ -50,6 +51,8 @@ app.use('/api/issues', issuesRouter);
 app.use('/api/bugs', bugRouter);
 
 app.use('/api/admin', adminRouter);
+
+app.use('/api/ip', userRouter);
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);

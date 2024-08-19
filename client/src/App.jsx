@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { ToastContainer } from "react-toastify";
 import { CssBaseline } from '@mui/material';
-import { isAdmin } from './helper/api.js';
+import { isAdmin, sendUserData } from './helper/api.js';
 import { auth } from './components/firebase.jsx';
 import Navbar from './components/navbar.jsx';
 import Home from './pages/Home.jsx';
@@ -35,6 +35,11 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const url = window.location.href;
+    sendUserData(url);
+  });
+
+  useEffect(() => {
     const checkAdmin = async () => {
       if (user) {
         const adminStatus = await isAdmin(user.uid);
@@ -43,10 +48,6 @@ function App() {
     };
     checkAdmin();
   }, [user]);
-
-  useEffect(() => {
-    console.log("Admin is: " + admin);
-  }, [admin]);
 
   return (
     <Router>
@@ -73,7 +74,6 @@ function App() {
               {user && <Route path="/profile" element={<Profile />} />}
               {user && admin && <Route path="/usermanagement" element={<UserManagement />} />}
               {user && admin && <Route path="/issuemanagement" element={<IssueManagement />} />}
-              {/* {user && admin && <Route path="/dashboard" element={<Dashboard />} />} */}
             </Routes>
           </div>
         </div>

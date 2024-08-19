@@ -376,3 +376,27 @@ export const getHeatmapData = async () => {
     throw error;
   }
 };
+
+export const sendUserData = async (url) => {
+  try {
+    const userAgent = navigator.userAgent;
+    const data = { userAgent, url };
+    
+    await instance.post('/ip', data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  } catch (error) {
+    if (error.response) {
+      console.error('Error response:', error.response.data);
+      console.error('Error status:', error.response.status);
+      console.error('Error headers:', error.response.headers);
+    } else if (error.request) {
+      console.error('Error request:', error.request);
+    } else {
+      console.error('Error message:', error.message);
+    }
+    throw error;
+  }
+};
