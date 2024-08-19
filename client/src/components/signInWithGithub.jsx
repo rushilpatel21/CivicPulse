@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { setDoc, doc, getDoc } from "firebase/firestore";
 import githubIcon from "../assets/GithubIconLight.png"; 
 import { useNavigate } from 'react-router-dom';
+import { sendEmail } from '../helper/email';
 
 function SignInWithGithub() {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ function SignInWithGithub() {
             role: "User",
             isEnabled: true
           });
+          sendEmail(user.email, user.displayName);
         }
         toast.success("User logged in Successfully", {
           position: "bottom-center",

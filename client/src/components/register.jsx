@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import { sendEmail } from '../helper/email';
 
 function Register() {
   const [email, setEmail] = useState("");
@@ -28,6 +29,7 @@ function Register() {
           role: "User",
           isEnabled: true
         });
+        sendEmail(user.email, (fname + " " + lname) );
       }
       console.log("User Registered Successfully!!");
       toast.success("User Registered Successfully!!", {
