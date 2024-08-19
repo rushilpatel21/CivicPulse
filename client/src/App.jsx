@@ -27,6 +27,7 @@ function App() {
   
   const [user, setUser] = useState();
   const [admin, setAdmin] = useState(false);
+  const [dataSent, setDataSent] = useState(false);
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
@@ -35,9 +36,17 @@ function App() {
   }, []);
 
   useEffect(() => {
+    sendUserDataOnce();
+  });
+
+  const sendUserDataOnce = async () => {
+    if(dataSent){
+      return;
+    }
+    setDataSent(true);
     const url = window.location.href;
     sendUserData(url);
-  });
+  }
 
   useEffect(() => {
     const checkAdmin = async () => {
