@@ -221,7 +221,7 @@ const UserManagement = () => {
       {loading && <Loader />}
       {loggedIn && (
         <div>
-          <Typography variant="h4" gutterBottom>User Management</Typography>
+          <Typography style={{marginTop: '90px'}} variant="h4" gutterBottom>User Management</Typography>
           <TableContainer component={Paper}>
             <Table stickyHeader aria-label="users table">
               <TableHead>
