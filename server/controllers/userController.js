@@ -12,13 +12,35 @@ async function sendIp(req, res) {
     } else {
         IP = req.connection.remoteAddress;
     }
+    const dataToStore = {
+        ip: IP,
+        history: 
+        [{
+            [date]: data.url,
+        }],
+        userAgent: userAgent,
+    }
     if (data) {
         data.ip = IP;
         data.date = date;
         console.log("Data: ", data);
         try {
-            const docRef = await db.collection('VisitDetail').add(data);
-            res.status(200).send(docRef.id);
+            const docRef = await db.collection('VisitDetail').where('ip', '==', IP).get();
+            if (docRef.empty) {
+                await db.collection('VisitDetail').add(dataToStore);
+            } else {
+                docRef.forEach(async doc => {
+                    const docData = doc.data();
+                    const history = docData.history;
+                    history.push({
+                        [date]: data.url,
+                    });
+                    await db.collection('VisitDetail').doc(doc.id).update({
+                        history: history,
+                    });
+                });
+            }
+
         } catch (error) {
             console.error("Error inserting document: ", error);
             res.status(500).send("Error inserting document");
