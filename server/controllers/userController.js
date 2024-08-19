@@ -18,7 +18,7 @@ async function sendIp(req, res) {
         [{
             [date]: data.url,
         }],
-        userAgent: userAgent,
+        userAgent: data.userAgent,
     }
     if (data) {
         data.ip = IP;
