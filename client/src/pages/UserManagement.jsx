@@ -131,7 +131,7 @@ const UserManagement = () => {
       if (result.isConfirmed) {
         confirmedDisableAccount(userId);
       } else {
-        Swal.fire('Cancelled', 'Account is safe :)', 'info');
+        Swal.fire('Cancelled', 'Account wont be disabled :)', 'info');
       }
     })
 
@@ -155,7 +155,7 @@ const UserManagement = () => {
       if (result.isConfirmed) {
         confirmedEnableAccount(userId);
       } else {
-        Swal.fire('Cancelled', 'Account is safe :)', 'info');
+        Swal.fire('Cancelled', 'Account wont be enabled :)', 'info');
       }
     })
   }

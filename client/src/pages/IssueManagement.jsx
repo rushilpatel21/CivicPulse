@@ -93,7 +93,7 @@ const IssueManagement = () => {
                 await fetchIssues();
                 toast.success("Issue Deleted Successfully", { position: "bottom-center" });
             } else {
-                MySwal.fire('Cancelled', 'Account is safe :)', 'info');
+                MySwal.fire('Cancelled', 'Issue is safe :)', 'info');
             }
         } catch (error) {
             console.error('Error deleting issue:', error);
