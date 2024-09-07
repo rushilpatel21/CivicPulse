@@ -67,13 +67,19 @@ const HeatmapComponent = () => {
   }, []);
 
   const heatmapPoints = useMemo(() => {
-    if (window.google) {
-      return heatMapData.map(point => ({
-        location: new window.google.maps.LatLng(point.lat, point.lng),
-        weight: point.weight,
-      }));
+    try{
+      if (window.google) {
+        return heatMapData.map(point => ({
+          location: new window.google.maps.LatLng(point.lat, point.lng),
+          weight: point.weight,
+        }));
+      }
+      return [];
+    }catch (error) {
+      console.error('Error creating heatmap points:', error);
+      alert('Please reload this page once, if the issue persists please report a bug.\nSorry for the inconvenience.');
+      return
     }
-    return [];
   }, [heatMapData]);
 
   const { isLoaded } = useJsApiLoader({
