@@ -20,7 +20,7 @@
     "@mui/x-data-grid": "^7.12.0",
     "@react-google-maps/api": "^2.19.3",
     "@react-oauth/google": "^0.12.1",
-    "axios": "^1.7.2",
+    "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.3",
     "client": "file:",
@@ -29,6 +29,7 @@
     "firebase": "^10.12.2",
     "flowbite-react": "^0.10.1",
     "heatmap.js": "https://github.com/ionata/heatmap.js.git",
+    "npm": "^10.8.3",
     "prop-types": "^15.8.1",
     "react": "^18.3.1",
     "react-chartjs-2": "^5.2.0",
@@ -36,7 +37,7 @@
     "react-router-dom": "^6.23.1",
     "react-toastify": "^10.0.5",
     "supertokens-auth-react": "^0.42.3",
-    "sweetalert2": "^11.12.4",
+    "sweetalert2": "^11.13.2",
     "sweetalert2-react-content": "^5.0.7"
   },
   "devDependencies": {
