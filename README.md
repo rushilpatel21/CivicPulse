@@ -6,6 +6,8 @@ CivicPulse is a web application designed to allow users to report and track comm
 
 You can view the live demo of the application [here](https://civicpulse.vercel.app).
 
+> **Note:** I have disabled my GCP account to avoid getting charged, so heatmap and places api would not be working.
+
 > **Note:** In some cases, clicking on the heatmap may cause the whole window to go blank. If this happens, simply reload the page. This issue typically occurs the first time you click on the heatmap.
 
 ### Youtube Video
