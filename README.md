@@ -2,6 +2,10 @@
 
 CivicPulse is a web application designed to allow users to report and track community issues such as road damage, drainage problems, and more. The application includes a public-facing frontend for reporting and viewing issues and an admin panel for managing reports and users.
 
+### Youtube Video
+
+You can view the video of the application [here](https://www.youtube.com/watch?v=qlDzaNWU6mc).
+
 ### Live Demo
 
 You can view the live demo of the application [here](https://civicpulse.vercel.app).
@@ -10,9 +14,6 @@ You can view the live demo of the application [here](https://civicpulse.vercel.a
 
 > **Note:** In some cases, clicking on the heatmap may cause the whole window to go blank. If this happens, simply reload the page. This issue typically occurs the first time you click on the heatmap.
 
-### Youtube Video
-
-You can view the video of the application [here](https://www.youtube.com/watch?v=qlDzaNWU6mc).
 
 ## Table of Contents
 
