@@ -5,6 +5,7 @@ import Loader from '../components/loader.jsx';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { toast } from 'react-toastify';
+import socketService from '../services/socketService.js';
 
 const IssueManagement = () => {
     const [issues, setIssues] = useState([]);
@@ -18,6 +19,33 @@ const IssueManagement = () => {
 
     useEffect(() => {
         fetchIssues();
+        
+        // Initialize socket connection for real-time updates
+        socketService.connect();
+        
+        // Listen for real-time updates from other users/sessions
+        const handleIssueProgressUpdate = (updateData) => {
+            console.log('🔄 Received real-time issue update:', updateData);
+            // Refresh issues list when someone else makes changes
+            fetchIssues();
+        };
+        
+        const handleIssueDeleted = (deletedIssueId) => {
+            console.log('🗑️ Issue deleted by another user:', deletedIssueId);
+            // Refresh issues list when someone else deletes an issue
+            fetchIssues();
+        };
+        
+        // Register socket event listeners
+        socketService.onIssueProgressUpdate(handleIssueProgressUpdate);
+        socketService.onIssueDeleted(handleIssueDeleted);
+        
+        // Cleanup function
+        return () => {
+            socketService.off('issue_progress_updated', handleIssueProgressUpdate);
+            socketService.off('issue_deleted', handleIssueDeleted);
+            socketService.disconnect();
+        };
     }, []);
 
     const fetchIssues = async () => {

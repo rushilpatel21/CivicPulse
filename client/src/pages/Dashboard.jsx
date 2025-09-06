@@ -6,6 +6,7 @@ import withReactContent from 'sweetalert2-react-content';
 import { Container, Grid, Paper, Typography } from '@mui/material';
 import { Bar, Doughnut } from 'react-chartjs-2';
 import { DataGrid } from '@mui/x-data-grid';
+import socketService from '../services/socketService.js';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -55,6 +56,51 @@ const Dashboard = () => {
     getDept();
     getClearance();
     getIssuesForTable();
+    
+    // Initialize socket connection for real-time updates
+    socketService.connect();
+    
+    // Listen for dashboard statistics updates
+    const handleDashboardStatsUpdate = (updatedStats) => {
+      console.log('📊 Dashboard stats updated:', updatedStats);
+      setDataForSummary([updatedStats.open, updatedStats.inProgress, updatedStats.resolved]);
+    };
+    
+    // Listen for issue progress updates
+    const handleIssueProgressUpdate = (updateData) => {
+      console.log('🔄 Issue progress updated:', updateData);
+      // Refresh the issues table and statistics
+      getClearance();
+      getIssuesForTable();
+    };
+    
+    // Listen for issue deletions
+    const handleIssueDeleted = (deletedIssueId) => {
+      console.log('🗑️ Issue deleted:', deletedIssueId);
+      // Refresh all data when an issue is deleted
+      getClearance();
+      getIssuesForTable();
+      getDept();
+      getIssueMonth();
+    };
+    
+        // Register socket event listeners
+        socketService.onDashboardStatsUpdate(handleDashboardStatsUpdate);
+        socketService.onIssueProgressUpdate(handleIssueProgressUpdate);
+        socketService.onIssueDeleted(handleIssueDeleted);
+        
+        // Test connection after a short delay
+        setTimeout(() => {
+          if (socketService.testConnection()) {
+            console.log('🧪 Socket connection test sent');
+          }
+        }, 3000);    // Cleanup function
+    return () => {
+      socketService.off('dashboard_stats_updated', handleDashboardStatsUpdate);
+      socketService.off('issue_progress_updated', handleIssueProgressUpdate);
+      socketService.off('issue_deleted', handleIssueDeleted);
+      socketService.disconnect();
+    };
   }, []);
 
   const getClearance = async () => {

@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const multer = require('multer');
 const cors = require('cors');
+const http = require('http');
+const socketIo = require('socket.io');
 const geminiRouter = require('./routes/geminiRouter.js');
 const issuesRouter = require('./routes/issuesRouter.js');
 const bugRouter = require('./routes/bugRouter.js');
@@ -9,6 +11,7 @@ const adminRouter = require('./routes/adminRouter.js');
 const userRouter = require('./routes/userRouter.js');
 const testClassifierRouter = require('./routes/testClassifierRouter.js'); // Import the new router
 const app = express();
+const server = http.createServer(app);
 const PORT = process.env.PORT || 8000;
 
 
@@ -22,6 +25,36 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
+// Socket.io setup with CORS
+const io = socketIo(server, {
+  cors: {
+    origin: [
+      'https://civicpulse.vercel.app',
+      'http://localhost:5173'
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: '*',
+  }
+});
+
+// Make io accessible to routes
+app.set('socketio', io);
+
+// Socket.io connection handling
+io.on('connection', (socket) => {
+  console.log('🟢 New client connected:', socket.id);
+  
+  // Test connection handler
+  socket.on('test_connection', (data) => {
+    console.log('🧪 Test connection received:', data);
+    socket.emit('test_response', { message: 'Hello from server!', clientId: socket.id });
+  });
+
+  socket.on('disconnect', (reason) => {
+    console.log('🔴 Client disconnected:', socket.id, 'Reason:', reason);
+  });
+});
 
 app.use(express.json());
 
@@ -39,6 +72,12 @@ const upload = multer({ storage: storage });
 
 // Middleware to handle uploads
 
+// Middleware to add io instance to request object
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
+
 app.get('/', (req, res) => {
   res.send("Server is running.")
 })
@@ -53,6 +92,7 @@ app.use('/api/bugs', bugRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/ip', userRouter);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
+  console.log(`Socket.io server running`);
 });

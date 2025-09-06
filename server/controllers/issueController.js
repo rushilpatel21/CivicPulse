@@ -2,6 +2,26 @@ const admin = require('firebase-admin');
 
 const db = admin.firestore();
 
+// Helper function to calculate clearance statistics
+async function getClearanceStatistics() {
+    try {
+        const snapshot = await db.collection('IssueDetails').get();
+        const clearanceCount = new Map();
+        clearanceCount.set('1', 0);
+        clearanceCount.set('2', 0);
+        clearanceCount.set('3', 0);
+        snapshot.forEach((doc) => {
+            const data = doc.data();
+            const clearance = data.progress;
+            clearanceCount.set(clearance, (clearanceCount.get(clearance) || 0) + 1);
+        });
+        return Object.fromEntries(clearanceCount);
+    } catch (error) {
+        console.error("Error calculating clearance statistics: ", error);
+        return { '1': 0, '2': 0, '3': 0 };
+    }
+}
+
 async function getAll(req, res) {
     try {
         const issues = [];
@@ -96,9 +116,40 @@ async function updateProgress(req, res) {
         if (snapshot.empty) {
             res.status(404).send('No issues found for the given issue id');
         } else {
+            // Get the old progress for comparison
+            const oldData = snapshot.data();
+            const oldProgress = oldData.progress;
+            
+            // Update the document
             await db.collection('IssueDetails').doc(id).update({
                 progress,
             });
+            
+            // Get socket.io instance from request
+            const io = req.io;
+            if (io) {
+                // Calculate updated statistics
+                const updatedStats = await getClearanceStatistics();
+                
+                // Emit real-time updates
+                io.emit('issue_progress_updated', {
+                    issueId: id,
+                    oldProgress: oldProgress,
+                    newProgress: progress,
+                    timestamp: new Date().toISOString()
+                });
+                
+                // Emit dashboard statistics update
+                io.emit('dashboard_stats_updated', {
+                    open: updatedStats[1] || 0,
+                    inProgress: updatedStats[2] || 0,
+                    resolved: updatedStats[3] || 0
+                });
+                
+                console.log(`📡 Socket events emitted - Progress updated for issue ${id}: ${oldProgress} -> ${progress}`);
+                console.log(`📊 Dashboard stats: Open: ${updatedStats[1]}, InProgress: ${updatedStats[2]}, Resolved: ${updatedStats[3]}`);
+            }
+            
             res.send('Document updated successfully');
         }
     } catch (error) {
@@ -243,19 +294,9 @@ async function getAllIssuesByDepartment(req, res) {
 
 async function getAllIssuesByClearance(req, res) {
     try {
-        const snapshot = await db.collection('IssueDetails').get();
-        const clearanceCount = new Map();
-        clearanceCount.set('1', 0);
-        clearanceCount.set('2', 0);
-        clearanceCount.set('3', 0);
-        snapshot.forEach((doc) => {
-            const data = doc.data();
-            const clearance = data.progress;
-            clearanceCount.set(clearance, (clearanceCount.get(clearance) || 0)+ 1);
-        });
-        const clearanceCountObj = Object.fromEntries(clearanceCount);
+        const clearanceCountObj = await getClearanceStatistics();
         res.send(clearanceCountObj);
-    } catch {
+    } catch (error) {
         console.error("Error fetching documents: ", error);
         res.status(500).send("Error fetching documents");
     }

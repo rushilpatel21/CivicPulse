@@ -21,7 +21,8 @@
     "firebase-admin": "^12.2.0",
     "multer": "^1.4.5-lts.1",
     "node-fetch": "^3.3.2",
-    "server": "file:"
+    "server": "file:",
+    "socket.io": "^4.8.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.4"
